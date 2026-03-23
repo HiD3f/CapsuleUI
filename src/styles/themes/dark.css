@@ -1,0 +1,13 @@
+[data-theme="dark"] {
+  --cap-color-primary:        #000000;
+  --cap-color-on-primary:     #FFE500;
+  --cap-color-surface:        #111111;
+  --cap-color-on-surface:     #FFE500;
+  --cap-color-background:     #111111;
+  --cap-color-on-background:  #FFE500;
+  --cap-border-color:         #FFE500;
+  --cap-color-focus:          #FFE500;
+  --cap-shadow:               3px 3px 0px #FFE500;
+  --cap-shadow-hover:         5px 5px 0px #FFE500;
+  --cap-shadow-active:        1px 1px 0px #FFE500;
+}

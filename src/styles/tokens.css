@@ -1,0 +1,54 @@
+:root {
+  /* ─── Brand ─────────────────────────────── */
+  --cap-color-yellow:        #FFE500;
+  --cap-color-black:         #000000;
+  --cap-color-white:         #FFFFFF;
+
+  /* ─── Semantic ───────────────────────────── */
+  --cap-color-primary:       var(--cap-color-yellow);
+  --cap-color-on-primary:    var(--cap-color-black);
+  --cap-color-surface:       var(--cap-color-white);
+  --cap-color-on-surface:    var(--cap-color-black);
+  --cap-color-background:    var(--cap-color-yellow);
+  --cap-color-on-background: var(--cap-color-black);
+  --cap-color-danger:        #CC0000;
+  --cap-color-on-danger:     var(--cap-color-white);
+  --cap-color-focus:         var(--cap-color-black);
+
+  /* ─── Typography ─────────────────────────── */
+  --cap-font-family:         'Georgia', 'Times New Roman', serif;
+  --cap-font-family-mono:    'Courier New', Courier, monospace;
+  --cap-font-size-sm:        12px;
+  --cap-font-size-md:        14px;
+  --cap-font-size-lg:        16px;
+  --cap-font-weight-normal:  400;
+  --cap-font-weight-bold:    700;
+  --cap-letter-spacing:      0.05em;
+
+  /* ─── Spacing ────────────────────────────── */
+  --cap-space-xs:            4px;
+  --cap-space-sm:            8px;
+  --cap-space-md:            12px;
+  --cap-space-lg:            18px;
+  --cap-space-xl:            24px;
+
+  /* ─── Border ─────────────────────────────── */
+  --cap-border-width:        2px;
+  --cap-border-width-thick:  3px;
+  --cap-border-color:        var(--cap-color-black);
+  --cap-border-radius:       0px;
+
+  /* ─── Retro shadow (offset solid) ───────── */
+  --cap-shadow:              3px 3px 0px var(--cap-color-black);
+  --cap-shadow-hover:        5px 5px 0px var(--cap-color-black);
+  --cap-shadow-active:       1px 1px 0px var(--cap-color-black);
+
+  /* ─── Transition ─────────────────────────── */
+  --cap-transition-fast:     0.1s ease;
+  --cap-transition-base:     0.15s ease;
+
+  /* ─── Sizing ─────────────────────────────── */
+  --cap-min-height-sm:       28px;
+  --cap-min-height-md:       38px;
+  --cap-min-height-lg:       48px;
+}

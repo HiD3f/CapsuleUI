@@ -5,7 +5,45 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
+export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 export namespace Components {
+    interface CapButton {
+        /**
+          * Accessible label for icon-only buttons
+         */
+        "ariaLabel": string;
+        /**
+          * Disables the button
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Stretches the button to full container width
+          * @default false
+         */
+        "fullWidth": boolean;
+        /**
+          * Shows a loading spinner and disables interaction
+          * @default false
+         */
+        "loading": boolean;
+        /**
+          * Size of the button
+          * @default 'md'
+         */
+        "size": ButtonSize;
+        /**
+          * HTML button type
+          * @default 'button'
+         */
+        "type": ButtonType;
+        /**
+          * Visual style of the button
+          * @default 'primary'
+         */
+        "variant": ButtonVariant;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -21,7 +59,28 @@ export namespace Components {
         "middle": string;
     }
 }
+export interface CapButtonCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapButtonElement;
+}
 declare global {
+    interface HTMLCapButtonElementEventMap {
+        "capClick": MouseEvent;
+    }
+    interface HTMLCapButtonElement extends Components.CapButton, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapButtonElementEventMap>(type: K, listener: (this: HTMLCapButtonElement, ev: CapButtonCustomEvent<HTMLCapButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapButtonElementEventMap>(type: K, listener: (this: HTMLCapButtonElement, ev: CapButtonCustomEvent<HTMLCapButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapButtonElement: {
+        prototype: HTMLCapButtonElement;
+        new (): HTMLCapButtonElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -29,10 +88,51 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "cap-button": HTMLCapButtonElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface CapButton {
+        /**
+          * Accessible label for icon-only buttons
+         */
+        "ariaLabel"?: string;
+        /**
+          * Disables the button
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Stretches the button to full container width
+          * @default false
+         */
+        "fullWidth"?: boolean;
+        /**
+          * Shows a loading spinner and disables interaction
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
+          * Emitted when the button is clicked
+         */
+        "onCapClick"?: (event: CapButtonCustomEvent<MouseEvent>) => void;
+        /**
+          * Size of the button
+          * @default 'md'
+         */
+        "size"?: ButtonSize;
+        /**
+          * HTML button type
+          * @default 'button'
+         */
+        "type"?: ButtonType;
+        /**
+          * Visual style of the button
+          * @default 'primary'
+         */
+        "variant"?: ButtonVariant;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -48,6 +148,15 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
 
+    interface CapButtonAttributes {
+        "variant": ButtonVariant;
+        "size": ButtonSize;
+        "type": ButtonType;
+        "disabled": boolean;
+        "loading": boolean;
+        "fullWidth": boolean;
+        "ariaLabel": string;
+    }
     interface MyComponentAttributes {
         "first": string;
         "middle": string;
@@ -55,6 +164,7 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
+        "cap-button": Omit<CapButton, keyof CapButtonAttributes> & { [K in keyof CapButton & keyof CapButtonAttributes]?: CapButton[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `attr:${K}`]?: CapButtonAttributes[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `prop:${K}`]?: CapButton[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
 }
@@ -62,6 +172,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "cap-button": LocalJSX.IntrinsicElements["cap-button"] & JSXBase.HTMLAttributes<HTMLCapButtonElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }
