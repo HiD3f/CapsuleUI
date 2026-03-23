@@ -1,7 +1,7 @@
 [data-theme="dark"] {
-  --cap-color-primary:        #000000;
-  --cap-color-on-primary:     #FFE500;
-  --cap-color-surface:        #111111;
+  --cap-color-primary:        #FFE500;
+  --cap-color-on-primary:     #000000;
+  --cap-color-surface:        #222222;
   --cap-color-on-surface:     #FFE500;
   --cap-color-background:     #111111;
   --cap-color-on-background:  #FFE500;
