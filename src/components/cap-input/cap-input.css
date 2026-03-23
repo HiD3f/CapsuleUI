@@ -1,0 +1,159 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Wrapper ────────────────────────────────── */
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-xs);
+}
+
+/* ─── Label ──────────────────────────────────── */
+.input__label {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  font-weight: var(--cap-font-weight-bold);
+  color: var(--cap-color-on-background);
+  text-transform: uppercase;
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.input__required {
+  color: var(--cap-color-danger);
+}
+
+/* ─── Field container ────────────────────────── */
+.input__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  background: var(--cap-color-surface);
+  transition: box-shadow var(--cap-transition-base);
+}
+
+/* ─── Focus ──────────────────────────────────── */
+.input__field:focus-within {
+  box-shadow: var(--cap-shadow);
+  outline: none;
+}
+
+:host-context(.cap-focus-outline) .input__field:focus-within {
+  box-shadow: none;
+  outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
+  outline-offset: 2px;
+}
+
+/* ─── Native input ───────────────────────────── */
+input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  min-height: var(--cap-min-height-md);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: var(--cap-color-on-surface);
+  opacity: 0.4;
+}
+
+/* ─── Icon ───────────────────────────────────── */
+.input__icon {
+  display: flex;
+  align-items: center;
+  padding-left: var(--cap-space-md);
+  color: var(--cap-color-on-surface);
+  opacity: 0.6;
+  font-size: var(--cap-font-size-md);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.input__field--has-icon input {
+  padding-left: var(--cap-space-xs);
+}
+
+/* ─── Action button (password toggle / clear) ── */
+.input__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-left: var(--cap-border-width) solid var(--cap-border-color);
+  cursor: pointer;
+  padding: 0 var(--cap-space-md);
+  min-height: var(--cap-min-height-md);
+  color: var(--cap-color-on-surface);
+  font-size: var(--cap-font-size-md);
+  flex-shrink: 0;
+  transition: background var(--cap-transition-fast);
+}
+
+.input__action:hover {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.input__action:focus-visible {
+  outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
+  outline-offset: 2px;
+}
+
+/* ─── Status variants ────────────────────────── */
+.input-wrapper--error .input__field {
+  border-color: var(--cap-color-danger);
+}
+
+.input-wrapper--error .input__field:focus-within {
+  outline-color: var(--cap-color-danger);
+}
+
+.input-wrapper--success .input__field {
+  border-color: var(--cap-color-success);
+}
+
+.input-wrapper--success .input__field:focus-within {
+  outline-color: var(--cap-color-success);
+}
+
+/* ─── Feedback message ───────────────────────── */
+.input__feedback {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.input__feedback--error {
+  color: var(--cap-color-danger);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.input__feedback--success {
+  color: var(--cap-color-success, #16a34a);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.input__feedback--hint {
+  color: var(--cap-color-on-background);
+  opacity: 0.6;
+}
+
+/* ─── Disabled ───────────────────────────────── */
+.input-wrapper--disabled .input__field {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.input-wrapper--disabled input {
+  cursor: not-allowed;
+}

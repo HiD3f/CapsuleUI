@@ -14,6 +14,8 @@
   --cap-color-danger:        #CC0000;
   --cap-color-on-danger:     var(--cap-color-white);
   --cap-color-focus:         var(--cap-color-black);
+  --cap-color-success:       #16a34a;
+  --cap-color-on-success:    var(--cap-color-white);
 
   /* ─── Typography ─────────────────────────── */
   --cap-font-family:         'Georgia', 'Times New Roman', serif;
@@ -51,4 +53,10 @@
   --cap-min-height-sm:       28px;
   --cap-min-height-md:       38px;
   --cap-min-height-lg:       48px;
+}
+
+/* ─── Focus style utility ────────────────────── */
+/* Default: shadow. Add class 'cap-focus-outline' to root element to switch. */
+.cap-focus-outline * {
+  --cap-focus-style: outline;
 }

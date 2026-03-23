@@ -99,8 +99,15 @@
   transform: translate(1px, 1px);
 }
 
-/* ─── Focus — WCAG 2.4.7 ─────────────────────── */
+
+/* ─── Focus ──────────────────────────────────── */
 .btn:focus-visible {
+  box-shadow: var(--cap-shadow-hover);
+  outline: none;
+}
+/* ─── Focus — WCAG 2.4.7 ─────────────────────── */
+:host-context(.cap-focus-outline) .btn:focus-visible {
+  box-shadow: none;
   outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
   outline-offset: 3px;
 }

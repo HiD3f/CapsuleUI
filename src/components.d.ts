@@ -6,7 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
+import { InputType } from "./components/cap-input/cap-input";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
+export { InputType } from "./components/cap-input/cap-input";
 export namespace Components {
     interface CapButton {
         /**
@@ -44,6 +46,57 @@ export namespace Components {
          */
         "variant": ButtonVariant;
     }
+    interface CapInput {
+        /**
+          * Disables the input
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message — takes priority over hint and success
+         */
+        "error": string;
+        /**
+          * Hint text
+         */
+        "hint": string;
+        /**
+          * Label text
+         */
+        "label": string;
+        /**
+          * Input name for forms
+         */
+        "name": string;
+        /**
+          * Placeholder text
+         */
+        "placeholder": string;
+        /**
+          * Makes the input read-only
+          * @default false
+         */
+        "readonly": boolean;
+        /**
+          * Marks the input as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Success message — takes priority over hint
+         */
+        "success": string;
+        /**
+          * Input type
+          * @default 'text'
+         */
+        "type": InputType;
+        /**
+          * Input value
+          * @default ''
+         */
+        "value": string;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -63,6 +116,10 @@ export interface CapButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapButtonElement;
 }
+export interface CapInputCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapInputElement;
+}
 declare global {
     interface HTMLCapButtonElementEventMap {
         "capClick": MouseEvent;
@@ -81,6 +138,27 @@ declare global {
         prototype: HTMLCapButtonElement;
         new (): HTMLCapButtonElement;
     };
+    interface HTMLCapInputElementEventMap {
+        "capChange": string;
+        "capInput": string;
+        "capFocus": FocusEvent;
+        "capBlur": FocusEvent;
+        "capClear": void;
+    }
+    interface HTMLCapInputElement extends Components.CapInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapInputElementEventMap>(type: K, listener: (this: HTMLCapInputElement, ev: CapInputCustomEvent<HTMLCapInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapInputElementEventMap>(type: K, listener: (this: HTMLCapInputElement, ev: CapInputCustomEvent<HTMLCapInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapInputElement: {
+        prototype: HTMLCapInputElement;
+        new (): HTMLCapInputElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -89,6 +167,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "cap-button": HTMLCapButtonElement;
+        "cap-input": HTMLCapInputElement;
         "my-component": HTMLMyComponentElement;
     }
 }
@@ -133,6 +212,77 @@ declare namespace LocalJSX {
          */
         "variant"?: ButtonVariant;
     }
+    interface CapInput {
+        /**
+          * Disables the input
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message — takes priority over hint and success
+         */
+        "error"?: string;
+        /**
+          * Hint text
+         */
+        "hint"?: string;
+        /**
+          * Label text
+         */
+        "label"?: string;
+        /**
+          * Input name for forms
+         */
+        "name"?: string;
+        /**
+          * Emitted when the input loses focus
+         */
+        "onCapBlur"?: (event: CapInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the value changes
+         */
+        "onCapChange"?: (event: CapInputCustomEvent<string>) => void;
+        /**
+          * Emitted when the clear button is clicked (search type)
+         */
+        "onCapClear"?: (event: CapInputCustomEvent<void>) => void;
+        /**
+          * Emitted when the input is focused
+         */
+        "onCapFocus"?: (event: CapInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted on input (every keystroke)
+         */
+        "onCapInput"?: (event: CapInputCustomEvent<string>) => void;
+        /**
+          * Placeholder text
+         */
+        "placeholder"?: string;
+        /**
+          * Makes the input read-only
+          * @default false
+         */
+        "readonly"?: boolean;
+        /**
+          * Marks the input as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Success message — takes priority over hint
+         */
+        "success"?: string;
+        /**
+          * Input type
+          * @default 'text'
+         */
+        "type"?: InputType;
+        /**
+          * Input value
+          * @default ''
+         */
+        "value"?: string;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -157,6 +307,19 @@ declare namespace LocalJSX {
         "fullWidth": boolean;
         "ariaLabel": string;
     }
+    interface CapInputAttributes {
+        "type": InputType;
+        "value": string;
+        "name": string;
+        "placeholder": string;
+        "label": string;
+        "hint": string;
+        "error": string;
+        "success": string;
+        "disabled": boolean;
+        "readonly": boolean;
+        "required": boolean;
+    }
     interface MyComponentAttributes {
         "first": string;
         "middle": string;
@@ -165,6 +328,7 @@ declare namespace LocalJSX {
 
     interface IntrinsicElements {
         "cap-button": Omit<CapButton, keyof CapButtonAttributes> & { [K in keyof CapButton & keyof CapButtonAttributes]?: CapButton[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `attr:${K}`]?: CapButtonAttributes[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `prop:${K}`]?: CapButton[K] };
+        "cap-input": Omit<CapInput, keyof CapInputAttributes> & { [K in keyof CapInput & keyof CapInputAttributes]?: CapInput[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `attr:${K}`]?: CapInputAttributes[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `prop:${K}`]?: CapInput[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
 }
@@ -173,6 +337,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "cap-button": LocalJSX.IntrinsicElements["cap-button"] & JSXBase.HTMLAttributes<HTMLCapButtonElement>;
+            "cap-input": LocalJSX.IntrinsicElements["cap-input"] & JSXBase.HTMLAttributes<HTMLCapInputElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }

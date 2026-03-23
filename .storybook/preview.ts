@@ -22,13 +22,28 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    focusStyle: {
+      description: 'Focus indicator style',
+      defaultValue: 'shadow',
+      toolbar: {
+        title: 'Focus',
+        icon: 'accessible',
+        items: [
+          { value: 'shadow', icon: 'box', title: 'Shadow' },
+          { value: 'outline', icon: 'outline', title: 'Outline' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   decorators: [
     (story, context) => {
       const theme = context.globals.theme || 'light';
+      const focusStyle = context.globals.focusStyle || 'shadow';
       return html`
         <div
           data-theme="${theme}"
+          class="${focusStyle === 'outline' ? 'cap-focus-outline' : ''}"
           style="background: var(--cap-color-background); padding: 32px; box-sizing: border-box;"
         >
           ${story()}
