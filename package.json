@@ -36,14 +36,21 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil-test",
     "test:watch": "stencil-test --watch",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
     "@stencil/core": "^4.27.1",
     "@stencil/vitest": "^1.8.3",
     "@types/node": "^22.13.5",
     "@vitest/browser-playwright": "^4.0.0",
-    "vitest": "^4.0.0"
+    "vitest": "^4.0.0",
+    "storybook": "^10.3.3",
+    "@storybook/web-components-vite": "^10.3.3",
+    "@storybook/addon-a11y": "^10.3.3",
+    "@storybook/addon-docs": "^10.3.3",
+    "lit": "^3.3.2"
   },
   "license": "MIT"
 }
