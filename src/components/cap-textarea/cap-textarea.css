@@ -1,0 +1,144 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Wrapper ────────────────────────────────── */
+.textarea-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-xs);
+}
+
+/* ─── Label ──────────────────────────────────── */
+.textarea__label {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  font-weight: var(--cap-font-weight-bold);
+  color: var(--cap-color-on-background);
+  text-transform: uppercase;
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.textarea__required {
+  color: var(--cap-color-danger);
+}
+
+/* ─── Field container ────────────────────────── */
+.textarea__field {
+  position: relative;
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  background: var(--cap-color-surface);
+  transition: box-shadow var(--cap-transition-base);
+}
+
+.textarea__field:focus-within {
+  box-shadow: var(--cap-shadow);
+  outline: none;
+}
+
+:host-context(.cap-focus-outline) .textarea__field:focus-within {
+  box-shadow: none;
+  outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
+  outline-offset: 2px;
+}
+
+/* ─── Native textarea ────────────────────────── */
+textarea {
+  display: block;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+textarea::placeholder {
+  color: var(--cap-color-on-surface);
+  opacity: 0.4;
+}
+
+/* ─── Bottom row (feedback + counter) ───────── */
+.textarea__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--cap-space-sm);
+}
+
+/* ─── Feedback ───────────────────────────────── */
+.textarea__feedback {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+  flex: 1;
+}
+
+.textarea__feedback--error {
+  color: var(--cap-color-danger);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.textarea__feedback--success {
+  color: var(--cap-color-success);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.textarea__feedback--hint {
+  color: var(--cap-color-on-background);
+  opacity: 0.6;
+}
+
+/* ─── Counter ────────────────────────────────── */
+.textarea__counter {
+  font-family: var(--cap-font-family-mono);
+  font-size: var(--cap-font-size-sm);
+  color: var(--cap-color-on-background);
+  opacity: 0.6;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.textarea__counter--warning {
+  color: var(--cap-color-danger);
+  opacity: 0.7;
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.textarea__counter--danger {
+  color: var(--cap-color-danger);
+  opacity: 1;
+  font-weight: var(--cap-font-weight-bold);
+}
+
+/* ─── Status variants ────────────────────────── */
+.textarea-wrapper--error .textarea__field {
+  border-color: var(--cap-color-danger);
+}
+
+.textarea-wrapper--error .textarea__field:focus-within {
+  outline-color: var(--cap-color-danger);
+}
+
+.textarea-wrapper--success .textarea__field {
+  border-color: var(--cap-color-success);
+}
+
+.textarea-wrapper--success .textarea__field:focus-within {
+  outline-color: var(--cap-color-success);
+}
+
+/* ─── Disabled ───────────────────────────────── */
+.textarea-wrapper--disabled .textarea__field {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.textarea-wrapper--disabled textarea {
+  cursor: not-allowed;
+}

@@ -7,8 +7,10 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 import { InputType } from "./components/cap-input/cap-input";
+import { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 export { InputType } from "./components/cap-input/cap-input";
+export { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export namespace Components {
     interface CapButton {
         /**
@@ -97,6 +99,70 @@ export namespace Components {
          */
         "value": string;
     }
+    interface CapTextarea {
+        /**
+          * Accessible label for when no visible label is used
+         */
+        "ariaLabel": string;
+        /**
+          * Disables the textarea
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message — takes priority over hint and success
+         */
+        "error": string;
+        /**
+          * Hint text shown below the textarea
+         */
+        "hint": string;
+        /**
+          * Label text
+         */
+        "label": string;
+        /**
+          * Maximum number of characters allowed
+         */
+        "maxlength": number;
+        /**
+          * Name attribute for form submission
+         */
+        "name": string;
+        /**
+          * Placeholder text
+         */
+        "placeholder": string;
+        /**
+          * Makes the textarea read-only
+          * @default false
+         */
+        "readonly": boolean;
+        /**
+          * Marks the textarea as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Whether the textarea can be resized
+          * @default 'vertical'
+         */
+        "resize": TextareaResize;
+        /**
+          * Number of visible rows
+          * @default 4
+         */
+        "rows": number;
+        /**
+          * Success message — takes priority over hint
+         */
+        "success": string;
+        /**
+          * The current value of the textarea
+          * @default ''
+         */
+        "value": string;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -119,6 +185,10 @@ export interface CapButtonCustomEvent<T> extends CustomEvent<T> {
 export interface CapInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapInputElement;
+}
+export interface CapTextareaCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapTextareaElement;
 }
 declare global {
     interface HTMLCapButtonElementEventMap {
@@ -159,6 +229,26 @@ declare global {
         prototype: HTMLCapInputElement;
         new (): HTMLCapInputElement;
     };
+    interface HTMLCapTextareaElementEventMap {
+        "capChange": string;
+        "capInput": string;
+        "capFocus": FocusEvent;
+        "capBlur": FocusEvent;
+    }
+    interface HTMLCapTextareaElement extends Components.CapTextarea, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapTextareaElementEventMap>(type: K, listener: (this: HTMLCapTextareaElement, ev: CapTextareaCustomEvent<HTMLCapTextareaElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapTextareaElementEventMap>(type: K, listener: (this: HTMLCapTextareaElement, ev: CapTextareaCustomEvent<HTMLCapTextareaElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapTextareaElement: {
+        prototype: HTMLCapTextareaElement;
+        new (): HTMLCapTextareaElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -168,6 +258,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "cap-button": HTMLCapButtonElement;
         "cap-input": HTMLCapInputElement;
+        "cap-textarea": HTMLCapTextareaElement;
         "my-component": HTMLMyComponentElement;
     }
 }
@@ -283,6 +374,86 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface CapTextarea {
+        /**
+          * Accessible label for when no visible label is used
+         */
+        "ariaLabel"?: string;
+        /**
+          * Disables the textarea
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message — takes priority over hint and success
+         */
+        "error"?: string;
+        /**
+          * Hint text shown below the textarea
+         */
+        "hint"?: string;
+        /**
+          * Label text
+         */
+        "label"?: string;
+        /**
+          * Maximum number of characters allowed
+         */
+        "maxlength"?: number;
+        /**
+          * Name attribute for form submission
+         */
+        "name"?: string;
+        /**
+          * Emitted when the textarea loses focus
+         */
+        "onCapBlur"?: (event: CapTextareaCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the value changes (on blur)
+         */
+        "onCapChange"?: (event: CapTextareaCustomEvent<string>) => void;
+        /**
+          * Emitted when the textarea is focused
+         */
+        "onCapFocus"?: (event: CapTextareaCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted on every keystroke
+         */
+        "onCapInput"?: (event: CapTextareaCustomEvent<string>) => void;
+        /**
+          * Placeholder text
+         */
+        "placeholder"?: string;
+        /**
+          * Makes the textarea read-only
+          * @default false
+         */
+        "readonly"?: boolean;
+        /**
+          * Marks the textarea as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Whether the textarea can be resized
+          * @default 'vertical'
+         */
+        "resize"?: TextareaResize;
+        /**
+          * Number of visible rows
+          * @default 4
+         */
+        "rows"?: number;
+        /**
+          * Success message — takes priority over hint
+         */
+        "success"?: string;
+        /**
+          * The current value of the textarea
+          * @default ''
+         */
+        "value"?: string;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -320,6 +491,22 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "required": boolean;
     }
+    interface CapTextareaAttributes {
+        "value": string;
+        "name": string;
+        "placeholder": string;
+        "label": string;
+        "hint": string;
+        "error": string;
+        "success": string;
+        "rows": number;
+        "resize": TextareaResize;
+        "maxlength": number;
+        "disabled": boolean;
+        "readonly": boolean;
+        "required": boolean;
+        "ariaLabel": string;
+    }
     interface MyComponentAttributes {
         "first": string;
         "middle": string;
@@ -329,6 +516,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "cap-button": Omit<CapButton, keyof CapButtonAttributes> & { [K in keyof CapButton & keyof CapButtonAttributes]?: CapButton[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `attr:${K}`]?: CapButtonAttributes[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `prop:${K}`]?: CapButton[K] };
         "cap-input": Omit<CapInput, keyof CapInputAttributes> & { [K in keyof CapInput & keyof CapInputAttributes]?: CapInput[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `attr:${K}`]?: CapInputAttributes[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `prop:${K}`]?: CapInput[K] };
+        "cap-textarea": Omit<CapTextarea, keyof CapTextareaAttributes> & { [K in keyof CapTextarea & keyof CapTextareaAttributes]?: CapTextarea[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `attr:${K}`]?: CapTextareaAttributes[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `prop:${K}`]?: CapTextarea[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
 }
@@ -338,6 +526,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "cap-button": LocalJSX.IntrinsicElements["cap-button"] & JSXBase.HTMLAttributes<HTMLCapButtonElement>;
             "cap-input": LocalJSX.IntrinsicElements["cap-input"] & JSXBase.HTMLAttributes<HTMLCapInputElement>;
+            "cap-textarea": LocalJSX.IntrinsicElements["cap-textarea"] & JSXBase.HTMLAttributes<HTMLCapTextareaElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }
