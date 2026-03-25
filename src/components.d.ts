@@ -6,10 +6,12 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
+import { ComboboxOption } from "./components/cap-combobox/cap-combobox";
 import { InputType } from "./components/cap-input/cap-input";
 import { SelectOption } from "./components/cap-select/cap-select";
 import { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
+export { ComboboxOption } from "./components/cap-combobox/cap-combobox";
 export { InputType } from "./components/cap-input/cap-input";
 export { SelectOption } from "./components/cap-select/cap-select";
 export { TextareaResize } from "./components/cap-textarea/cap-textarea";
@@ -89,6 +91,58 @@ export namespace Components {
         "required": boolean;
         /**
           * Value submitted with the form
+         */
+        "value": string;
+    }
+    interface CapCombobox {
+        /**
+          * Forces the dropdown open — useful for debugging styles
+          * @default false
+         */
+        "defaultOpen": boolean;
+        /**
+          * Disables the combobox
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message
+         */
+        "error": string;
+        /**
+          * When true, typed text that doesn't match any option is accepted as a valid value. When false (default), blurring without selecting reverts the input to the last valid selection.
+          * @default false
+         */
+        "freeText": boolean;
+        /**
+          * Hint text
+         */
+        "hint": string;
+        /**
+          * Label text
+         */
+        "label": string;
+        /**
+          * Name attribute for form submission
+         */
+        "name": string;
+        /**
+          * Array of options to filter and display
+          * @default []
+         */
+        "options": ComboboxOption[];
+        /**
+          * Placeholder shown when input is empty
+         */
+        "placeholder": string;
+        /**
+          * Marks the combobox as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Committed value — option.value when selected, or typed text when freeText=true
+          * @default ''
          */
         "value": string;
     }
@@ -341,6 +395,10 @@ export interface CapCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapCheckboxElement;
 }
+export interface CapComboboxCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapComboboxElement;
+}
 export interface CapInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapInputElement;
@@ -395,6 +453,26 @@ declare global {
     var HTMLCapCheckboxElement: {
         prototype: HTMLCapCheckboxElement;
         new (): HTMLCapCheckboxElement;
+    };
+    interface HTMLCapComboboxElementEventMap {
+        "capChange": string;
+        "capInput": string;
+        "capFocus": FocusEvent;
+        "capBlur": FocusEvent;
+    }
+    interface HTMLCapComboboxElement extends Components.CapCombobox, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapComboboxElementEventMap>(type: K, listener: (this: HTMLCapComboboxElement, ev: CapComboboxCustomEvent<HTMLCapComboboxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapComboboxElementEventMap>(type: K, listener: (this: HTMLCapComboboxElement, ev: CapComboboxCustomEvent<HTMLCapComboboxElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapComboboxElement: {
+        prototype: HTMLCapComboboxElement;
+        new (): HTMLCapComboboxElement;
     };
     interface HTMLCapInputElementEventMap {
         "capChange": string;
@@ -499,6 +577,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "cap-button": HTMLCapButtonElement;
         "cap-checkbox": HTMLCapCheckboxElement;
+        "cap-combobox": HTMLCapComboboxElement;
         "cap-input": HTMLCapInputElement;
         "cap-radio": HTMLCapRadioElement;
         "cap-radio-group": HTMLCapRadioGroupElement;
@@ -591,6 +670,74 @@ declare namespace LocalJSX {
         "required"?: boolean;
         /**
           * Value submitted with the form
+         */
+        "value"?: string;
+    }
+    interface CapCombobox {
+        /**
+          * Forces the dropdown open — useful for debugging styles
+          * @default false
+         */
+        "defaultOpen"?: boolean;
+        /**
+          * Disables the combobox
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message
+         */
+        "error"?: string;
+        /**
+          * When true, typed text that doesn't match any option is accepted as a valid value. When false (default), blurring without selecting reverts the input to the last valid selection.
+          * @default false
+         */
+        "freeText"?: boolean;
+        /**
+          * Hint text
+         */
+        "hint"?: string;
+        /**
+          * Label text
+         */
+        "label"?: string;
+        /**
+          * Name attribute for form submission
+         */
+        "name"?: string;
+        /**
+          * Emitted when focus leaves the component
+         */
+        "onCapBlur"?: (event: CapComboboxCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the committed value changes
+         */
+        "onCapChange"?: (event: CapComboboxCustomEvent<string>) => void;
+        /**
+          * Emitted when the input is focused
+         */
+        "onCapFocus"?: (event: CapComboboxCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted on every keystroke
+         */
+        "onCapInput"?: (event: CapComboboxCustomEvent<string>) => void;
+        /**
+          * Array of options to filter and display
+          * @default []
+         */
+        "options"?: ComboboxOption[];
+        /**
+          * Placeholder shown when input is empty
+         */
+        "placeholder"?: string;
+        /**
+          * Marks the combobox as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Committed value — option.value when selected, or typed text when freeText=true
+          * @default ''
          */
         "value"?: string;
     }
@@ -911,6 +1058,18 @@ declare namespace LocalJSX {
         "hint": string;
         "error": string;
     }
+    interface CapComboboxAttributes {
+        "value": string;
+        "placeholder": string;
+        "name": string;
+        "label": string;
+        "hint": string;
+        "error": string;
+        "disabled": boolean;
+        "required": boolean;
+        "freeText": boolean;
+        "defaultOpen": boolean;
+    }
     interface CapInputAttributes {
         "type": InputType;
         "value": string;
@@ -978,6 +1137,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "cap-button": Omit<CapButton, keyof CapButtonAttributes> & { [K in keyof CapButton & keyof CapButtonAttributes]?: CapButton[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `attr:${K}`]?: CapButtonAttributes[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `prop:${K}`]?: CapButton[K] };
         "cap-checkbox": Omit<CapCheckbox, keyof CapCheckboxAttributes> & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes]?: CapCheckbox[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `attr:${K}`]?: CapCheckboxAttributes[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `prop:${K}`]?: CapCheckbox[K] };
+        "cap-combobox": Omit<CapCombobox, keyof CapComboboxAttributes> & { [K in keyof CapCombobox & keyof CapComboboxAttributes]?: CapCombobox[K] } & { [K in keyof CapCombobox & keyof CapComboboxAttributes as `attr:${K}`]?: CapComboboxAttributes[K] } & { [K in keyof CapCombobox & keyof CapComboboxAttributes as `prop:${K}`]?: CapCombobox[K] };
         "cap-input": Omit<CapInput, keyof CapInputAttributes> & { [K in keyof CapInput & keyof CapInputAttributes]?: CapInput[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `attr:${K}`]?: CapInputAttributes[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `prop:${K}`]?: CapInput[K] };
         "cap-radio": Omit<CapRadio, keyof CapRadioAttributes> & { [K in keyof CapRadio & keyof CapRadioAttributes]?: CapRadio[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `attr:${K}`]?: CapRadioAttributes[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `prop:${K}`]?: CapRadio[K] };
         "cap-radio-group": Omit<CapRadioGroup, keyof CapRadioGroupAttributes> & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes]?: CapRadioGroup[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `attr:${K}`]?: CapRadioGroupAttributes[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `prop:${K}`]?: CapRadioGroup[K] };
@@ -992,6 +1152,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "cap-button": LocalJSX.IntrinsicElements["cap-button"] & JSXBase.HTMLAttributes<HTMLCapButtonElement>;
             "cap-checkbox": LocalJSX.IntrinsicElements["cap-checkbox"] & JSXBase.HTMLAttributes<HTMLCapCheckboxElement>;
+            "cap-combobox": LocalJSX.IntrinsicElements["cap-combobox"] & JSXBase.HTMLAttributes<HTMLCapComboboxElement>;
             "cap-input": LocalJSX.IntrinsicElements["cap-input"] & JSXBase.HTMLAttributes<HTMLCapInputElement>;
             "cap-radio": LocalJSX.IntrinsicElements["cap-radio"] & JSXBase.HTMLAttributes<HTMLCapRadioElement>;
             "cap-radio-group": LocalJSX.IntrinsicElements["cap-radio-group"] & JSXBase.HTMLAttributes<HTMLCapRadioGroupElement>;

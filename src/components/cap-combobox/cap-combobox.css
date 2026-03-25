@@ -1,0 +1,253 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Wrapper ────────────────────────────────── */
+.combobox-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-xs);
+}
+
+/* ─── Label ──────────────────────────────────── */
+.combobox__label {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  font-weight: var(--cap-font-weight-bold);
+  color: var(--cap-color-on-background);
+  text-transform: uppercase;
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.combobox__required {
+  color: var(--cap-color-danger);
+}
+
+/* ─── Combobox container ─────────────────────── */
+.combobox__container {
+  position: relative;
+}
+
+/* ─── Field container ────────────────────────── */
+.combobox__field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  background: var(--cap-color-surface);
+  transition: box-shadow var(--cap-transition-base);
+}
+
+.combobox__field:focus-within {
+  box-shadow: var(--cap-shadow);
+  outline: none;
+}
+
+:host-context(.cap-focus-outline) .combobox__field:focus-within {
+  box-shadow: none;
+  outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
+  outline-offset: 2px;
+}
+
+/* When open, remove bottom shadow so listbox sits flush */
+.combobox-wrapper--open .combobox__field:focus-within {
+  box-shadow: none;
+}
+
+/* ─── Text input ─────────────────────────────── */
+input[type="text"] {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  min-height: var(--cap-min-height-md);
+  width: 100%;
+  box-sizing: border-box;
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+input[type="text"]::placeholder {
+  color: var(--cap-color-on-surface);
+  opacity: 0.4;
+}
+
+input[type="text"]:disabled {
+  cursor: not-allowed;
+}
+
+/* ─── Clear button ───────────────────────────── */
+.combobox__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-left: var(--cap-border-width) solid var(--cap-border-color);
+  cursor: pointer;
+  padding: 0 var(--cap-space-sm);
+  color: var(--cap-color-on-surface);
+  font-size: var(--cap-font-size-sm);
+  opacity: 0.5;
+  transition: opacity var(--cap-transition-fast);
+}
+
+.combobox__clear:hover {
+  opacity: 1;
+}
+
+/* ─── Toggle button ──────────────────────────── */
+.combobox__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--cap-color-surface);
+  border: none;
+  border-left: var(--cap-border-width) solid var(--cap-border-color);
+  cursor: pointer;
+  padding: 0 var(--cap-space-md);
+  transition: background var(--cap-transition-fast),
+              color var(--cap-transition-fast);
+}
+
+.combobox__field:focus-within .combobox__toggle,
+.combobox-wrapper--open .combobox__toggle {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+/* ─── Arrow ──────────────────────────────────── */
+.combobox__arrow {
+  display: block;
+  font-size: var(--cap-font-size-sm);
+  color: var(--cap-color-on-surface);
+  transition: transform var(--cap-transition-fast),
+              color var(--cap-transition-fast);
+  pointer-events: none;
+}
+
+.combobox__field:focus-within .combobox__arrow,
+.combobox-wrapper--open .combobox__arrow {
+  color: var(--cap-color-on-primary);
+}
+
+.combobox__arrow--open {
+  transform: rotate(180deg);
+}
+
+/* ─── Listbox ────────────────────────────────── */
+.combobox__listbox {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--cap-color-surface);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  border-top: none;
+  box-shadow: var(--cap-shadow);
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.combobox__listbox[hidden] {
+  display: none;
+}
+
+/* ─── Options ────────────────────────────────── */
+.combobox__option {
+  display: flex;
+  align-items: center;
+  gap: var(--cap-space-sm);
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  letter-spacing: var(--cap-letter-spacing);
+  cursor: pointer;
+  user-select: none;
+  min-height: var(--cap-min-height-md);
+  box-sizing: border-box;
+}
+
+.combobox__option + .combobox__option {
+  border-top: var(--cap-border-width) solid var(--cap-border-color);
+}
+
+.combobox__option--active {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.combobox__option--selected {
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.combobox__option--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ─── Selected checkmark ─────────────────────── */
+.combobox__option-check {
+  flex-shrink: 0;
+  width: 16px;
+  font-size: var(--cap-font-size-sm);
+}
+
+.combobox__option:not(.combobox__option--selected) {
+  padding-left: calc(var(--cap-space-md) + 16px + var(--cap-space-sm));
+}
+
+/* ─── Empty state ────────────────────────────── */
+.combobox__empty {
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  color: var(--cap-color-on-surface);
+  opacity: 0.5;
+  letter-spacing: var(--cap-letter-spacing);
+  min-height: var(--cap-min-height-md);
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Error state ────────────────────────────── */
+.combobox-wrapper--error .combobox__field {
+  border-color: var(--cap-color-danger);
+}
+
+.combobox-wrapper--error .combobox__listbox {
+  border-color: var(--cap-color-danger);
+}
+
+/* ─── Disabled ───────────────────────────────── */
+.combobox-wrapper--disabled .combobox__field {
+  opacity: 0.4;
+}
+
+/* ─── Feedback ───────────────────────────────── */
+.combobox__feedback {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.combobox__feedback--error {
+  color: var(--cap-color-danger);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.combobox__feedback--hint {
+  color: var(--cap-color-on-background);
+  opacity: 0.6;
+}
