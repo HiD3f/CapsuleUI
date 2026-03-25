@@ -1,0 +1,232 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Wrapper ────────────────────────────────── */
+.select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-xs);
+}
+
+/* ─── Label ──────────────────────────────────── */
+.select__label {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  font-weight: var(--cap-font-weight-bold);
+  color: var(--cap-color-on-background);
+  text-transform: uppercase;
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.select__required {
+  color: var(--cap-color-danger);
+}
+
+/* ─── Combobox container ─────────────────────── */
+.select__container {
+  position: relative;
+}
+
+/* ─── Trigger button ─────────────────────────── */
+.select__trigger {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  background: var(--cap-color-surface);
+  cursor: pointer;
+  padding: 0;
+  min-height: var(--cap-min-height-md);
+  box-sizing: border-box;
+  transition: box-shadow var(--cap-transition-base);
+  font-family: var(--cap-font-family);
+}
+
+.select__trigger:focus-visible {
+  box-shadow: var(--cap-shadow);
+  outline: none;
+}
+
+:host-context(.cap-focus-outline) .select__trigger:focus-visible {
+  box-shadow: none;
+  outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
+  outline-offset: 2px;
+}
+
+/* When open, remove bottom shadow so listbox sits flush */
+.select-wrapper--open .select__trigger:focus-visible {
+  box-shadow: none;
+}
+
+.select__trigger:disabled {
+  cursor: not-allowed;
+}
+
+/* ─── Trigger value text ─────────────────────── */
+.select__trigger-value {
+  flex: 1;
+  text-align: left;
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  letter-spacing: var(--cap-letter-spacing);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select__trigger--placeholder .select__trigger-value {
+  color: var(--cap-color-on-surface);
+  opacity: 0.4;
+}
+
+/* ─── Trigger arrow ──────────────────────────── */
+.select__trigger-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  padding: 0 var(--cap-space-md);
+  border-left: var(--cap-border-width) solid var(--cap-border-color);
+  font-size: var(--cap-font-size-sm);
+  color: var(--cap-color-on-surface);
+  background: var(--cap-color-surface);
+  transition: background var(--cap-transition-fast),
+              color var(--cap-transition-fast),
+              transform var(--cap-transition-fast);
+}
+
+.select__trigger:focus-visible .select__trigger-arrow,
+.select-wrapper--open .select__trigger-arrow {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.select-wrapper--open .select__trigger-arrow {
+  transform: rotate(180deg);
+}
+
+/* ─── Listbox ────────────────────────────────── */
+.select__listbox {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--cap-color-surface);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  border-top: none;
+  box-shadow: var(--cap-shadow);
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.select__listbox[hidden] {
+  display: none;
+}
+
+/* ─── Options ────────────────────────────────── */
+.select__option {
+  display: flex;
+  align-items: center;
+  gap: var(--cap-space-sm);
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  letter-spacing: var(--cap-letter-spacing);
+  cursor: pointer;
+  user-select: none;
+  min-height: var(--cap-min-height-md);
+  box-sizing: border-box;
+}
+
+.select__option + .select__option {
+  border-top: var(--cap-border-width) solid var(--cap-border-color);
+}
+
+/* Keyboard-active option */
+.select__option--active {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+/* Selected option */
+.select__option--selected {
+  font-weight: var(--cap-font-weight-bold);
+}
+
+/* Selected + active */
+.select__option--selected.select__option--active {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+/* Disabled option */
+.select__option--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ─── Selected checkmark ─────────────────────── */
+.select__option-check {
+  flex-shrink: 0;
+  width: 16px;
+  font-size: var(--cap-font-size-sm);
+}
+
+/* Align non-selected options with selected ones */
+.select__option:not(.select__option--selected) {
+  padding-left: calc(var(--cap-space-md) + 16px + var(--cap-space-sm));
+}
+
+/* ─── Error state ────────────────────────────── */
+.select-wrapper--error .select__trigger {
+  border-color: var(--cap-color-danger);
+}
+
+.select-wrapper--error .select__listbox {
+  border-color: var(--cap-color-danger);
+}
+
+/* ─── Disabled wrapper ───────────────────────── */
+.select-wrapper--disabled .select__trigger {
+  opacity: 0.4;
+}
+
+/* ─── Hidden native select (form submission) ─── */
+.select__native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Feedback message ───────────────────────── */
+.select__feedback {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.select__feedback--error {
+  color: var(--cap-color-danger);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.select__feedback--hint {
+  color: var(--cap-color-on-background);
+  opacity: 0.6;
+}

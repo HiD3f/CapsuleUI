@@ -7,9 +7,11 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 import { InputType } from "./components/cap-input/cap-input";
+import { SelectOption } from "./components/cap-select/cap-select";
 import { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 export { InputType } from "./components/cap-input/cap-input";
+export { SelectOption } from "./components/cap-select/cap-select";
 export { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export namespace Components {
     interface CapButton {
@@ -141,6 +143,117 @@ export namespace Components {
          */
         "value": string;
     }
+    interface CapRadio {
+        /**
+          * Whether this radio is selected
+          * @default false
+         */
+        "checked": boolean;
+        /**
+          * Disables the radio
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message
+         */
+        "error": string;
+        /**
+          * Hint text
+         */
+        "hint": string;
+        /**
+          * Label text
+         */
+        "label": string;
+        /**
+          * Name attribute — shared across radios in the same group
+         */
+        "name": string;
+        /**
+          * Marks the radio as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Value submitted with the form
+         */
+        "value": string;
+    }
+    interface CapRadioGroup {
+        /**
+          * Disables all child radios
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message
+         */
+        "error": string;
+        /**
+          * Hint text
+         */
+        "hint": string;
+        /**
+          * Group label
+         */
+        "label": string;
+        /**
+          * Name shared across all child cap-radio elements
+         */
+        "name": string;
+        /**
+          * Marks all child radios as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Currently selected value
+         */
+        "value": string;
+    }
+    interface CapSelect {
+        /**
+          * Disables the select
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message
+         */
+        "error": string;
+        /**
+          * Hint text
+         */
+        "hint": string;
+        /**
+          * Label text
+         */
+        "label": string;
+        /**
+          * Name attribute for form submission
+         */
+        "name": string;
+        /**
+          * Array of options to render
+          * @default []
+         */
+        "options": SelectOption[];
+        /**
+          * Placeholder shown when no value is selected
+         */
+        "placeholder": string;
+        /**
+          * Marks the select as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Currently selected value
+          * @default ''
+         */
+        "value": string;
+    }
     interface CapTextarea {
         /**
           * Accessible label for when no visible label is used
@@ -232,6 +345,18 @@ export interface CapInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapInputElement;
 }
+export interface CapRadioCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapRadioElement;
+}
+export interface CapRadioGroupCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapRadioGroupElement;
+}
+export interface CapSelectCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapSelectElement;
+}
 export interface CapTextareaCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapTextareaElement;
@@ -292,6 +417,59 @@ declare global {
         prototype: HTMLCapInputElement;
         new (): HTMLCapInputElement;
     };
+    interface HTMLCapRadioElementEventMap {
+        "capChange": string;
+    }
+    interface HTMLCapRadioElement extends Components.CapRadio, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapRadioElementEventMap>(type: K, listener: (this: HTMLCapRadioElement, ev: CapRadioCustomEvent<HTMLCapRadioElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapRadioElementEventMap>(type: K, listener: (this: HTMLCapRadioElement, ev: CapRadioCustomEvent<HTMLCapRadioElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapRadioElement: {
+        prototype: HTMLCapRadioElement;
+        new (): HTMLCapRadioElement;
+    };
+    interface HTMLCapRadioGroupElementEventMap {
+        "capChange": string;
+    }
+    interface HTMLCapRadioGroupElement extends Components.CapRadioGroup, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapRadioGroupElementEventMap>(type: K, listener: (this: HTMLCapRadioGroupElement, ev: CapRadioGroupCustomEvent<HTMLCapRadioGroupElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapRadioGroupElementEventMap>(type: K, listener: (this: HTMLCapRadioGroupElement, ev: CapRadioGroupCustomEvent<HTMLCapRadioGroupElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapRadioGroupElement: {
+        prototype: HTMLCapRadioGroupElement;
+        new (): HTMLCapRadioGroupElement;
+    };
+    interface HTMLCapSelectElementEventMap {
+        "capChange": string;
+        "capFocus": FocusEvent;
+        "capBlur": FocusEvent;
+    }
+    interface HTMLCapSelectElement extends Components.CapSelect, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapSelectElementEventMap>(type: K, listener: (this: HTMLCapSelectElement, ev: CapSelectCustomEvent<HTMLCapSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapSelectElementEventMap>(type: K, listener: (this: HTMLCapSelectElement, ev: CapSelectCustomEvent<HTMLCapSelectElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapSelectElement: {
+        prototype: HTMLCapSelectElement;
+        new (): HTMLCapSelectElement;
+    };
     interface HTMLCapTextareaElementEventMap {
         "capChange": string;
         "capInput": string;
@@ -322,6 +500,9 @@ declare global {
         "cap-button": HTMLCapButtonElement;
         "cap-checkbox": HTMLCapCheckboxElement;
         "cap-input": HTMLCapInputElement;
+        "cap-radio": HTMLCapRadioElement;
+        "cap-radio-group": HTMLCapRadioGroupElement;
+        "cap-select": HTMLCapSelectElement;
         "cap-textarea": HTMLCapTextareaElement;
         "my-component": HTMLMyComponentElement;
     }
@@ -484,6 +665,137 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface CapRadio {
+        /**
+          * Whether this radio is selected
+          * @default false
+         */
+        "checked"?: boolean;
+        /**
+          * Disables the radio
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message
+         */
+        "error"?: string;
+        /**
+          * Hint text
+         */
+        "hint"?: string;
+        /**
+          * Label text
+         */
+        "label"?: string;
+        /**
+          * Name attribute — shared across radios in the same group
+         */
+        "name"?: string;
+        /**
+          * Emitted when this radio is selected
+         */
+        "onCapChange"?: (event: CapRadioCustomEvent<string>) => void;
+        /**
+          * Marks the radio as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Value submitted with the form
+         */
+        "value"?: string;
+    }
+    interface CapRadioGroup {
+        /**
+          * Disables all child radios
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message
+         */
+        "error"?: string;
+        /**
+          * Hint text
+         */
+        "hint"?: string;
+        /**
+          * Group label
+         */
+        "label"?: string;
+        /**
+          * Name shared across all child cap-radio elements
+         */
+        "name"?: string;
+        /**
+          * Emitted when the selected value changes
+         */
+        "onCapChange"?: (event: CapRadioGroupCustomEvent<string>) => void;
+        /**
+          * Marks all child radios as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Currently selected value
+         */
+        "value"?: string;
+    }
+    interface CapSelect {
+        /**
+          * Disables the select
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message
+         */
+        "error"?: string;
+        /**
+          * Hint text
+         */
+        "hint"?: string;
+        /**
+          * Label text
+         */
+        "label"?: string;
+        /**
+          * Name attribute for form submission
+         */
+        "name"?: string;
+        /**
+          * Emitted when focus leaves the component
+         */
+        "onCapBlur"?: (event: CapSelectCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the selected value changes
+         */
+        "onCapChange"?: (event: CapSelectCustomEvent<string>) => void;
+        /**
+          * Emitted when the trigger is focused
+         */
+        "onCapFocus"?: (event: CapSelectCustomEvent<FocusEvent>) => void;
+        /**
+          * Array of options to render
+          * @default []
+         */
+        "options"?: SelectOption[];
+        /**
+          * Placeholder shown when no value is selected
+         */
+        "placeholder"?: string;
+        /**
+          * Marks the select as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Currently selected value
+          * @default ''
+         */
+        "value"?: string;
+    }
     interface CapTextarea {
         /**
           * Accessible label for when no visible label is used
@@ -612,6 +924,35 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "required": boolean;
     }
+    interface CapRadioAttributes {
+        "checked": boolean;
+        "disabled": boolean;
+        "required": boolean;
+        "name": string;
+        "value": string;
+        "label": string;
+        "hint": string;
+        "error": string;
+    }
+    interface CapRadioGroupAttributes {
+        "value": string;
+        "name": string;
+        "disabled": boolean;
+        "required": boolean;
+        "label": string;
+        "hint": string;
+        "error": string;
+    }
+    interface CapSelectAttributes {
+        "value": string;
+        "placeholder": string;
+        "name": string;
+        "label": string;
+        "hint": string;
+        "error": string;
+        "disabled": boolean;
+        "required": boolean;
+    }
     interface CapTextareaAttributes {
         "value": string;
         "name": string;
@@ -638,6 +979,9 @@ declare namespace LocalJSX {
         "cap-button": Omit<CapButton, keyof CapButtonAttributes> & { [K in keyof CapButton & keyof CapButtonAttributes]?: CapButton[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `attr:${K}`]?: CapButtonAttributes[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `prop:${K}`]?: CapButton[K] };
         "cap-checkbox": Omit<CapCheckbox, keyof CapCheckboxAttributes> & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes]?: CapCheckbox[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `attr:${K}`]?: CapCheckboxAttributes[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `prop:${K}`]?: CapCheckbox[K] };
         "cap-input": Omit<CapInput, keyof CapInputAttributes> & { [K in keyof CapInput & keyof CapInputAttributes]?: CapInput[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `attr:${K}`]?: CapInputAttributes[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `prop:${K}`]?: CapInput[K] };
+        "cap-radio": Omit<CapRadio, keyof CapRadioAttributes> & { [K in keyof CapRadio & keyof CapRadioAttributes]?: CapRadio[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `attr:${K}`]?: CapRadioAttributes[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `prop:${K}`]?: CapRadio[K] };
+        "cap-radio-group": Omit<CapRadioGroup, keyof CapRadioGroupAttributes> & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes]?: CapRadioGroup[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `attr:${K}`]?: CapRadioGroupAttributes[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `prop:${K}`]?: CapRadioGroup[K] };
+        "cap-select": Omit<CapSelect, keyof CapSelectAttributes> & { [K in keyof CapSelect & keyof CapSelectAttributes]?: CapSelect[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `attr:${K}`]?: CapSelectAttributes[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `prop:${K}`]?: CapSelect[K] };
         "cap-textarea": Omit<CapTextarea, keyof CapTextareaAttributes> & { [K in keyof CapTextarea & keyof CapTextareaAttributes]?: CapTextarea[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `attr:${K}`]?: CapTextareaAttributes[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `prop:${K}`]?: CapTextarea[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
@@ -649,6 +993,9 @@ declare module "@stencil/core" {
             "cap-button": LocalJSX.IntrinsicElements["cap-button"] & JSXBase.HTMLAttributes<HTMLCapButtonElement>;
             "cap-checkbox": LocalJSX.IntrinsicElements["cap-checkbox"] & JSXBase.HTMLAttributes<HTMLCapCheckboxElement>;
             "cap-input": LocalJSX.IntrinsicElements["cap-input"] & JSXBase.HTMLAttributes<HTMLCapInputElement>;
+            "cap-radio": LocalJSX.IntrinsicElements["cap-radio"] & JSXBase.HTMLAttributes<HTMLCapRadioElement>;
+            "cap-radio-group": LocalJSX.IntrinsicElements["cap-radio-group"] & JSXBase.HTMLAttributes<HTMLCapRadioGroupElement>;
+            "cap-select": LocalJSX.IntrinsicElements["cap-select"] & JSXBase.HTMLAttributes<HTMLCapSelectElement>;
             "cap-textarea": LocalJSX.IntrinsicElements["cap-textarea"] & JSXBase.HTMLAttributes<HTMLCapTextareaElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }

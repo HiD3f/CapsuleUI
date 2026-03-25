@@ -1,0 +1,59 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Wrapper ────────────────────────────────── */
+.radio-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-sm);
+}
+
+/* ─── Legend ─────────────────────────────────── */
+.radio-group__legend {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  font-weight: var(--cap-font-weight-bold);
+  color: var(--cap-color-on-background);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.radio-group__required {
+  color: var(--cap-color-danger);
+}
+
+/* ─── Options ────────────────────────────────── */
+.radio-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-sm);
+}
+
+/* ─── Disabled ───────────────────────────────── */
+.radio-group-wrapper--disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ─── Error state ────────────────────────────── */
+.radio-group-wrapper--error .radio-group__legend {
+  color: var(--cap-color-danger);
+}
+
+/* ─── Feedback ───────────────────────────────── */
+.radio-group__feedback {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.radio-group__feedback--error {
+  color: var(--cap-color-danger);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.radio-group__feedback--hint {
+  color: var(--cap-color-on-background);
+  opacity: 0.6;
+}
