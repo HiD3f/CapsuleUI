@@ -1,0 +1,125 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Wrapper ────────────────────────────────── */
+.checkbox-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-xs);
+}
+
+/* ─── Label ──────────────────────────────────── */
+.checkbox__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cap-space-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-wrapper--disabled .checkbox__label {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* ─── Hide native input ──────────────────────── */
+input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Custom control ─────────────────────────── */
+.checkbox__control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  background: var(--cap-color-surface);
+  transition: background var(--cap-transition-fast),
+              box-shadow var(--cap-transition-fast);
+  position: relative;
+}
+
+/* Checked state — checkmark via pseudo element */
+.checkbox__control--checked::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: var(--cap-border-width) solid var(--cap-color-on-primary);
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.checkbox__control--checked {
+  background: var(--cap-color-primary);
+  border-color: var(--cap-border-color);
+}
+
+/* Indeterminate state — dash via pseudo element */
+.checkbox__control--indeterminate::after {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 2px;
+  background: var(--cap-color-on-surface);
+}
+
+/* ─── Focus ──────────────────────────────────── */
+input[type="checkbox"]:focus-visible ~ .checkbox__control {
+  box-shadow: var(--cap-shadow);
+}
+
+:host-context(.cap-focus-outline) input[type="checkbox"]:focus-visible ~ .checkbox__control {
+  box-shadow: none;
+  outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
+  outline-offset: 2px;
+}
+
+/* ─── Error state ────────────────────────────── */
+.checkbox-wrapper--error .checkbox__control {
+  border-color: var(--cap-color-danger);
+}
+
+/* ─── Label text ─────────────────────────────── */
+.checkbox__text {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-background);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.checkbox__required {
+  color: var(--cap-color-danger);
+}
+
+/* ─── Feedback ───────────────────────────────── */
+.checkbox__feedback {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+  padding-left: calc(18px + var(--cap-space-sm));
+}
+
+.checkbox__feedback--error {
+  color: var(--cap-color-danger);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.checkbox__feedback--hint {
+  color: var(--cap-color-on-background);
+  opacity: 0.6;
+}

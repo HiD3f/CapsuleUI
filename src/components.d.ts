@@ -48,6 +48,48 @@ export namespace Components {
          */
         "variant": ButtonVariant;
     }
+    interface CapCheckbox {
+        /**
+          * Whether the checkbox is checked
+          * @default false
+         */
+        "checked": boolean;
+        /**
+          * Disables the checkbox
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message
+         */
+        "error": string;
+        /**
+          * Hint text
+         */
+        "hint": string;
+        /**
+          * Indeterminate state — visually a dash, neither checked nor unchecked
+          * @default false
+         */
+        "indeterminate": boolean;
+        /**
+          * Label text
+         */
+        "label": string;
+        /**
+          * Name attribute for form submission
+         */
+        "name": string;
+        /**
+          * Marks the checkbox as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Value submitted with the form
+         */
+        "value": string;
+    }
     interface CapInput {
         /**
           * Disables the input
@@ -182,6 +224,10 @@ export interface CapButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapButtonElement;
 }
+export interface CapCheckboxCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapCheckboxElement;
+}
 export interface CapInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapInputElement;
@@ -207,6 +253,23 @@ declare global {
     var HTMLCapButtonElement: {
         prototype: HTMLCapButtonElement;
         new (): HTMLCapButtonElement;
+    };
+    interface HTMLCapCheckboxElementEventMap {
+        "capChange": boolean;
+    }
+    interface HTMLCapCheckboxElement extends Components.CapCheckbox, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapCheckboxElementEventMap>(type: K, listener: (this: HTMLCapCheckboxElement, ev: CapCheckboxCustomEvent<HTMLCapCheckboxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapCheckboxElementEventMap>(type: K, listener: (this: HTMLCapCheckboxElement, ev: CapCheckboxCustomEvent<HTMLCapCheckboxElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapCheckboxElement: {
+        prototype: HTMLCapCheckboxElement;
+        new (): HTMLCapCheckboxElement;
     };
     interface HTMLCapInputElementEventMap {
         "capChange": string;
@@ -257,6 +320,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "cap-button": HTMLCapButtonElement;
+        "cap-checkbox": HTMLCapCheckboxElement;
         "cap-input": HTMLCapInputElement;
         "cap-textarea": HTMLCapTextareaElement;
         "my-component": HTMLMyComponentElement;
@@ -302,6 +366,52 @@ declare namespace LocalJSX {
           * @default 'primary'
          */
         "variant"?: ButtonVariant;
+    }
+    interface CapCheckbox {
+        /**
+          * Whether the checkbox is checked
+          * @default false
+         */
+        "checked"?: boolean;
+        /**
+          * Disables the checkbox
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message
+         */
+        "error"?: string;
+        /**
+          * Hint text
+         */
+        "hint"?: string;
+        /**
+          * Indeterminate state — visually a dash, neither checked nor unchecked
+          * @default false
+         */
+        "indeterminate"?: boolean;
+        /**
+          * Label text
+         */
+        "label"?: string;
+        /**
+          * Name attribute for form submission
+         */
+        "name"?: string;
+        /**
+          * Emitted when the checked state changes
+         */
+        "onCapChange"?: (event: CapCheckboxCustomEvent<boolean>) => void;
+        /**
+          * Marks the checkbox as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Value submitted with the form
+         */
+        "value"?: string;
     }
     interface CapInput {
         /**
@@ -478,6 +588,17 @@ declare namespace LocalJSX {
         "fullWidth": boolean;
         "ariaLabel": string;
     }
+    interface CapCheckboxAttributes {
+        "checked": boolean;
+        "indeterminate": boolean;
+        "disabled": boolean;
+        "required": boolean;
+        "name": string;
+        "value": string;
+        "label": string;
+        "hint": string;
+        "error": string;
+    }
     interface CapInputAttributes {
         "type": InputType;
         "value": string;
@@ -515,6 +636,7 @@ declare namespace LocalJSX {
 
     interface IntrinsicElements {
         "cap-button": Omit<CapButton, keyof CapButtonAttributes> & { [K in keyof CapButton & keyof CapButtonAttributes]?: CapButton[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `attr:${K}`]?: CapButtonAttributes[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `prop:${K}`]?: CapButton[K] };
+        "cap-checkbox": Omit<CapCheckbox, keyof CapCheckboxAttributes> & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes]?: CapCheckbox[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `attr:${K}`]?: CapCheckboxAttributes[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `prop:${K}`]?: CapCheckbox[K] };
         "cap-input": Omit<CapInput, keyof CapInputAttributes> & { [K in keyof CapInput & keyof CapInputAttributes]?: CapInput[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `attr:${K}`]?: CapInputAttributes[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `prop:${K}`]?: CapInput[K] };
         "cap-textarea": Omit<CapTextarea, keyof CapTextareaAttributes> & { [K in keyof CapTextarea & keyof CapTextareaAttributes]?: CapTextarea[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `attr:${K}`]?: CapTextareaAttributes[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `prop:${K}`]?: CapTextarea[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
@@ -525,6 +647,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "cap-button": LocalJSX.IntrinsicElements["cap-button"] & JSXBase.HTMLAttributes<HTMLCapButtonElement>;
+            "cap-checkbox": LocalJSX.IntrinsicElements["cap-checkbox"] & JSXBase.HTMLAttributes<HTMLCapCheckboxElement>;
             "cap-input": LocalJSX.IntrinsicElements["cap-input"] & JSXBase.HTMLAttributes<HTMLCapInputElement>;
             "cap-textarea": LocalJSX.IntrinsicElements["cap-textarea"] & JSXBase.HTMLAttributes<HTMLCapTextareaElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
