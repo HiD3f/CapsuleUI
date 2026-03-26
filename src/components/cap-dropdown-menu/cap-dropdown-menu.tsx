@@ -1,4 +1,4 @@
-import { Component, Host, Prop, State, Event, EventEmitter, Element, h } from '@stencil/core';
+import { Component, Host, Prop, State, Event, EventEmitter, Element, Watch, h } from '@stencil/core';
 import { firstEnabledIndex, lastEnabledIndex, nextEnabledIndex, prevEnabledIndex } from '../../utils/listbox-keyboard';
 import { createClickOutsideHandler } from '../../utils/click-outside';
 
@@ -18,6 +18,12 @@ export interface MenuItem {
   /** Controlled checked state for type='toggle' */
   checked?: boolean;
   disabled?: boolean;
+  /**
+   * When true, the menu stays open after the item is activated.
+   * Useful for repeated actions like zoom in/out or quantity steppers.
+   * toggle items are always persistent regardless of this flag.
+   */
+  persistent?: boolean;
   /** One level of nested items. Deeper nesting is ignored. */
   items?: MenuItem[];
 }
@@ -58,12 +64,23 @@ export class CapDropdownMenu {
   @State() openSubMenuIndex: number = -1;
   @State() activeSubIndex: number = -1;
   @State() inSubMenu: boolean = false;
+  // Internal checked state for toggle items — keyed by `r{i}` (root) or `s{i}_{j}` (sub)
+  @State() checkedMap: Map<string, boolean> = new Map();
 
   /** Emitted when an action or link item is activated */
   @Event() capSelect: EventEmitter<MenuItem>;
 
   /** Emitted when a toggle item is activated; checked reflects the new state */
   @Event() capToggle: EventEmitter<{ item: MenuItem; checked: boolean }>;
+
+  componentWillLoad() {
+    this.syncCheckedMap();
+  }
+
+  @Watch('items')
+  itemsChanged() {
+    this.syncCheckedMap();
+  }
 
   connectedCallback() {
     this.clickOutsideHandler = createClickOutsideHandler(this.el, () => {
@@ -105,6 +122,32 @@ export class CapDropdownMenu {
     return items.map(item => ({ disabled: item.type === 'separator' || !!item.disabled }));
   }
 
+  // ─── Checked state helpers ─────────────────────────────────────────────────
+
+  private rootCheckedKey(i: number) { return `r${i}`; }
+  private subCheckedKey(i: number, j: number) { return `s${i}_${j}`; }
+
+  private syncCheckedMap() {
+    const map = new Map<string, boolean>();
+    this.items.forEach((item, i) => {
+      if (item.type === 'toggle') map.set(this.rootCheckedKey(i), !!item.checked);
+      item.items?.forEach((sub, j) => {
+        if (sub.type === 'toggle') map.set(this.subCheckedKey(i, j), !!sub.checked);
+      });
+    });
+    this.checkedMap = map;
+  }
+
+  private getChecked(key: string): boolean {
+    return this.checkedMap.get(key) ?? false;
+  }
+
+  private setChecked(key: string, value: boolean) {
+    const map = new Map(this.checkedMap);
+    map.set(key, value);
+    this.checkedMap = map;
+  }
+
   // ─── Actions ──────────────────────────────────────────────────────────────
 
   private openMenu(focusLast = false) {
@@ -144,17 +187,19 @@ export class CapDropdownMenu {
     this._focusOnUpdate = true;
   }
 
-  private activateItem(item: MenuItem) {
+  private activateItem(item: MenuItem, checkedKey?: string) {
     if (item.disabled || item.type === 'separator') return;
 
     if (item.type === 'toggle') {
-      this.capToggle.emit({ item, checked: !item.checked });
-      // Keep menu open — user may want to toggle multiple items
+      const newChecked = checkedKey ? !this.getChecked(checkedKey) : !item.checked;
+      if (checkedKey) this.setChecked(checkedKey, newChecked);
+      this.capToggle.emit({ item, checked: newChecked });
+      // Toggle items are always persistent
       return;
     }
 
     this.capSelect.emit(item);
-    this.closeMenu();
+    if (!item.persistent) this.closeMenu();
     // link navigation is handled natively by the <a> element
   }
 
@@ -248,7 +293,7 @@ export class CapDropdownMenu {
         if (item.items?.length) {
           this.openSubMenu(this.activeIndex);
         } else {
-          this.activateItem(item);
+          this.activateItem(item, this.rootCheckedKey(this.activeIndex));
         }
         break;
       }
@@ -300,7 +345,7 @@ export class CapDropdownMenu {
       case ' ': {
         e.preventDefault();
         const item = subItems[this.activeSubIndex];
-        if (item) this.activateItem(item);
+        if (item) this.activateItem(item, this.subCheckedKey(this.openSubMenuIndex, this.activeSubIndex));
         break;
       }
       case 'Tab':
@@ -342,21 +387,21 @@ export class CapDropdownMenu {
       this.openSubMenuIndex = this.openSubMenuIndex === index ? -1 : index;
       return;
     }
-    this.activateItem(item);
+    this.activateItem(item, this.rootCheckedKey(index));
   };
 
-  private handleSubItemClick = (item: MenuItem) => {
-    this.activateItem(item);
+  private handleSubItemClick = (item: MenuItem, parentIndex: number, subIndex: number) => {
+    this.activateItem(item, this.subCheckedKey(parentIndex, subIndex));
   };
 
   // ─── Render helpers ───────────────────────────────────────────────────────
 
-  private renderItemStart(item: MenuItem) {
+  private renderItemStart(item: MenuItem, checkedKey?: string) {
     // Always render a fixed-width left slot for visual alignment
     return (
       <span class="dropdown__item-start" aria-hidden="true">
         {item.type === 'toggle'
-          ? (item.checked ? '✓' : '')
+          ? (checkedKey ? this.getChecked(checkedKey) : !!item.checked) ? '✓' : ''
           : (item.icon ?? '')}
       </span>
     );
@@ -390,8 +435,9 @@ export class CapDropdownMenu {
       onClick: () => this.handleItemClick(item, index),
     };
 
+    const checkedKey = item.type === 'toggle' ? this.rootCheckedKey(index) : undefined;
     const content = [
-      this.renderItemStart(item),
+      this.renderItemStart(item, checkedKey),
       <span class="dropdown__item-label">{item.label}</span>,
       hasSubMenu && (
         <span class="dropdown__item-submenu-arrow" aria-hidden="true">▶</span>
@@ -430,7 +476,7 @@ export class CapDropdownMenu {
         key={item.value ?? index}
         {...sharedAttrs}
         role={item.type === 'toggle' ? 'menuitemcheckbox' : 'menuitem'}
-        aria-checked={item.type === 'toggle' ? String(!!item.checked) : undefined}
+        aria-checked={item.type === 'toggle' ? String(checkedKey ? this.getChecked(checkedKey) : !!item.checked) : undefined}
         aria-haspopup={hasSubMenu ? 'menu' : undefined}
         aria-expanded={hasSubMenu ? String(isSubMenuOpen) : undefined}
         aria-controls={hasSubMenu ? this.subMenuId(index) : undefined}
@@ -460,11 +506,12 @@ export class CapDropdownMenu {
       tabIndex: -1,
       'aria-disabled': item.disabled ? 'true' : undefined,
       onMouseEnter: () => this.handleSubItemMouseEnter(j),
-      onClick: () => this.handleSubItemClick(item),
+      onClick: () => this.handleSubItemClick(item, parentIndex, j),
     };
 
+    const subCheckedKey = item.type === 'toggle' ? this.subCheckedKey(parentIndex, j) : undefined;
     const content = [
-      this.renderItemStart(item),
+      this.renderItemStart(item, subCheckedKey),
       <span class="dropdown__item-label">{item.label}</span>,
     ];
 
@@ -488,7 +535,7 @@ export class CapDropdownMenu {
         key={item.value ?? j}
         {...sharedAttrs}
         role={item.type === 'toggle' ? 'menuitemcheckbox' : 'menuitem'}
-        aria-checked={item.type === 'toggle' ? String(!!item.checked) : undefined}
+        aria-checked={item.type === 'toggle' ? String(subCheckedKey ? this.getChecked(subCheckedKey) : !!item.checked) : undefined}
         class={classes}
       >
         {content}
