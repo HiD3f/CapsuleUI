@@ -8,8 +8,8 @@ Running log of decisions made, reasoning, open questions, and things to revisit.
 
 - **Stencil.js** — web components with Shadow DOM, TSX, scoped CSS per component
 - **Storybook** — stories use `lit-html` tagged templates; array/object props use `.prop=${value}` binding
-- **Design tokens** — `src/styles/tokens.css`, light theme only for now
-- **Aesthetic** — retro yellow/black, 0px border-radius, offset solid box shadows, Georgia serif, Courier New mono
+- **Design tokens** — `src/styles/tokens.css`; every visual decision is a CSS custom property — colors, typography, spacing, border radius, shadows, focus styles
+- **Aesthetic** — retro yellow/black is the reference theme, not the ceiling. The token system is intentionally broad so the library can be reskinned for any style by overriding custom properties, no component code changes needed.
 
 ---
 

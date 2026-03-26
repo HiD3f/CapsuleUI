@@ -112,12 +112,17 @@ CapsuleUI ships two focus ring styles. Toggle between them by adding a class to 
 
 ## Theming
 
-Design tokens are defined in `tokens.css` and support light and dark themes via `data-theme`:
+The retro yellow/black look is the reference theme — not the ceiling. Every visual decision (colors, typography, spacing, border radius, shadows, focus styles) is driven by CSS custom properties in `tokens.css`. Swap out the token values and the components follow, no code changes needed.
 
-```html
-<div data-theme="dark">
-  <!-- components inside will use the dark theme -->
-</div>
+Override at `:root` for a global retheme, or scope overrides to any element for per-section theming:
+
+```css
+:root {
+  --cap-color-primary: #0057ff;
+  --cap-color-on-primary: #ffffff;
+  --cap-border-radius: 6px;
+  /* ...and so on */
+}
 ```
 
-Use the **Theme** and **Focus** toolbar controls at the top of this page to preview both modes across all stories.
+CapsuleUI is built to be the foundation of any design system, not just a retro one.
