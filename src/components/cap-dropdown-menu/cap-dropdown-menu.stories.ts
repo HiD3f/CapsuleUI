@@ -52,8 +52,8 @@ const VIEW_MENU = [
     ],
   },
   { type: 'separator' },
-  { type: 'action', label: 'Zoom In', value: 'zoom-in', icon: '+' },
-  { type: 'action', label: 'Zoom Out', value: 'zoom-out', icon: '−' },
+  { type: 'action', label: 'Zoom In', value: 'zoom-in', icon: '+', persistent: true },
+  { type: 'action', label: 'Zoom Out', value: 'zoom-out', icon: '−', persistent: true },
 ];
 
 const LINKS_MENU = [
