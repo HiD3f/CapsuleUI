@@ -1,4 +1,6 @@
 import { Component, Host, Prop, State, Event, EventEmitter, Element, Watch, h } from '@stencil/core';
+import { firstEnabledIndex, lastEnabledIndex, nextEnabledIndex, prevEnabledIndex } from '../../utils/listbox-keyboard';
+import { createClickOutsideHandler } from '../../utils/click-outside';
 
 export type ComboboxStatus = 'default' | 'error';
 
@@ -79,14 +81,15 @@ export class CapCombobox {
   }
 
   connectedCallback() {
-    this.clickOutsideHandler = (e: MouseEvent) => {
-      if (this.defaultOpen) return;
-      if (!this.el.contains(e.target as Node)) {
+    this.clickOutsideHandler = createClickOutsideHandler(
+      this.el,
+      () => {
         this.commitOrRevert();
         this.open = false;
         this.activeIndex = -1;
-      }
-    };
+      },
+      () => this.defaultOpen,
+    );
     document.addEventListener('mousedown', this.clickOutsideHandler);
   }
 
@@ -148,30 +151,6 @@ export class CapCombobox {
     return `${this.comboboxId}-option-${index}`;
   }
 
-  private firstEnabledIndex(opts: ComboboxOption[]): number {
-    return opts.findIndex((o) => !o.disabled);
-  }
-
-  private lastEnabledIndex(opts: ComboboxOption[]): number {
-    for (let i = opts.length - 1; i >= 0; i--) {
-      if (!opts[i].disabled) return i;
-    }
-    return -1;
-  }
-
-  private nextEnabledIndex(opts: ComboboxOption[], from: number): number {
-    for (let i = from + 1; i < opts.length; i++) {
-      if (!opts[i].disabled) return i;
-    }
-    return from;
-  }
-
-  private prevEnabledIndex(opts: ComboboxOption[], from: number): number {
-    for (let i = from - 1; i >= 0; i--) {
-      if (!opts[i].disabled) return i;
-    }
-    return from;
-  }
 
   // ─── Actions ──────────────────────────────────────────────────────────────
 
@@ -217,7 +196,7 @@ export class CapCombobox {
     if (!this.open) {
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
-        this.activeIndex = this.firstEnabledIndex(filtered);
+        this.activeIndex = firstEnabledIndex(filtered);
         this.open = true;
         return;
       }
@@ -235,22 +214,22 @@ export class CapCombobox {
       case 'ArrowDown':
         e.preventDefault();
         this.activeIndex = this.activeIndex < 0
-          ? this.firstEnabledIndex(filtered)
-          : this.nextEnabledIndex(filtered, this.activeIndex);
+          ? firstEnabledIndex(filtered)
+          : nextEnabledIndex(filtered, this.activeIndex);
         break;
       case 'ArrowUp':
         e.preventDefault();
         this.activeIndex = this.activeIndex < 0
-          ? this.lastEnabledIndex(filtered)
-          : this.prevEnabledIndex(filtered, this.activeIndex);
+          ? lastEnabledIndex(filtered)
+          : prevEnabledIndex(filtered, this.activeIndex);
         break;
       case 'Home':
         e.preventDefault();
-        this.activeIndex = this.firstEnabledIndex(filtered);
+        this.activeIndex = firstEnabledIndex(filtered);
         break;
       case 'End':
         e.preventDefault();
-        this.activeIndex = this.lastEnabledIndex(filtered);
+        this.activeIndex = lastEnabledIndex(filtered);
         break;
       case 'Enter':
         e.preventDefault();

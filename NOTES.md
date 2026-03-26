@@ -202,8 +202,8 @@ Added a welcome/intro page and per-component descriptions to improve the Storybo
 - [x] **cap-multiselect**: chips inside trigger, `overflow` prop (`grow` | `single-line`), `maxVisibleChips` for truncation, `filterable` prop for select-only vs editable mode — decisions logged above
 - [x] **cap-tag-input**: free text always on; options optional (suggestions); value stores option.value when from suggestion, raw string when free text — consistent with Ant Design / react-select Creatable
 - [ ] **Dark theme**: tokens exist but no dark theme CSS yet — when do we add it?
-- [ ] **cap-listbox primitive**: revisit after cap-multiselect is built
-- [ ] **Utility extraction**: `listbox-keyboard.ts` + `click-outside.ts` — do after cap-multiselect
+- [x] **cap-listbox primitive**: decided against for now — utilities are sufficient, revisit if a 5th consumer emerges
+- [x] **Utility extraction**: `src/utils/listbox-keyboard.ts` + `src/utils/click-outside.ts` — extracted and used by all 4 dropdown components
 
 ---
 
@@ -211,7 +211,7 @@ Added a welcome/intro page and per-component descriptions to improve the Storybo
 
 - [x] Build `cap-multiselect`
 - [x] Build `cap-tag-input`
-- [ ] Extract shared listbox utilities
+- [x] Extract shared listbox utilities
 - [ ] Create design decisions file for each component? Or keep it all here?
 - [ ] Decide on Group 4 (menus) — different session, different ARIA mindset
 

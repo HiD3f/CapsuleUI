@@ -1,4 +1,6 @@
 import { Component, Host, Prop, State, Event, EventEmitter, Element, Watch, h } from '@stencil/core';
+import { firstEnabledIndex, lastEnabledIndex, nextEnabledIndex, prevEnabledIndex } from '../../utils/listbox-keyboard';
+import { createClickOutsideHandler } from '../../utils/click-outside';
 
 export type TagInputStatus = 'default' | 'error';
 
@@ -79,14 +81,15 @@ export class CapTagInput {
   }
 
   connectedCallback() {
-    this.clickOutsideHandler = (e: MouseEvent) => {
-      if (this.defaultOpen) return;
-      if (!this.el.contains(e.target as Node)) {
+    this.clickOutsideHandler = createClickOutsideHandler(
+      this.el,
+      () => {
         this.open = false;
         this.activeIndex = -1;
         this.inputText = '';
-      }
-    };
+      },
+      () => this.defaultOpen,
+    );
     document.addEventListener('mousedown', this.clickOutsideHandler);
   }
 
@@ -128,30 +131,6 @@ export class CapTagInput {
   private get listboxId(): string { return `${this.tagId}-listbox`; }
   private optionId(index: number): string { return `${this.tagId}-option-${index}`; }
 
-  private firstEnabledIndex(opts: TagInputOption[]): number {
-    return opts.findIndex(o => !o.disabled);
-  }
-
-  private lastEnabledIndex(opts: TagInputOption[]): number {
-    for (let i = opts.length - 1; i >= 0; i--) {
-      if (!opts[i].disabled) return i;
-    }
-    return -1;
-  }
-
-  private nextEnabledIndex(opts: TagInputOption[], from: number): number {
-    for (let i = from + 1; i < opts.length; i++) {
-      if (!opts[i].disabled) return i;
-    }
-    return from;
-  }
-
-  private prevEnabledIndex(opts: TagInputOption[], from: number): number {
-    for (let i = from - 1; i >= 0; i--) {
-      if (!opts[i].disabled) return i;
-    }
-    return from;
-  }
 
   // ─── Actions ──────────────────────────────────────────────────────────────
 
@@ -247,12 +226,12 @@ export class CapTagInput {
         if (this.hasSuggestions) {
           e.preventDefault();
           if (!this.open) {
-            this.activeIndex = this.firstEnabledIndex(filtered);
+            this.activeIndex = firstEnabledIndex(filtered);
             this.open = true;
           } else {
             this.activeIndex = this.activeIndex < 0
-              ? this.firstEnabledIndex(filtered)
-              : this.nextEnabledIndex(filtered, this.activeIndex);
+              ? firstEnabledIndex(filtered)
+              : nextEnabledIndex(filtered, this.activeIndex);
           }
         }
         break;
@@ -261,22 +240,22 @@ export class CapTagInput {
         if (this.hasSuggestions && this.open) {
           e.preventDefault();
           this.activeIndex = this.activeIndex < 0
-            ? this.lastEnabledIndex(filtered)
-            : this.prevEnabledIndex(filtered, this.activeIndex);
+            ? lastEnabledIndex(filtered)
+            : prevEnabledIndex(filtered, this.activeIndex);
         }
         break;
 
       case 'Home':
         if (this.open) {
           e.preventDefault();
-          this.activeIndex = this.firstEnabledIndex(filtered);
+          this.activeIndex = firstEnabledIndex(filtered);
         }
         break;
 
       case 'End':
         if (this.open) {
           e.preventDefault();
-          this.activeIndex = this.lastEnabledIndex(filtered);
+          this.activeIndex = lastEnabledIndex(filtered);
         }
         break;
 

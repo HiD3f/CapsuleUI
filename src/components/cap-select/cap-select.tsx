@@ -1,4 +1,6 @@
 import { Component, Host, Prop, State, Event, EventEmitter, Element, Watch, h } from '@stencil/core';
+import { firstEnabledIndex, lastEnabledIndex, nextEnabledIndex, prevEnabledIndex } from '../../utils/listbox-keyboard';
+import { createClickOutsideHandler } from '../../utils/click-outside';
 
 export type SelectStatus = 'default' | 'error';
 
@@ -61,12 +63,10 @@ export class CapSelect {
   @Event() capBlur: EventEmitter<FocusEvent>;
 
   connectedCallback() {
-    this.clickOutsideHandler = (e: MouseEvent) => {
-      if (!this.el.contains(e.target as Node)) {
-        this.open = false;
-        this.activeIndex = -1;
-      }
-    };
+    this.clickOutsideHandler = createClickOutsideHandler(this.el, () => {
+      this.open = false;
+      this.activeIndex = -1;
+    });
     document.addEventListener('mousedown', this.clickOutsideHandler);
   }
 
@@ -116,37 +116,13 @@ export class CapSelect {
     return `${this.selectId}-option-${index}`;
   }
 
-  private firstEnabledIndex(): number {
-    return this.options.findIndex((o) => !o.disabled);
-  }
-
-  private lastEnabledIndex(): number {
-    for (let i = this.options.length - 1; i >= 0; i--) {
-      if (!this.options[i].disabled) return i;
-    }
-    return -1;
-  }
-
-  private nextEnabledIndex(from: number): number {
-    for (let i = from + 1; i < this.options.length; i++) {
-      if (!this.options[i].disabled) return i;
-    }
-    return from;
-  }
-
-  private prevEnabledIndex(from: number): number {
-    for (let i = from - 1; i >= 0; i--) {
-      if (!this.options[i].disabled) return i;
-    }
-    return from;
-  }
 
   // ─── Actions ──────────────────────────────────────────────────────────────
 
   private openDropdown() {
     if (this.disabled) return;
     const selectedIdx = this.options.findIndex((o) => o.value === this.value && !o.disabled);
-    this.activeIndex = selectedIdx >= 0 ? selectedIdx : this.firstEnabledIndex();
+    this.activeIndex = selectedIdx >= 0 ? selectedIdx : firstEnabledIndex(this.options);
     this.open = true;
   }
 
@@ -186,19 +162,19 @@ export class CapSelect {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        this.activeIndex = this.nextEnabledIndex(this.activeIndex);
+        this.activeIndex = nextEnabledIndex(this.options, this.activeIndex);
         break;
       case 'ArrowUp':
         e.preventDefault();
-        this.activeIndex = this.prevEnabledIndex(this.activeIndex);
+        this.activeIndex = prevEnabledIndex(this.options, this.activeIndex);
         break;
       case 'Home':
         e.preventDefault();
-        this.activeIndex = this.firstEnabledIndex();
+        this.activeIndex = firstEnabledIndex(this.options);
         break;
       case 'End':
         e.preventDefault();
-        this.activeIndex = this.lastEnabledIndex();
+        this.activeIndex = lastEnabledIndex(this.options);
         break;
       case 'Enter':
       case ' ':

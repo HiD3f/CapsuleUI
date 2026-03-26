@@ -1,4 +1,6 @@
 import { Component, Host, Prop, State, Event, EventEmitter, Element, Watch, h } from '@stencil/core';
+import { firstEnabledIndex, lastEnabledIndex, nextEnabledIndex, prevEnabledIndex } from '../../utils/listbox-keyboard';
+import { createClickOutsideHandler } from '../../utils/click-outside';
 
 export type MultiselectStatus = 'default' | 'error';
 export type MultiselectOverflow = 'grow' | 'single-line';
@@ -94,14 +96,15 @@ export class CapMultiselect {
   }
 
   connectedCallback() {
-    this.clickOutsideHandler = (e: MouseEvent) => {
-      if (this.defaultOpen) return;
-      if (!this.el.contains(e.target as Node)) {
+    this.clickOutsideHandler = createClickOutsideHandler(
+      this.el,
+      () => {
         this.open = false;
         this.activeIndex = -1;
         this.filterText = '';
-      }
-    };
+      },
+      () => this.defaultOpen,
+    );
     document.addEventListener('mousedown', this.clickOutsideHandler);
   }
 
@@ -162,36 +165,12 @@ export class CapMultiselect {
   private get inputId(): string { return `${this.msId}-input`; }
   private optionId(index: number): string { return `${this.msId}-option-${index}`; }
 
-  private firstEnabledIndex(opts: MultiselectOption[]): number {
-    return opts.findIndex(o => !o.disabled);
-  }
-
-  private lastEnabledIndex(opts: MultiselectOption[]): number {
-    for (let i = opts.length - 1; i >= 0; i--) {
-      if (!opts[i].disabled) return i;
-    }
-    return -1;
-  }
-
-  private nextEnabledIndex(opts: MultiselectOption[], from: number): number {
-    for (let i = from + 1; i < opts.length; i++) {
-      if (!opts[i].disabled) return i;
-    }
-    return from;
-  }
-
-  private prevEnabledIndex(opts: MultiselectOption[], from: number): number {
-    for (let i = from - 1; i >= 0; i--) {
-      if (!opts[i].disabled) return i;
-    }
-    return from;
-  }
 
   // ─── Actions ──────────────────────────────────────────────────────────────
 
   private openDropdown() {
     if (this.disabled) return;
-    this.activeIndex = this.firstEnabledIndex(this.filteredOptions);
+    this.activeIndex = firstEnabledIndex(this.filteredOptions);
     this.open = true;
   }
 
@@ -275,22 +254,22 @@ export class CapMultiselect {
       case 'ArrowDown':
         e.preventDefault();
         this.activeIndex = this.activeIndex < 0
-          ? this.firstEnabledIndex(filtered)
-          : this.nextEnabledIndex(filtered, this.activeIndex);
+          ? firstEnabledIndex(filtered)
+          : nextEnabledIndex(filtered, this.activeIndex);
         break;
       case 'ArrowUp':
         e.preventDefault();
         this.activeIndex = this.activeIndex < 0
-          ? this.lastEnabledIndex(filtered)
-          : this.prevEnabledIndex(filtered, this.activeIndex);
+          ? lastEnabledIndex(filtered)
+          : prevEnabledIndex(filtered, this.activeIndex);
         break;
       case 'Home':
         e.preventDefault();
-        this.activeIndex = this.firstEnabledIndex(filtered);
+        this.activeIndex = firstEnabledIndex(filtered);
         break;
       case 'End':
         e.preventDefault();
-        this.activeIndex = this.lastEnabledIndex(filtered);
+        this.activeIndex = lastEnabledIndex(filtered);
         break;
       case 'Enter':
       case ' ':
