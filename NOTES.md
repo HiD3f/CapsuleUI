@@ -31,7 +31,7 @@ Running log of decisions made, reasoning, open questions, and things to revisit.
 |---|---|---|
 | `cap-select` | ✅ done | custom ARIA combobox, select-only |
 | `cap-combobox` | ✅ done | editable combobox, freeText prop |
-| `cap-multiselect` | 🔲 next | |
+| `cap-multiselect` | ✅ done | `overflow`, `filterable`, `maxVisibleChips` props |
 | `cap-tag-input` | 🔲 next | |
 
 ---
@@ -59,7 +59,7 @@ Custom ARIA combobox gives full styling control while remaining accessible.
 
 - **`cap-select`** — Select-Only Combobox (`role="combobox"` on a `<button>`, no text input)
 - **`cap-combobox`** — Editable Combobox (`role="combobox"` on `<input>`, `aria-autocomplete="list"`)
-- **`cap-multiselect`** (planned) — Editable Combobox + multiselect listbox
+- **`cap-multiselect`** (planned) — multiselect listbox; `filterable` prop switches between select-only and editable combobox modes
 - **Future `cap-dropdown-menu`** — Different pattern entirely: `role="menu"` / `role="menuitem"` — shares nothing with the listbox family except click-outside and positioning
 
 ### Shared primitive decision (cap-listbox)
@@ -140,6 +140,47 @@ Groups 1–3 share the listbox pattern. Group 4 is unrelated internally.
 
 ---
 
+## cap-multiselect — Design Decisions
+
+### Chip layout — `overflow` prop
+
+`overflow="grow"` (default) — trigger expands vertically as chips are added. Chips wrap to new lines. Simple, always shows all selections.
+
+`overflow="single-line"` — trigger stays fixed height. Overflow handled with a **"+N more" badge** (e.g. "Spring, Summer +2"). Best practice across mature multiselects (react-select, Ant Design). Alternatives considered and rejected:
+- Horizontal scroll — poor UX, especially on non-touch
+- "3 selected" replacing all chips — loses visibility of what's selected
+
+Overflow count controlled by `maxVisibleChips` prop (default: 3). Avoids DOM measurement / ResizeObserver complexity while keeping behaviour predictable.
+
+### Filterable — `filterable` prop
+
+`filterable=false` (default) — select-only mode. Trigger is a button, same ARIA pattern as `cap-select` but with multiselect listbox. No text input.
+
+`filterable=true` — editable combobox mode. Text input inside the trigger filters the listbox as you type. Same ARIA pattern as `cap-combobox` (`role="combobox"` on `<input>`, `aria-autocomplete="list"`).
+
+Both modes share the same chip rendering and listbox logic — `filterable` only changes the trigger element and keyboard interaction on it.
+
+### ARIA
+
+- Trigger: `role="combobox"` (both modes), `aria-haspopup="listbox"`, `aria-expanded`, `aria-label` reflects **all** selected values regardless of chip visibility (screen readers must not be limited by visual truncation)
+- Listbox: `role="listbox"`, `aria-multiselectable="true"`
+- Options: `role="option"`, `aria-selected="true/false"` — selected options **stay in the list** and are marked, not removed. Users deselect by clicking again.
+- Chip remove buttons: `aria-label="Remove [option name]"` — "×" alone is meaningless to a screen reader
+- Toggle button: `aria-label` includes selection count — e.g. "Season, 3 selected, collapsed"
+
+### Keyboard interactions
+
+- **Tab** cycles through chip remove buttons before reaching the listbox toggle
+- **Backspace** on the trigger (when filter input is empty) removes the last chip — standard multiselect convention
+- On chip removal: announce via `aria-live="polite"` ("[option] removed"), focus moves to next chip or trigger if none left
+- In the listbox: Space/Enter toggles selection without closing. Escape closes.
+
+### Form submission
+
+Uses a hidden `<select multiple>` (aria-hidden, tabIndex=-1) with one `<option selected>` per selected value. Same principle as `cap-select` — the visible trigger never carries `name`.
+
+---
+
 ## Tooling & Infrastructure
 
 ### Storybook 10 upgrade
@@ -158,7 +199,7 @@ Added a welcome/intro page and per-component descriptions to improve the Storybo
 
 ## Open Questions
 
-- [ ] **cap-multiselect**: chips inside trigger or below it? Max visible chips before overflow?
+- [x] **cap-multiselect**: chips inside trigger, `overflow` prop (`grow` | `single-line`), `maxVisibleChips` for truncation, `filterable` prop for select-only vs editable mode — decisions logged above
 - [ ] **cap-tag-input**: predefined options only, free text only, or both modes (via prop like freeText)?
 - [ ] **Dark theme**: tokens exist but no dark theme CSS yet — when do we add it?
 - [ ] **cap-listbox primitive**: revisit after cap-multiselect is built
@@ -168,7 +209,7 @@ Added a welcome/intro page and per-component descriptions to improve the Storybo
 
 ## To Do
 
-- [ ] Build `cap-multiselect`
+- [x] Build `cap-multiselect`
 - [ ] Build `cap-tag-input`
 - [ ] Extract shared listbox utilities
 - [ ] Create design decisions file for each component? Or keep it all here?

@@ -8,11 +8,13 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 import { ComboboxOption } from "./components/cap-combobox/cap-combobox";
 import { InputType } from "./components/cap-input/cap-input";
+import { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
 import { SelectOption } from "./components/cap-select/cap-select";
 import { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 export { ComboboxOption } from "./components/cap-combobox/cap-combobox";
 export { InputType } from "./components/cap-input/cap-input";
+export { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
 export { SelectOption } from "./components/cap-select/cap-select";
 export { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export namespace Components {
@@ -196,6 +198,68 @@ export namespace Components {
           * @default ''
          */
         "value": string;
+    }
+    interface CapMultiselect {
+        /**
+          * Forces the dropdown open — useful for debugging styles
+          * @default false
+         */
+        "defaultOpen": boolean;
+        /**
+          * Disables the component
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message
+         */
+        "error": string;
+        /**
+          * When true, a text input is shown inside the trigger for filtering options. When false (default), the trigger is a select-only control.
+          * @default false
+         */
+        "filterable": boolean;
+        /**
+          * Hint text
+         */
+        "hint": string;
+        /**
+          * Label text
+         */
+        "label": string;
+        /**
+          * Maximum chips shown in the trigger before a "+N" badge appears. Only relevant when overflow="single-line".
+          * @default 3
+         */
+        "maxVisibleChips": number;
+        /**
+          * Name attribute for form submission
+         */
+        "name": string;
+        /**
+          * Array of options to display
+          * @default []
+         */
+        "options": MultiselectOption[];
+        /**
+          * Controls chip layout. grow (default): the trigger expands vertically as chips are added. single-line: trigger stays one line; excess chips collapse into a "+N" badge.
+          * @default 'grow'
+         */
+        "overflow": MultiselectOverflow;
+        /**
+          * Placeholder shown when no value is selected
+         */
+        "placeholder": string;
+        /**
+          * Marks the component as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Currently selected values
+          * @default []
+         */
+        "value": string[];
     }
     interface CapRadio {
         /**
@@ -403,6 +467,10 @@ export interface CapInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapInputElement;
 }
+export interface CapMultiselectCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapMultiselectElement;
+}
 export interface CapRadioCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapRadioElement;
@@ -495,6 +563,26 @@ declare global {
         prototype: HTMLCapInputElement;
         new (): HTMLCapInputElement;
     };
+    interface HTMLCapMultiselectElementEventMap {
+        "capChange": string[];
+        "capInput": string;
+        "capFocus": FocusEvent;
+        "capBlur": FocusEvent;
+    }
+    interface HTMLCapMultiselectElement extends Components.CapMultiselect, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapMultiselectElementEventMap>(type: K, listener: (this: HTMLCapMultiselectElement, ev: CapMultiselectCustomEvent<HTMLCapMultiselectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapMultiselectElementEventMap>(type: K, listener: (this: HTMLCapMultiselectElement, ev: CapMultiselectCustomEvent<HTMLCapMultiselectElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapMultiselectElement: {
+        prototype: HTMLCapMultiselectElement;
+        new (): HTMLCapMultiselectElement;
+    };
     interface HTMLCapRadioElementEventMap {
         "capChange": string;
     }
@@ -579,6 +667,7 @@ declare global {
         "cap-checkbox": HTMLCapCheckboxElement;
         "cap-combobox": HTMLCapComboboxElement;
         "cap-input": HTMLCapInputElement;
+        "cap-multiselect": HTMLCapMultiselectElement;
         "cap-radio": HTMLCapRadioElement;
         "cap-radio-group": HTMLCapRadioGroupElement;
         "cap-select": HTMLCapSelectElement;
@@ -811,6 +900,84 @@ declare namespace LocalJSX {
           * @default ''
          */
         "value"?: string;
+    }
+    interface CapMultiselect {
+        /**
+          * Forces the dropdown open — useful for debugging styles
+          * @default false
+         */
+        "defaultOpen"?: boolean;
+        /**
+          * Disables the component
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message
+         */
+        "error"?: string;
+        /**
+          * When true, a text input is shown inside the trigger for filtering options. When false (default), the trigger is a select-only control.
+          * @default false
+         */
+        "filterable"?: boolean;
+        /**
+          * Hint text
+         */
+        "hint"?: string;
+        /**
+          * Label text
+         */
+        "label"?: string;
+        /**
+          * Maximum chips shown in the trigger before a "+N" badge appears. Only relevant when overflow="single-line".
+          * @default 3
+         */
+        "maxVisibleChips"?: number;
+        /**
+          * Name attribute for form submission
+         */
+        "name"?: string;
+        /**
+          * Emitted when focus leaves the component
+         */
+        "onCapBlur"?: (event: CapMultiselectCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the selected values change
+         */
+        "onCapChange"?: (event: CapMultiselectCustomEvent<string[]>) => void;
+        /**
+          * Emitted when the trigger is focused
+         */
+        "onCapFocus"?: (event: CapMultiselectCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted on every keystroke in filterable mode
+         */
+        "onCapInput"?: (event: CapMultiselectCustomEvent<string>) => void;
+        /**
+          * Array of options to display
+          * @default []
+         */
+        "options"?: MultiselectOption[];
+        /**
+          * Controls chip layout. grow (default): the trigger expands vertically as chips are added. single-line: trigger stays one line; excess chips collapse into a "+N" badge.
+          * @default 'grow'
+         */
+        "overflow"?: MultiselectOverflow;
+        /**
+          * Placeholder shown when no value is selected
+         */
+        "placeholder"?: string;
+        /**
+          * Marks the component as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Currently selected values
+          * @default []
+         */
+        "value"?: string[];
     }
     interface CapRadio {
         /**
@@ -1083,6 +1250,19 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "required": boolean;
     }
+    interface CapMultiselectAttributes {
+        "placeholder": string;
+        "name": string;
+        "label": string;
+        "hint": string;
+        "error": string;
+        "disabled": boolean;
+        "required": boolean;
+        "overflow": MultiselectOverflow;
+        "maxVisibleChips": number;
+        "filterable": boolean;
+        "defaultOpen": boolean;
+    }
     interface CapRadioAttributes {
         "checked": boolean;
         "disabled": boolean;
@@ -1139,6 +1319,7 @@ declare namespace LocalJSX {
         "cap-checkbox": Omit<CapCheckbox, keyof CapCheckboxAttributes> & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes]?: CapCheckbox[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `attr:${K}`]?: CapCheckboxAttributes[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `prop:${K}`]?: CapCheckbox[K] };
         "cap-combobox": Omit<CapCombobox, keyof CapComboboxAttributes> & { [K in keyof CapCombobox & keyof CapComboboxAttributes]?: CapCombobox[K] } & { [K in keyof CapCombobox & keyof CapComboboxAttributes as `attr:${K}`]?: CapComboboxAttributes[K] } & { [K in keyof CapCombobox & keyof CapComboboxAttributes as `prop:${K}`]?: CapCombobox[K] };
         "cap-input": Omit<CapInput, keyof CapInputAttributes> & { [K in keyof CapInput & keyof CapInputAttributes]?: CapInput[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `attr:${K}`]?: CapInputAttributes[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `prop:${K}`]?: CapInput[K] };
+        "cap-multiselect": Omit<CapMultiselect, keyof CapMultiselectAttributes> & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes]?: CapMultiselect[K] } & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes as `attr:${K}`]?: CapMultiselectAttributes[K] } & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes as `prop:${K}`]?: CapMultiselect[K] };
         "cap-radio": Omit<CapRadio, keyof CapRadioAttributes> & { [K in keyof CapRadio & keyof CapRadioAttributes]?: CapRadio[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `attr:${K}`]?: CapRadioAttributes[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `prop:${K}`]?: CapRadio[K] };
         "cap-radio-group": Omit<CapRadioGroup, keyof CapRadioGroupAttributes> & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes]?: CapRadioGroup[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `attr:${K}`]?: CapRadioGroupAttributes[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `prop:${K}`]?: CapRadioGroup[K] };
         "cap-select": Omit<CapSelect, keyof CapSelectAttributes> & { [K in keyof CapSelect & keyof CapSelectAttributes]?: CapSelect[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `attr:${K}`]?: CapSelectAttributes[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `prop:${K}`]?: CapSelect[K] };
@@ -1154,6 +1335,7 @@ declare module "@stencil/core" {
             "cap-checkbox": LocalJSX.IntrinsicElements["cap-checkbox"] & JSXBase.HTMLAttributes<HTMLCapCheckboxElement>;
             "cap-combobox": LocalJSX.IntrinsicElements["cap-combobox"] & JSXBase.HTMLAttributes<HTMLCapComboboxElement>;
             "cap-input": LocalJSX.IntrinsicElements["cap-input"] & JSXBase.HTMLAttributes<HTMLCapInputElement>;
+            "cap-multiselect": LocalJSX.IntrinsicElements["cap-multiselect"] & JSXBase.HTMLAttributes<HTMLCapMultiselectElement>;
             "cap-radio": LocalJSX.IntrinsicElements["cap-radio"] & JSXBase.HTMLAttributes<HTMLCapRadioElement>;
             "cap-radio-group": LocalJSX.IntrinsicElements["cap-radio-group"] & JSXBase.HTMLAttributes<HTMLCapRadioGroupElement>;
             "cap-select": LocalJSX.IntrinsicElements["cap-select"] & JSXBase.HTMLAttributes<HTMLCapSelectElement>;

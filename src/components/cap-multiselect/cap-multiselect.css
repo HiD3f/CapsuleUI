@@ -1,0 +1,388 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Wrapper ────────────────────────────────── */
+.multiselect-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-xs);
+}
+
+/* ─── Label ──────────────────────────────────── */
+.multiselect__label {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  font-weight: var(--cap-font-weight-bold);
+  color: var(--cap-color-on-background);
+  text-transform: uppercase;
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.multiselect__required {
+  color: var(--cap-color-danger);
+}
+
+/* ─── Container ──────────────────────────────── */
+.multiselect__container {
+  position: relative;
+}
+
+/* ─── Field (outer border + flex row) ───────── */
+.multiselect__field {
+  display: flex;
+  align-items: stretch;
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  background: var(--cap-color-surface);
+  transition: box-shadow var(--cap-transition-base);
+  box-sizing: border-box;
+}
+
+.multiselect__field:focus-within {
+  box-shadow: var(--cap-shadow);
+}
+
+:host-context(.cap-focus-outline) .multiselect__field:focus-within {
+  box-shadow: none;
+  outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
+  outline-offset: 2px;
+}
+
+.multiselect-wrapper--open .multiselect__field:focus-within {
+  box-shadow: none;
+}
+
+/* ─── Trigger div (select-only mode) ────────── */
+.multiselect__trigger {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  min-height: var(--cap-min-height-md);
+  box-sizing: border-box;
+}
+
+/* ─── Chips area ─────────────────────────────── */
+.multiselect__chips-area {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: var(--cap-space-xs);
+  padding: var(--cap-space-xs) var(--cap-space-sm);
+  min-height: var(--cap-min-height-md);
+  box-sizing: border-box;
+}
+
+.multiselect-wrapper--grow .multiselect__chips-area {
+  flex-wrap: wrap;
+}
+
+.multiselect-wrapper--single-line .multiselect__chips-area {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+/* ─── Placeholder ────────────────────────────── */
+.multiselect__placeholder {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  letter-spacing: var(--cap-letter-spacing);
+  opacity: 0.4;
+  padding: 0 var(--cap-space-xs);
+  white-space: nowrap;
+}
+
+/* ─── Filter input (filterable mode) ────────── */
+.multiselect__input {
+  flex: 1;
+  min-width: 60px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  letter-spacing: var(--cap-letter-spacing);
+  padding: var(--cap-space-xs) var(--cap-space-xs);
+  box-sizing: border-box;
+}
+
+.multiselect__input::placeholder {
+  color: var(--cap-color-on-surface);
+  opacity: 0.4;
+}
+
+.multiselect__input:disabled {
+  cursor: not-allowed;
+}
+
+/* ─── Chip ───────────────────────────────────── */
+.multiselect__chip {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 4px;
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  padding: 2px var(--cap-space-xs) 2px var(--cap-space-sm);
+  box-sizing: border-box;
+}
+
+.multiselect__chip-label {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+  white-space: nowrap;
+}
+
+.multiselect__chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 2px;
+  color: var(--cap-color-on-primary);
+  font-size: 10px;
+  opacity: 0.7;
+  transition: opacity var(--cap-transition-fast);
+  line-height: 1;
+}
+
+.multiselect__chip-remove:hover {
+  opacity: 1;
+}
+
+.multiselect__chip-remove:disabled {
+  cursor: not-allowed;
+}
+
+/* ─── Overflow badge (+N) ────────────────────── */
+.multiselect__overflow-badge {
+  flex-shrink: 0;
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+  color: var(--cap-color-on-surface);
+  opacity: 0.6;
+  white-space: nowrap;
+  padding: 0 var(--cap-space-xs);
+}
+
+/* ─── Clear button ───────────────────────────── */
+.multiselect__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  background: none;
+  border: none;
+  border-left: var(--cap-border-width) solid var(--cap-border-color);
+  cursor: pointer;
+  padding: 0 var(--cap-space-sm);
+  color: var(--cap-color-on-surface);
+  font-size: var(--cap-font-size-sm);
+  opacity: 0.5;
+  transition: opacity var(--cap-transition-fast);
+}
+
+.multiselect__clear:hover {
+  opacity: 1;
+}
+
+.multiselect__clear:disabled {
+  cursor: not-allowed;
+}
+
+/* ─── Toggle button ──────────────────────────── */
+.multiselect__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  background: var(--cap-color-surface);
+  border: none;
+  border-left: var(--cap-border-width) solid var(--cap-border-color);
+  cursor: pointer;
+  padding: 0 var(--cap-space-md);
+  transition: background var(--cap-transition-fast),
+              color var(--cap-transition-fast);
+}
+
+.multiselect__field:focus-within .multiselect__toggle,
+.multiselect-wrapper--open .multiselect__toggle {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.multiselect__toggle:disabled {
+  cursor: not-allowed;
+}
+
+/* ─── Arrow ──────────────────────────────────── */
+.multiselect__arrow {
+  display: block;
+  font-size: var(--cap-font-size-sm);
+  color: var(--cap-color-on-surface);
+  transition: transform var(--cap-transition-fast),
+              color var(--cap-transition-fast);
+  pointer-events: none;
+}
+
+.multiselect__field:focus-within .multiselect__arrow,
+.multiselect-wrapper--open .multiselect__arrow {
+  color: var(--cap-color-on-primary);
+}
+
+.multiselect__arrow--open {
+  transform: rotate(180deg);
+}
+
+/* ─── Listbox ────────────────────────────────── */
+.multiselect__listbox {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--cap-color-surface);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  border-top: none;
+  box-shadow: var(--cap-shadow);
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.multiselect__listbox[hidden] {
+  display: none;
+}
+
+/* ─── Options ────────────────────────────────── */
+.multiselect__option {
+  display: flex;
+  align-items: center;
+  gap: var(--cap-space-sm);
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  letter-spacing: var(--cap-letter-spacing);
+  cursor: pointer;
+  user-select: none;
+  min-height: var(--cap-min-height-md);
+  box-sizing: border-box;
+}
+
+.multiselect__option + .multiselect__option {
+  border-top: var(--cap-border-width) solid var(--cap-border-color);
+}
+
+.multiselect__option--active {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.multiselect__option--selected {
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.multiselect__option--selected.multiselect__option--active {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.multiselect__option--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ─── Option checkmark ───────────────────────── */
+.multiselect__option-check {
+  flex-shrink: 0;
+  width: 16px;
+  font-size: var(--cap-font-size-sm);
+}
+
+/* ─── Empty state ────────────────────────────── */
+.multiselect__empty {
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  color: var(--cap-color-on-surface);
+  opacity: 0.5;
+  letter-spacing: var(--cap-letter-spacing);
+  min-height: var(--cap-min-height-md);
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Error state ────────────────────────────── */
+.multiselect-wrapper--error .multiselect__field {
+  border-color: var(--cap-color-danger);
+}
+
+.multiselect-wrapper--error .multiselect__listbox {
+  border-color: var(--cap-color-danger);
+}
+
+/* ─── Disabled ───────────────────────────────── */
+.multiselect-wrapper--disabled .multiselect__field {
+  opacity: 0.4;
+}
+
+.multiselect-wrapper--disabled .multiselect__trigger {
+  cursor: not-allowed;
+}
+
+/* ─── Hidden native select (form submission) ─── */
+.multiselect__native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Feedback ───────────────────────────────── */
+.multiselect__feedback {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.multiselect__feedback--error {
+  color: var(--cap-color-danger);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.multiselect__feedback--hint {
+  color: var(--cap-color-on-background);
+  opacity: 0.6;
+}
+
+/* ─── Screen reader announcer ────────────────── */
+.multiselect__announcer {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
