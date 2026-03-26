@@ -22,6 +22,13 @@ const meta: Meta = {
     disabled: false,
     required: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: `Binary on/off toggle. For mutually exclusive choices use \`cap-radio-group\` instead. Supports \`indeterminate\` state (set programmatically, for "select all" patterns). Uses a hidden native \`<input type="checkbox">\` — \`aria-required\`, \`aria-invalid\`, \`aria-describedby\` set automatically.`,
+      },
+    },
+  },
 };
 
 export default meta;

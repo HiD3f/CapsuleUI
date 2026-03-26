@@ -29,6 +29,13 @@ const meta: Meta = {
     readonly: false,
     required: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: `Single-line text input. Types: \`text\`, \`email\`, \`password\` (show/hide toggle), \`number\`, \`search\` (clear button). Supports \`error\`, \`success\`, \`hint\`, \`readonly\`. \`aria-required\`, \`aria-invalid\`, and \`aria-describedby\` set automatically.`,
+      },
+    },
+  },
 };
 
 export default meta;

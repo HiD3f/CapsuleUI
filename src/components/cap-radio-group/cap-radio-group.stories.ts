@@ -20,6 +20,13 @@ const meta: Meta = {
     disabled: false,
     required: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: `Container for \`cap-radio\` buttons. Propagates \`name\` to children, syncs \`checked\` state from \`value\`, and re-emits \`capChange\` with the selected value. \`disabled\` cascades to all children. Renders \`role="radiogroup"\` with \`aria-labelledby\`.`,
+      },
+    },
+  },
 };
 
 export default meta;

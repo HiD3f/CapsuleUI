@@ -27,7 +27,7 @@ const preview: Preview = {
       defaultValue: 'shadow',
       toolbar: {
         title: 'Focus',
-        icon: 'accessible',
+        icon: 'accessibility',
         items: [
           { value: 'shadow', icon: 'box', title: 'Shadow' },
           { value: 'outline', icon: 'outline', title: 'Outline' },
@@ -52,6 +52,11 @@ const preview: Preview = {
     },
   ],
   parameters: {
+    options: {
+      storySort: {
+        order: ['Welcome', 'Components'],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

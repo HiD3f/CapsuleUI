@@ -36,6 +36,13 @@ const meta: Meta = {
     disabled: false,
     required: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: `Custom single-value select. Options passed as \`[{ label, value, disabled? }]\`. Hidden native \`<select>\` handles form submission. Implements WAI-ARIA Select-Only Combobox — \`role="combobox"\` on trigger, \`role="listbox"\` dropdown, full keyboard navigation (↑↓ Home End Enter Esc).`,
+      },
+    },
+  },
 };
 
 export default meta;

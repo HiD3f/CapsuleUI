@@ -46,6 +46,13 @@ const meta: Meta = {
     loading: false,
     fullWidth: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: `Triggers actions. Four variants: \`primary\`, \`secondary\`, \`outline\`, \`danger\`. Supports \`icon-start\` / \`icon-end\` slots, \`loading\` state, and \`type="submit"\` / \`reset\`. Uses a native \`<button>\` — fully keyboard accessible. \`aria-label\` required for icon-only use.`,
+      },
+    },
+  },
 };
 
 export default meta;

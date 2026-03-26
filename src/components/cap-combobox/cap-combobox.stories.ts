@@ -39,6 +39,13 @@ const meta: Meta = {
     required: false,
     freeText: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: `Filterable select with a text input. \`freeText=false\` (default): must select from list, blurring without selecting reverts input. \`freeText=true\`: typed value is accepted as-is. Implements WAI-ARIA Editable Combobox — \`role="combobox"\` on input, \`aria-autocomplete="list"\`, \`aria-activedescendant\`. Hidden \`<input type="hidden">\` for form submission.`,
+      },
+    },
+  },
 };
 
 export default meta;

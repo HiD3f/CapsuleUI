@@ -22,6 +22,13 @@ const meta: Meta = {
     disabled: false,
     required: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: `Single radio button. Prefer \`cap-radio-group\` for managing sets — use standalone only when you need full manual control. Emits \`capChange\` with its \`value\` when selected. Uses a hidden native \`<input type="radio">\` — \`aria-required\`, \`aria-invalid\`, \`aria-describedby\` set automatically.`,
+      },
+    },
+  },
 };
 
 export default meta;

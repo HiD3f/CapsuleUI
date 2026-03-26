@@ -31,6 +31,13 @@ const meta: Meta = {
     readonly: false,
     required: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: `Multi-line text input. \`rows\` sets initial height. \`resize\`: \`none\`, \`vertical\` (default), \`both\`. \`maxlength\` shows a live character counter that turns red at the limit. \`aria-required\`, \`aria-invalid\`, and \`aria-describedby\` set automatically.`,
+      },
+    },
+  },
 };
 
 export default meta;

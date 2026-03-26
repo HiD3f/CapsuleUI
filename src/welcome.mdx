@@ -1,0 +1,123 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Welcome" />
+
+# CapsuleUI
+
+A retro-styled web component library built with **Stencil.js**. Yellow, black, no border radius — brutalist by design, accessible by default.
+
+---
+
+## Stack
+
+- **[Stencil.js](https://stenciljs.com)** — compiles to standard Web Components (Custom Elements v1)
+- **Shadow DOM** — scoped styles per component, no leakage
+- **ARIA / WCAG 2.1 AA** — every component is keyboard navigable and screen reader compliant
+- **Design tokens** — all colours, spacing, typography, and shadows live in `tokens.css`
+
+---
+
+## Installation
+
+```bash
+npm install capsuleui
+```
+
+Register all components once at your app's entry point:
+
+```js
+import { defineCustomElements } from 'capsuleui/loader';
+defineCustomElements();
+```
+
+Import the base styles:
+
+```js
+import 'capsuleui/dist/capsuleui/capsuleui.css';
+```
+
+Or in HTML:
+
+```html
+<link rel="stylesheet" href="node_modules/capsuleui/dist/capsuleui/capsuleui.css" />
+```
+
+---
+
+## Usage
+
+Components are standard HTML elements — they work in any framework or plain HTML.
+
+```html
+<cap-button variant="primary">Save</cap-button>
+
+<cap-input label="Email" type="email" required></cap-input>
+
+<cap-select
+  label="Season"
+  placeholder="Pick one…"
+></cap-select>
+```
+
+For props that take arrays or objects, use the `.prop` binding syntax in frameworks:
+
+```js
+// Vanilla JS
+document.querySelector('cap-select').options = [
+  { label: 'Spring', value: 'spring' },
+  { label: 'Summer', value: 'summer' },
+];
+
+// Lit
+html`<cap-select .options=${options}></cap-select>`;
+
+// React (with a wrapper)
+// Vue / Angular — use their property binding syntax
+```
+
+---
+
+## Focus styles
+
+CapsuleUI ships two focus ring styles. Toggle between them by adding a class to any parent element:
+
+| Mode | Class | Appearance |
+|------|-------|------------|
+| Shadow (default) | *(none)* | Retro offset shadow |
+| Outline | `cap-focus-outline` | Standard 2px outline |
+
+```html
+<!-- Apply to body or a section to affect all components inside -->
+<body class="cap-focus-outline">
+  ...
+</body>
+```
+
+---
+
+## Components
+
+| Component | Tag | Description |
+|-----------|-----|-------------|
+| Button | `cap-button` | Actions. Variants: primary, secondary, outline, danger |
+| Input | `cap-input` | Single-line text, email, password, number, search |
+| Textarea | `cap-textarea` | Multi-line input with optional character counter |
+| Checkbox | `cap-checkbox` | Binary toggle with indeterminate state |
+| Radio | `cap-radio` | Single radio button — use inside `cap-radio-group` |
+| Radio Group | `cap-radio-group` | Manages a set of radios as a mutually exclusive group |
+| Select | `cap-select` | Custom styled single-value dropdown |
+| Combobox | `cap-combobox` | Filterable select with text input; `freeText` prop for open-ended values |
+
+---
+
+## Theming
+
+Design tokens are defined in `tokens.css` and support light and dark themes via `data-theme`:
+
+```html
+<div data-theme="dark">
+  <!-- components inside will use the dark theme -->
+</div>
+```
+
+Use the **Theme** and **Focus** toolbar controls at the top of this page to preview both modes across all stories.
