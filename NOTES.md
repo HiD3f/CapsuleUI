@@ -10,6 +10,7 @@ Running log of decisions made, reasoning, open questions, and things to revisit.
 - **Storybook** — stories use `lit-html` tagged templates; array/object props use `.prop=${value}` binding
 - **Design tokens** — `src/styles/tokens.css`; every visual decision is a CSS custom property — colors, typography, spacing, border radius, shadows, focus styles
 - **Aesthetic** — retro yellow/black is the reference theme, not the ceiling. The token system is intentionally broad so the library can be reskinned for any style by overriding custom properties, no component code changes needed.
+- **Token pipeline vision** — the CSS custom property layer is designed to be the consumption end of a token pipeline. A tool like Style Dictionary or Tokens Studio could generate the token file from a Figma source, meaning a designer can drive the entire visual output of the library without a single line of code changing hands.
 
 ---
 
