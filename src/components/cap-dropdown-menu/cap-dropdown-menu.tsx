@@ -378,6 +378,7 @@ export class CapDropdownMenu {
 
   private handleSubItemMouseEnter = (j: number) => {
     this.cancelCloseSubMenu();
+    this.inSubMenu = true;
     this.activeSubIndex = j;
   };
 
