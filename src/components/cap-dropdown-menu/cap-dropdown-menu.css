@@ -1,0 +1,211 @@
+:host {
+  display: inline-block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Wrapper ────────────────────────────────── */
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* ─── Trigger ────────────────────────────────── */
+.dropdown__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cap-space-sm);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  background: var(--cap-color-surface);
+  cursor: pointer;
+  padding: 0;
+  min-height: var(--cap-min-height-md);
+  box-sizing: border-box;
+  font-family: var(--cap-font-family);
+  transition: box-shadow var(--cap-transition-base);
+}
+
+.dropdown__trigger:focus-visible {
+  box-shadow: var(--cap-shadow);
+  outline: none;
+}
+
+:host-context(.cap-focus-outline) .dropdown__trigger:focus-visible {
+  box-shadow: none;
+  outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
+  outline-offset: 2px;
+}
+
+.dropdown-wrapper--open .dropdown__trigger:focus-visible {
+  box-shadow: none;
+}
+
+.dropdown__trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.dropdown__trigger-icon {
+  padding-left: var(--cap-space-md);
+  font-size: var(--cap-font-size-md);
+}
+
+.dropdown__trigger-label {
+  flex: 1;
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  letter-spacing: var(--cap-letter-spacing);
+  white-space: nowrap;
+}
+
+.dropdown__trigger-icon + .dropdown__trigger-label {
+  padding-left: 0;
+}
+
+.dropdown__trigger-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  padding: 0 var(--cap-space-md);
+  border-left: var(--cap-border-width) solid var(--cap-border-color);
+  font-size: var(--cap-font-size-sm);
+  color: var(--cap-color-on-surface);
+  background: var(--cap-color-surface);
+  transition: background var(--cap-transition-fast),
+              color var(--cap-transition-fast),
+              transform var(--cap-transition-fast);
+}
+
+.dropdown__trigger:focus-visible .dropdown__trigger-arrow,
+.dropdown-wrapper--open .dropdown__trigger-arrow {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.dropdown-wrapper--open .dropdown__trigger-arrow {
+  transform: rotate(180deg);
+}
+
+/* ─── Menu panel ─────────────────────────────── */
+.dropdown__menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 100;
+  min-width: 100%;
+  background: var(--cap-color-surface);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  border-top: none;
+  box-shadow: var(--cap-shadow);
+  outline: none;
+  white-space: nowrap;
+}
+
+.dropdown__menu--end {
+  left: auto;
+  right: 0;
+}
+
+.dropdown__menu[hidden] {
+  display: none;
+}
+
+/* ─── Items ──────────────────────────────────── */
+.dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: var(--cap-space-sm);
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-surface);
+  letter-spacing: var(--cap-letter-spacing);
+  cursor: pointer;
+  user-select: none;
+  min-height: var(--cap-min-height-md);
+  box-sizing: border-box;
+  text-decoration: none;
+  position: relative;
+}
+
+.dropdown__item + .dropdown__item {
+  border-top: var(--cap-border-width) solid var(--cap-border-color);
+}
+
+.dropdown__item:focus {
+  outline: none;
+}
+
+.dropdown__item--active {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.dropdown__item--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ─── Item left slot (icon / check) ─────────── */
+.dropdown__item-start {
+  flex-shrink: 0;
+  width: 16px;
+  font-size: var(--cap-font-size-sm);
+  text-align: center;
+}
+
+/* ─── Item label ─────────────────────────────── */
+.dropdown__item-label {
+  flex: 1;
+}
+
+/* ─── Sub-menu arrow ─────────────────────────── */
+.dropdown__item-submenu-arrow {
+  flex-shrink: 0;
+  margin-left: var(--cap-space-sm);
+  font-size: 10px;
+  opacity: 0.6;
+  transition: opacity var(--cap-transition-fast);
+}
+
+.dropdown__item--active .dropdown__item-submenu-arrow {
+  opacity: 1;
+}
+
+/* ─── Separator ──────────────────────────────── */
+.dropdown__separator {
+  height: var(--cap-border-width);
+  background: var(--cap-border-color);
+  margin: var(--cap-space-xs) 0;
+}
+
+/* ─── Sub-menu panel ─────────────────────────── */
+.dropdown__submenu {
+  position: absolute;
+  top: calc(-1 * var(--cap-border-width));
+  left: 100%;
+  z-index: 101;
+  min-width: 100%;
+  background: var(--cap-color-surface);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  box-shadow: var(--cap-shadow);
+  white-space: nowrap;
+  outline: none;
+}
+
+.dropdown__submenu[hidden] {
+  display: none;
+}
+
+/* Ensure items inside sub-menu don't inherit border-top from sibling rule */
+.dropdown__submenu .dropdown__item:first-child {
+  border-top: none;
+}
+
+.dropdown__submenu .dropdown__item + .dropdown__item {
+  border-top: var(--cap-border-width) solid var(--cap-border-color);
+}

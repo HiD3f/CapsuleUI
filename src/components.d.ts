@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 import { ComboboxOption } from "./components/cap-combobox/cap-combobox";
+import { MenuItem } from "./components/cap-dropdown-menu/cap-dropdown-menu";
 import { InputType } from "./components/cap-input/cap-input";
 import { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
 import { SelectOption } from "./components/cap-select/cap-select";
@@ -14,6 +15,7 @@ import { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 import { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 export { ComboboxOption } from "./components/cap-combobox/cap-combobox";
+export { MenuItem } from "./components/cap-dropdown-menu/cap-dropdown-menu";
 export { InputType } from "./components/cap-input/cap-input";
 export { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
 export { SelectOption } from "./components/cap-select/cap-select";
@@ -149,6 +151,32 @@ export namespace Components {
           * @default ''
          */
         "value": string;
+    }
+    interface CapDropdownMenu {
+        /**
+          * Horizontal alignment of the menu panel relative to the trigger
+          * @default 'start'
+         */
+        "align": 'start' | 'end';
+        /**
+          * Disables the trigger
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Optional icon shown in the trigger
+         */
+        "icon": string;
+        /**
+          * Menu items
+          * @default []
+         */
+        "items": MenuItem[];
+        /**
+          * Trigger button label
+          * @default ''
+         */
+        "label": string;
     }
     interface CapInput {
         /**
@@ -512,6 +540,10 @@ export interface CapComboboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapComboboxElement;
 }
+export interface CapDropdownMenuCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapDropdownMenuElement;
+}
 export interface CapInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapInputElement;
@@ -594,6 +626,24 @@ declare global {
     var HTMLCapComboboxElement: {
         prototype: HTMLCapComboboxElement;
         new (): HTMLCapComboboxElement;
+    };
+    interface HTMLCapDropdownMenuElementEventMap {
+        "capSelect": MenuItem;
+        "capToggle": { item: MenuItem; checked: boolean };
+    }
+    interface HTMLCapDropdownMenuElement extends Components.CapDropdownMenu, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapDropdownMenuElementEventMap>(type: K, listener: (this: HTMLCapDropdownMenuElement, ev: CapDropdownMenuCustomEvent<HTMLCapDropdownMenuElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapDropdownMenuElementEventMap>(type: K, listener: (this: HTMLCapDropdownMenuElement, ev: CapDropdownMenuCustomEvent<HTMLCapDropdownMenuElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapDropdownMenuElement: {
+        prototype: HTMLCapDropdownMenuElement;
+        new (): HTMLCapDropdownMenuElement;
     };
     interface HTMLCapInputElementEventMap {
         "capChange": string;
@@ -739,6 +789,7 @@ declare global {
         "cap-button": HTMLCapButtonElement;
         "cap-checkbox": HTMLCapCheckboxElement;
         "cap-combobox": HTMLCapComboboxElement;
+        "cap-dropdown-menu": HTMLCapDropdownMenuElement;
         "cap-input": HTMLCapInputElement;
         "cap-multiselect": HTMLCapMultiselectElement;
         "cap-radio": HTMLCapRadioElement;
@@ -903,6 +954,40 @@ declare namespace LocalJSX {
           * @default ''
          */
         "value"?: string;
+    }
+    interface CapDropdownMenu {
+        /**
+          * Horizontal alignment of the menu panel relative to the trigger
+          * @default 'start'
+         */
+        "align"?: 'start' | 'end';
+        /**
+          * Disables the trigger
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Optional icon shown in the trigger
+         */
+        "icon"?: string;
+        /**
+          * Menu items
+          * @default []
+         */
+        "items"?: MenuItem[];
+        /**
+          * Trigger button label
+          * @default ''
+         */
+        "label"?: string;
+        /**
+          * Emitted when an action or link item is activated
+         */
+        "onCapSelect"?: (event: CapDropdownMenuCustomEvent<MenuItem>) => void;
+        /**
+          * Emitted when a toggle item is activated; checked reflects the new state
+         */
+        "onCapToggle"?: (event: CapDropdownMenuCustomEvent<{ item: MenuItem; checked: boolean }>) => void;
     }
     interface CapInput {
         /**
@@ -1374,6 +1459,12 @@ declare namespace LocalJSX {
         "freeText": boolean;
         "defaultOpen": boolean;
     }
+    interface CapDropdownMenuAttributes {
+        "label": string;
+        "icon": string;
+        "align": 'start' | 'end';
+        "disabled": boolean;
+    }
     interface CapInputAttributes {
         "type": InputType;
         "value": string;
@@ -1465,6 +1556,7 @@ declare namespace LocalJSX {
         "cap-button": Omit<CapButton, keyof CapButtonAttributes> & { [K in keyof CapButton & keyof CapButtonAttributes]?: CapButton[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `attr:${K}`]?: CapButtonAttributes[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `prop:${K}`]?: CapButton[K] };
         "cap-checkbox": Omit<CapCheckbox, keyof CapCheckboxAttributes> & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes]?: CapCheckbox[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `attr:${K}`]?: CapCheckboxAttributes[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `prop:${K}`]?: CapCheckbox[K] };
         "cap-combobox": Omit<CapCombobox, keyof CapComboboxAttributes> & { [K in keyof CapCombobox & keyof CapComboboxAttributes]?: CapCombobox[K] } & { [K in keyof CapCombobox & keyof CapComboboxAttributes as `attr:${K}`]?: CapComboboxAttributes[K] } & { [K in keyof CapCombobox & keyof CapComboboxAttributes as `prop:${K}`]?: CapCombobox[K] };
+        "cap-dropdown-menu": Omit<CapDropdownMenu, keyof CapDropdownMenuAttributes> & { [K in keyof CapDropdownMenu & keyof CapDropdownMenuAttributes]?: CapDropdownMenu[K] } & { [K in keyof CapDropdownMenu & keyof CapDropdownMenuAttributes as `attr:${K}`]?: CapDropdownMenuAttributes[K] } & { [K in keyof CapDropdownMenu & keyof CapDropdownMenuAttributes as `prop:${K}`]?: CapDropdownMenu[K] };
         "cap-input": Omit<CapInput, keyof CapInputAttributes> & { [K in keyof CapInput & keyof CapInputAttributes]?: CapInput[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `attr:${K}`]?: CapInputAttributes[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `prop:${K}`]?: CapInput[K] };
         "cap-multiselect": Omit<CapMultiselect, keyof CapMultiselectAttributes> & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes]?: CapMultiselect[K] } & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes as `attr:${K}`]?: CapMultiselectAttributes[K] } & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes as `prop:${K}`]?: CapMultiselect[K] };
         "cap-radio": Omit<CapRadio, keyof CapRadioAttributes> & { [K in keyof CapRadio & keyof CapRadioAttributes]?: CapRadio[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `attr:${K}`]?: CapRadioAttributes[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `prop:${K}`]?: CapRadio[K] };
@@ -1482,6 +1574,7 @@ declare module "@stencil/core" {
             "cap-button": LocalJSX.IntrinsicElements["cap-button"] & JSXBase.HTMLAttributes<HTMLCapButtonElement>;
             "cap-checkbox": LocalJSX.IntrinsicElements["cap-checkbox"] & JSXBase.HTMLAttributes<HTMLCapCheckboxElement>;
             "cap-combobox": LocalJSX.IntrinsicElements["cap-combobox"] & JSXBase.HTMLAttributes<HTMLCapComboboxElement>;
+            "cap-dropdown-menu": LocalJSX.IntrinsicElements["cap-dropdown-menu"] & JSXBase.HTMLAttributes<HTMLCapDropdownMenuElement>;
             "cap-input": LocalJSX.IntrinsicElements["cap-input"] & JSXBase.HTMLAttributes<HTMLCapInputElement>;
             "cap-multiselect": LocalJSX.IntrinsicElements["cap-multiselect"] & JSXBase.HTMLAttributes<HTMLCapMultiselectElement>;
             "cap-radio": LocalJSX.IntrinsicElements["cap-radio"] & JSXBase.HTMLAttributes<HTMLCapRadioElement>;
