@@ -10,12 +10,14 @@ import { ComboboxOption } from "./components/cap-combobox/cap-combobox";
 import { InputType } from "./components/cap-input/cap-input";
 import { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
 import { SelectOption } from "./components/cap-select/cap-select";
+import { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 import { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 export { ComboboxOption } from "./components/cap-combobox/cap-combobox";
 export { InputType } from "./components/cap-input/cap-input";
 export { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
 export { SelectOption } from "./components/cap-select/cap-select";
+export { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 export { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export namespace Components {
     interface CapButton {
@@ -372,6 +374,53 @@ export namespace Components {
          */
         "value": string;
     }
+    interface CapTagInput {
+        /**
+          * Forces the dropdown open — useful for debugging styles
+          * @default false
+         */
+        "defaultOpen": boolean;
+        /**
+          * Disables the component
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message
+         */
+        "error": string;
+        /**
+          * Hint text
+         */
+        "hint": string;
+        /**
+          * Label text
+         */
+        "label": string;
+        /**
+          * Name attribute for form submission
+         */
+        "name": string;
+        /**
+          * Optional list of suggestions shown as an autocomplete dropdown while typing. If omitted, the component operates as a pure free-text tag input.
+          * @default []
+         */
+        "options": TagInputOption[];
+        /**
+          * Placeholder shown when input is empty and no tags are present
+         */
+        "placeholder": string;
+        /**
+          * Marks the component as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Current tags. When a suggestion is selected, stores the option's value. When typed freely, stores the raw text.
+          * @default []
+         */
+        "value": string[];
+    }
     interface CapTextarea {
         /**
           * Accessible label for when no visible label is used
@@ -482,6 +531,10 @@ export interface CapRadioGroupCustomEvent<T> extends CustomEvent<T> {
 export interface CapSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapSelectElement;
+}
+export interface CapTagInputCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapTagInputElement;
 }
 export interface CapTextareaCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -636,6 +689,26 @@ declare global {
         prototype: HTMLCapSelectElement;
         new (): HTMLCapSelectElement;
     };
+    interface HTMLCapTagInputElementEventMap {
+        "capChange": string[];
+        "capInput": string;
+        "capFocus": FocusEvent;
+        "capBlur": FocusEvent;
+    }
+    interface HTMLCapTagInputElement extends Components.CapTagInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapTagInputElementEventMap>(type: K, listener: (this: HTMLCapTagInputElement, ev: CapTagInputCustomEvent<HTMLCapTagInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapTagInputElementEventMap>(type: K, listener: (this: HTMLCapTagInputElement, ev: CapTagInputCustomEvent<HTMLCapTagInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapTagInputElement: {
+        prototype: HTMLCapTagInputElement;
+        new (): HTMLCapTagInputElement;
+    };
     interface HTMLCapTextareaElementEventMap {
         "capChange": string;
         "capInput": string;
@@ -671,6 +744,7 @@ declare global {
         "cap-radio": HTMLCapRadioElement;
         "cap-radio-group": HTMLCapRadioGroupElement;
         "cap-select": HTMLCapSelectElement;
+        "cap-tag-input": HTMLCapTagInputElement;
         "cap-textarea": HTMLCapTextareaElement;
         "my-component": HTMLMyComponentElement;
     }
@@ -1110,6 +1184,69 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface CapTagInput {
+        /**
+          * Forces the dropdown open — useful for debugging styles
+          * @default false
+         */
+        "defaultOpen"?: boolean;
+        /**
+          * Disables the component
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message
+         */
+        "error"?: string;
+        /**
+          * Hint text
+         */
+        "hint"?: string;
+        /**
+          * Label text
+         */
+        "label"?: string;
+        /**
+          * Name attribute for form submission
+         */
+        "name"?: string;
+        /**
+          * Emitted when focus leaves the component
+         */
+        "onCapBlur"?: (event: CapTagInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted when the tag list changes
+         */
+        "onCapChange"?: (event: CapTagInputCustomEvent<string[]>) => void;
+        /**
+          * Emitted when the input is focused
+         */
+        "onCapFocus"?: (event: CapTagInputCustomEvent<FocusEvent>) => void;
+        /**
+          * Emitted on every keystroke
+         */
+        "onCapInput"?: (event: CapTagInputCustomEvent<string>) => void;
+        /**
+          * Optional list of suggestions shown as an autocomplete dropdown while typing. If omitted, the component operates as a pure free-text tag input.
+          * @default []
+         */
+        "options"?: TagInputOption[];
+        /**
+          * Placeholder shown when input is empty and no tags are present
+         */
+        "placeholder"?: string;
+        /**
+          * Marks the component as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Current tags. When a suggestion is selected, stores the option's value. When typed freely, stores the raw text.
+          * @default []
+         */
+        "value"?: string[];
+    }
     interface CapTextarea {
         /**
           * Accessible label for when no visible label is used
@@ -1292,6 +1429,16 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "required": boolean;
     }
+    interface CapTagInputAttributes {
+        "placeholder": string;
+        "name": string;
+        "label": string;
+        "hint": string;
+        "error": string;
+        "disabled": boolean;
+        "required": boolean;
+        "defaultOpen": boolean;
+    }
     interface CapTextareaAttributes {
         "value": string;
         "name": string;
@@ -1323,6 +1470,7 @@ declare namespace LocalJSX {
         "cap-radio": Omit<CapRadio, keyof CapRadioAttributes> & { [K in keyof CapRadio & keyof CapRadioAttributes]?: CapRadio[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `attr:${K}`]?: CapRadioAttributes[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `prop:${K}`]?: CapRadio[K] };
         "cap-radio-group": Omit<CapRadioGroup, keyof CapRadioGroupAttributes> & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes]?: CapRadioGroup[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `attr:${K}`]?: CapRadioGroupAttributes[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `prop:${K}`]?: CapRadioGroup[K] };
         "cap-select": Omit<CapSelect, keyof CapSelectAttributes> & { [K in keyof CapSelect & keyof CapSelectAttributes]?: CapSelect[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `attr:${K}`]?: CapSelectAttributes[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `prop:${K}`]?: CapSelect[K] };
+        "cap-tag-input": Omit<CapTagInput, keyof CapTagInputAttributes> & { [K in keyof CapTagInput & keyof CapTagInputAttributes]?: CapTagInput[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `attr:${K}`]?: CapTagInputAttributes[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `prop:${K}`]?: CapTagInput[K] };
         "cap-textarea": Omit<CapTextarea, keyof CapTextareaAttributes> & { [K in keyof CapTextarea & keyof CapTextareaAttributes]?: CapTextarea[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `attr:${K}`]?: CapTextareaAttributes[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `prop:${K}`]?: CapTextarea[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
@@ -1339,6 +1487,7 @@ declare module "@stencil/core" {
             "cap-radio": LocalJSX.IntrinsicElements["cap-radio"] & JSXBase.HTMLAttributes<HTMLCapRadioElement>;
             "cap-radio-group": LocalJSX.IntrinsicElements["cap-radio-group"] & JSXBase.HTMLAttributes<HTMLCapRadioGroupElement>;
             "cap-select": LocalJSX.IntrinsicElements["cap-select"] & JSXBase.HTMLAttributes<HTMLCapSelectElement>;
+            "cap-tag-input": LocalJSX.IntrinsicElements["cap-tag-input"] & JSXBase.HTMLAttributes<HTMLCapTagInputElement>;
             "cap-textarea": LocalJSX.IntrinsicElements["cap-textarea"] & JSXBase.HTMLAttributes<HTMLCapTextareaElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }

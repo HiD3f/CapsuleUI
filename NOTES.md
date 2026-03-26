@@ -32,7 +32,7 @@ Running log of decisions made, reasoning, open questions, and things to revisit.
 | `cap-select` | ✅ done | custom ARIA combobox, select-only |
 | `cap-combobox` | ✅ done | editable combobox, freeText prop |
 | `cap-multiselect` | ✅ done | `overflow`, `filterable`, `maxVisibleChips` props |
-| `cap-tag-input` | 🔲 next | |
+| `cap-tag-input` | ✅ done | free text always on; options optional (suggestions); Enter + Tab to commit |
 
 ---
 
@@ -200,7 +200,7 @@ Added a welcome/intro page and per-component descriptions to improve the Storybo
 ## Open Questions
 
 - [x] **cap-multiselect**: chips inside trigger, `overflow` prop (`grow` | `single-line`), `maxVisibleChips` for truncation, `filterable` prop for select-only vs editable mode — decisions logged above
-- [ ] **cap-tag-input**: predefined options only, free text only, or both modes (via prop like freeText)?
+- [x] **cap-tag-input**: free text always on; options optional (suggestions); value stores option.value when from suggestion, raw string when free text — consistent with Ant Design / react-select Creatable
 - [ ] **Dark theme**: tokens exist but no dark theme CSS yet — when do we add it?
 - [ ] **cap-listbox primitive**: revisit after cap-multiselect is built
 - [ ] **Utility extraction**: `listbox-keyboard.ts` + `click-outside.ts` — do after cap-multiselect
@@ -210,7 +210,7 @@ Added a welcome/intro page and per-component descriptions to improve the Storybo
 ## To Do
 
 - [x] Build `cap-multiselect`
-- [ ] Build `cap-tag-input`
+- [x] Build `cap-tag-input`
 - [ ] Extract shared listbox utilities
 - [ ] Create design decisions file for each component? Or keep it all here?
 - [ ] Decide on Group 4 (menus) — different session, different ARIA mindset
