@@ -134,7 +134,7 @@ Grouped by similarity to guide future shared primitive decisions:
 
 **Group 4 — Action menus (not form fields, different ARIA)**
 - `cap-dropdown-menu` ✅ — trigger + list of actions/links (`role="menu"`), sub-menus (one level), toggle items
-- `cap-context-menu` 🔲 — right-click variant
+- `cap-context-menu` ✅ — right-click variant
 
 Groups 1–3 share the listbox pattern. Group 4 is unrelated internally.
 
@@ -214,6 +214,7 @@ Added a welcome/intro page and per-component descriptions to improve the Storybo
 - [x] Extract shared listbox utilities
 - [ ] Create design decisions file for each component? Or keep it all here?
 - [x] Build `cap-dropdown-menu` — data-driven items array, sub-menus one level deep, toggle items, link items as `<a>`
+- [x] Build `cap-context-menu` — right-click variant, `position: fixed` at cursor, viewport clamping, same item types
 
 ---
 
