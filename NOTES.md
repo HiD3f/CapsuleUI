@@ -139,6 +139,22 @@ Groups 1–3 share the listbox pattern. Group 4 is unrelated internally.
 
 ---
 
+## Tooling & Infrastructure
+
+### Storybook 10 upgrade
+
+Upgraded to Storybook 10. Breaking change: `@storybook/blocks` import path changed — required updating the import in the docs config.
+
+### Package exports map — types condition ordering
+
+In `package.json` exports, the `types` condition must come **before** `import` and `require`, otherwise TypeScript won't resolve types correctly. Fixed by reordering the conditions in the loader exports entry.
+
+### Storybook welcome page
+
+Added a welcome/intro page and per-component descriptions to improve the Storybook browsing experience.
+
+---
+
 ## Open Questions
 
 - [ ] **cap-multiselect**: chips inside trigger or below it? Max visible chips before overflow?
