@@ -1,5 +1,6 @@
 :host {
   display: block;
+  position: relative;
   font-family: var(--cap-font-family);
 }
 
@@ -11,7 +12,7 @@
 
 /* ─── Menu panel ─────────────────────────────── */
 .context-menu__panel {
-  position: fixed;
+  position: absolute;
   z-index: 1000;
   min-width: 180px;
   background: var(--cap-color-surface);

@@ -73,8 +73,10 @@ export class CapContextMenu {
       const rect = this.menuEl.getBoundingClientRect();
       let x = this.menuX;
       let y = this.menuY;
-      if (rect.right > window.innerWidth) x = Math.max(0, window.innerWidth - rect.width);
-      if (rect.bottom > window.innerHeight) y = Math.max(0, window.innerHeight - rect.height);
+      if (rect.right > window.innerWidth) x -= rect.right - window.innerWidth;
+      if (rect.bottom > window.innerHeight) y -= rect.bottom - window.innerHeight;
+      if (x < 0) x = 0;
+      if (y < 0) y = 0;
       if (x !== this.menuX) this.menuX = x;
       if (y !== this.menuY) this.menuY = y;
     }
@@ -207,11 +209,12 @@ export class CapContextMenu {
   // ─── Event handlers ───────────────────────────────────────────────────────
 
   private handleContextMenu = (e: MouseEvent) => {
+    if (this.disabled) return; // let the browser's native context menu appear
     e.preventDefault();
-    if (this.disabled) return;
     this._previousFocus = document.activeElement as HTMLElement;
-    this.menuX = e.clientX;
-    this.menuY = e.clientY;
+    const hostRect = this.el.getBoundingClientRect();
+    this.menuX = e.clientX - hostRect.left;
+    this.menuY = e.clientY - hostRect.top;
     this.openMenu();
   };
 
