@@ -38,6 +38,23 @@ Running log of decisions made, reasoning, open questions, and things to revisit.
 | Component | Status | Notes |
 |---|---|---|
 | `cap-tooltip` | ✅ done | hover + focus trigger, 4 placements, auto-flip, viewport clamping, probe pattern for transform ancestors |
+| `cap-modal` | ✅ done | focus trap, scroll lock, backdrop, `show()`/`hide()` methods, `heading`, `width`, `closeOnBackdrop` props |
+| `cap-toast` | ✅ done | notification queue, auto-dismiss, 6 positions, `show()`/`dismiss()`/`clear()` methods, 4 variants |
+
+### Display / feedback
+| Component | Status | Notes |
+|---|---|---|
+| `cap-badge` | ✅ done | pill label, 5 variants, 2 sizes |
+| `cap-switch` | ✅ done | toggle switch, `role="switch"`, form-integrated |
+| `cap-alert` | ✅ done | inline banner, 5 variants, `heading`, `dismissible`, `actions` slot |
+| `cap-spinner` | ✅ done | retro rotating square, 3 sizes |
+| `cap-progress` | ✅ done | determinate + indeterminate, 4 variants, `showValue` |
+
+### Navigation / layout
+| Component | Status | Notes |
+|---|---|---|
+| `cap-tabs` | ✅ done | WAI-ARIA tabs pattern, named slots for panels, keyboard ← → Home End |
+| `cap-accordion` | ✅ done | collapsible panels, `multiple` prop, `content` string or named slots |
 
 ---
 

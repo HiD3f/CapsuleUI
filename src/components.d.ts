@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { AccordionItem } from "./components/cap-accordion/cap-accordion";
+import { AlertVariant } from "./components/cap-alert/cap-alert";
 import { BadgeSize, BadgeVariant } from "./components/cap-badge/cap-badge";
 import { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 import { ComboboxOption } from "./components/cap-combobox/cap-combobox";
@@ -12,10 +14,15 @@ import { MenuItem } from "./components/cap-dropdown-menu/cap-dropdown-menu";
 import { MenuItem as MenuItem1 } from "./components/cap-dropdown-menu/cap-dropdown-menu";
 import { InputType } from "./components/cap-input/cap-input";
 import { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
+import { ProgressVariant } from "./components/cap-progress/cap-progress";
 import { SelectOption } from "./components/cap-select/cap-select";
+import { SpinnerSize } from "./components/cap-spinner/cap-spinner";
+import { TabItem } from "./components/cap-tabs/cap-tabs";
 import { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 import { TextareaResize } from "./components/cap-textarea/cap-textarea";
 import { ToastOptions, ToastPosition } from "./components/cap-toast/cap-toast";
+export { AccordionItem } from "./components/cap-accordion/cap-accordion";
+export { AlertVariant } from "./components/cap-alert/cap-alert";
 export { BadgeSize, BadgeVariant } from "./components/cap-badge/cap-badge";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 export { ComboboxOption } from "./components/cap-combobox/cap-combobox";
@@ -23,11 +30,48 @@ export { MenuItem } from "./components/cap-dropdown-menu/cap-dropdown-menu";
 export { MenuItem as MenuItem1 } from "./components/cap-dropdown-menu/cap-dropdown-menu";
 export { InputType } from "./components/cap-input/cap-input";
 export { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
+export { ProgressVariant } from "./components/cap-progress/cap-progress";
 export { SelectOption } from "./components/cap-select/cap-select";
+export { SpinnerSize } from "./components/cap-spinner/cap-spinner";
+export { TabItem } from "./components/cap-tabs/cap-tabs";
 export { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 export { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export { ToastOptions, ToastPosition } from "./components/cap-toast/cap-toast";
 export namespace Components {
+    interface CapAccordion {
+        /**
+          * Items to render
+          * @default []
+         */
+        "items": AccordionItem[];
+        /**
+          * Allow multiple panels to be open simultaneously
+          * @default false
+         */
+        "multiple": boolean;
+        /**
+          * ID(s) of the open panel(s). Pass a string for single mode, or an array for multiple mode. When unset the accordion starts collapsed.
+          * @default []
+         */
+        "openItems": string | string[];
+    }
+    interface CapAlert {
+        /**
+          * Show a dismiss (×) button
+          * @default false
+         */
+        "dismissible": boolean;
+        /**
+          * Bold title line above the message
+          * @default ''
+         */
+        "heading": string;
+        /**
+          * Visual style
+          * @default 'default'
+         */
+        "variant": AlertVariant;
+    }
     interface CapBadge {
         /**
           * Size of the badge
@@ -361,6 +405,33 @@ export namespace Components {
          */
         "value": string[];
     }
+    interface CapProgress {
+        /**
+          * Accessible label
+          * @default ''
+         */
+        "label": string;
+        /**
+          * Maximum value (default 100)
+          * @default 100
+         */
+        "max": number;
+        /**
+          * Show the numeric percentage next to the bar
+          * @default false
+         */
+        "showValue": boolean;
+        /**
+          * Current value. When undefined the bar shows an indeterminate animation.
+          * @default undefined
+         */
+        "value": number | undefined;
+        /**
+          * Color variant
+          * @default 'default'
+         */
+        "variant": ProgressVariant;
+    }
     interface CapRadio {
         /**
           * Whether this radio is selected
@@ -472,6 +543,18 @@ export namespace Components {
          */
         "value": string;
     }
+    interface CapSpinner {
+        /**
+          * Accessible label announced to screen readers
+          * @default 'Loading…'
+         */
+        "label": string;
+        /**
+          * Size of the spinner
+          * @default 'md'
+         */
+        "size": SpinnerSize;
+    }
     interface CapSwitch {
         /**
           * Whether the switch is on
@@ -509,6 +592,18 @@ export namespace Components {
           * @default 'on'
          */
         "value": string;
+    }
+    interface CapTabs {
+        /**
+          * ID of the active tab
+          * @default ''
+         */
+        "activeTab": string;
+        /**
+          * Tab definitions
+          * @default []
+         */
+        "tabs": TabItem[];
     }
     interface CapTagInput {
         /**
@@ -682,6 +777,14 @@ export namespace Components {
         "middle": string;
     }
 }
+export interface CapAccordionCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapAccordionElement;
+}
+export interface CapAlertCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapAlertElement;
+}
 export interface CapButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapButtonElement;
@@ -730,6 +833,10 @@ export interface CapSwitchCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapSwitchElement;
 }
+export interface CapTabsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapTabsElement;
+}
 export interface CapTagInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapTagInputElement;
@@ -743,6 +850,40 @@ export interface CapToastCustomEvent<T> extends CustomEvent<T> {
     target: HTMLCapToastElement;
 }
 declare global {
+    interface HTMLCapAccordionElementEventMap {
+        "capChange": { id: string; open: boolean; openItems: string[] };
+    }
+    interface HTMLCapAccordionElement extends Components.CapAccordion, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapAccordionElementEventMap>(type: K, listener: (this: HTMLCapAccordionElement, ev: CapAccordionCustomEvent<HTMLCapAccordionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapAccordionElementEventMap>(type: K, listener: (this: HTMLCapAccordionElement, ev: CapAccordionCustomEvent<HTMLCapAccordionElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapAccordionElement: {
+        prototype: HTMLCapAccordionElement;
+        new (): HTMLCapAccordionElement;
+    };
+    interface HTMLCapAlertElementEventMap {
+        "capDismiss": void;
+    }
+    interface HTMLCapAlertElement extends Components.CapAlert, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapAlertElementEventMap>(type: K, listener: (this: HTMLCapAlertElement, ev: CapAlertCustomEvent<HTMLCapAlertElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapAlertElementEventMap>(type: K, listener: (this: HTMLCapAlertElement, ev: CapAlertCustomEvent<HTMLCapAlertElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapAlertElement: {
+        prototype: HTMLCapAlertElement;
+        new (): HTMLCapAlertElement;
+    };
     interface HTMLCapBadgeElement extends Components.CapBadge, HTMLStencilElement {
     }
     var HTMLCapBadgeElement: {
@@ -898,6 +1039,12 @@ declare global {
         prototype: HTMLCapMultiselectElement;
         new (): HTMLCapMultiselectElement;
     };
+    interface HTMLCapProgressElement extends Components.CapProgress, HTMLStencilElement {
+    }
+    var HTMLCapProgressElement: {
+        prototype: HTMLCapProgressElement;
+        new (): HTMLCapProgressElement;
+    };
     interface HTMLCapRadioElementEventMap {
         "capChange": string;
     }
@@ -951,6 +1098,12 @@ declare global {
         prototype: HTMLCapSelectElement;
         new (): HTMLCapSelectElement;
     };
+    interface HTMLCapSpinnerElement extends Components.CapSpinner, HTMLStencilElement {
+    }
+    var HTMLCapSpinnerElement: {
+        prototype: HTMLCapSpinnerElement;
+        new (): HTMLCapSpinnerElement;
+    };
     interface HTMLCapSwitchElementEventMap {
         "capChange": { checked: boolean; value: string };
         "capFocus": void;
@@ -969,6 +1122,23 @@ declare global {
     var HTMLCapSwitchElement: {
         prototype: HTMLCapSwitchElement;
         new (): HTMLCapSwitchElement;
+    };
+    interface HTMLCapTabsElementEventMap {
+        "capChange": { id: string };
+    }
+    interface HTMLCapTabsElement extends Components.CapTabs, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapTabsElementEventMap>(type: K, listener: (this: HTMLCapTabsElement, ev: CapTabsCustomEvent<HTMLCapTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapTabsElementEventMap>(type: K, listener: (this: HTMLCapTabsElement, ev: CapTabsCustomEvent<HTMLCapTabsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapTabsElement: {
+        prototype: HTMLCapTabsElement;
+        new (): HTMLCapTabsElement;
     };
     interface HTMLCapTagInputElementEventMap {
         "capChange": string[];
@@ -1040,6 +1210,8 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "cap-accordion": HTMLCapAccordionElement;
+        "cap-alert": HTMLCapAlertElement;
         "cap-badge": HTMLCapBadgeElement;
         "cap-button": HTMLCapButtonElement;
         "cap-checkbox": HTMLCapCheckboxElement;
@@ -1049,10 +1221,13 @@ declare global {
         "cap-input": HTMLCapInputElement;
         "cap-modal": HTMLCapModalElement;
         "cap-multiselect": HTMLCapMultiselectElement;
+        "cap-progress": HTMLCapProgressElement;
         "cap-radio": HTMLCapRadioElement;
         "cap-radio-group": HTMLCapRadioGroupElement;
         "cap-select": HTMLCapSelectElement;
+        "cap-spinner": HTMLCapSpinnerElement;
         "cap-switch": HTMLCapSwitchElement;
+        "cap-tabs": HTMLCapTabsElement;
         "cap-tag-input": HTMLCapTagInputElement;
         "cap-textarea": HTMLCapTextareaElement;
         "cap-toast": HTMLCapToastElement;
@@ -1061,6 +1236,48 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface CapAccordion {
+        /**
+          * Items to render
+          * @default []
+         */
+        "items"?: AccordionItem[];
+        /**
+          * Allow multiple panels to be open simultaneously
+          * @default false
+         */
+        "multiple"?: boolean;
+        /**
+          * Emitted when a panel is toggled. Detail: `{ id, open, openItems }`
+         */
+        "onCapChange"?: (event: CapAccordionCustomEvent<{ id: string; open: boolean; openItems: string[] }>) => void;
+        /**
+          * ID(s) of the open panel(s). Pass a string for single mode, or an array for multiple mode. When unset the accordion starts collapsed.
+          * @default []
+         */
+        "openItems"?: string | string[];
+    }
+    interface CapAlert {
+        /**
+          * Show a dismiss (×) button
+          * @default false
+         */
+        "dismissible"?: boolean;
+        /**
+          * Bold title line above the message
+          * @default ''
+         */
+        "heading"?: string;
+        /**
+          * Emitted when the dismiss button is clicked
+         */
+        "onCapDismiss"?: (event: CapAlertCustomEvent<void>) => void;
+        /**
+          * Visual style
+          * @default 'default'
+         */
+        "variant"?: AlertVariant;
+    }
     interface CapBadge {
         /**
           * Size of the badge
@@ -1470,6 +1687,33 @@ declare namespace LocalJSX {
          */
         "value"?: string[];
     }
+    interface CapProgress {
+        /**
+          * Accessible label
+          * @default ''
+         */
+        "label"?: string;
+        /**
+          * Maximum value (default 100)
+          * @default 100
+         */
+        "max"?: number;
+        /**
+          * Show the numeric percentage next to the bar
+          * @default false
+         */
+        "showValue"?: boolean;
+        /**
+          * Current value. When undefined the bar shows an indeterminate animation.
+          * @default undefined
+         */
+        "value"?: number | undefined;
+        /**
+          * Color variant
+          * @default 'default'
+         */
+        "variant"?: ProgressVariant;
+    }
     interface CapRadio {
         /**
           * Whether this radio is selected
@@ -1601,6 +1845,18 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface CapSpinner {
+        /**
+          * Accessible label announced to screen readers
+          * @default 'Loading…'
+         */
+        "label"?: string;
+        /**
+          * Size of the spinner
+          * @default 'md'
+         */
+        "size"?: SpinnerSize;
+    }
     interface CapSwitch {
         /**
           * Whether the switch is on
@@ -1650,6 +1906,22 @@ declare namespace LocalJSX {
           * @default 'on'
          */
         "value"?: string;
+    }
+    interface CapTabs {
+        /**
+          * ID of the active tab
+          * @default ''
+         */
+        "activeTab"?: string;
+        /**
+          * Emitted when the active tab changes. Detail: `{ id }` — the newly active tab id.
+         */
+        "onCapChange"?: (event: CapTabsCustomEvent<{ id: string }>) => void;
+        /**
+          * Tab definitions
+          * @default []
+         */
+        "tabs"?: TabItem[];
     }
     interface CapTagInput {
         /**
@@ -1847,6 +2119,15 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
 
+    interface CapAccordionAttributes {
+        "openItems": string | string[];
+        "multiple": boolean;
+    }
+    interface CapAlertAttributes {
+        "variant": AlertVariant;
+        "heading": string;
+        "dismissible": boolean;
+    }
     interface CapBadgeAttributes {
         "variant": BadgeVariant;
         "size": BadgeSize;
@@ -1926,6 +2207,13 @@ declare namespace LocalJSX {
         "filterable": boolean;
         "defaultOpen": boolean;
     }
+    interface CapProgressAttributes {
+        "value": number | undefined;
+        "max": number;
+        "label": string;
+        "showValue": boolean;
+        "variant": ProgressVariant;
+    }
     interface CapRadioAttributes {
         "checked": boolean;
         "disabled": boolean;
@@ -1955,6 +2243,10 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "required": boolean;
     }
+    interface CapSpinnerAttributes {
+        "size": SpinnerSize;
+        "label": string;
+    }
     interface CapSwitchAttributes {
         "checked": boolean;
         "disabled": boolean;
@@ -1964,6 +2256,9 @@ declare namespace LocalJSX {
         "name": string;
         "value": string;
         "required": boolean;
+    }
+    interface CapTabsAttributes {
+        "activeTab": string;
     }
     interface CapTagInputAttributes {
         "placeholder": string;
@@ -2008,6 +2303,8 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
+        "cap-accordion": Omit<CapAccordion, keyof CapAccordionAttributes> & { [K in keyof CapAccordion & keyof CapAccordionAttributes]?: CapAccordion[K] } & { [K in keyof CapAccordion & keyof CapAccordionAttributes as `attr:${K}`]?: CapAccordionAttributes[K] } & { [K in keyof CapAccordion & keyof CapAccordionAttributes as `prop:${K}`]?: CapAccordion[K] };
+        "cap-alert": Omit<CapAlert, keyof CapAlertAttributes> & { [K in keyof CapAlert & keyof CapAlertAttributes]?: CapAlert[K] } & { [K in keyof CapAlert & keyof CapAlertAttributes as `attr:${K}`]?: CapAlertAttributes[K] } & { [K in keyof CapAlert & keyof CapAlertAttributes as `prop:${K}`]?: CapAlert[K] };
         "cap-badge": Omit<CapBadge, keyof CapBadgeAttributes> & { [K in keyof CapBadge & keyof CapBadgeAttributes]?: CapBadge[K] } & { [K in keyof CapBadge & keyof CapBadgeAttributes as `attr:${K}`]?: CapBadgeAttributes[K] } & { [K in keyof CapBadge & keyof CapBadgeAttributes as `prop:${K}`]?: CapBadge[K] };
         "cap-button": Omit<CapButton, keyof CapButtonAttributes> & { [K in keyof CapButton & keyof CapButtonAttributes]?: CapButton[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `attr:${K}`]?: CapButtonAttributes[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `prop:${K}`]?: CapButton[K] };
         "cap-checkbox": Omit<CapCheckbox, keyof CapCheckboxAttributes> & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes]?: CapCheckbox[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `attr:${K}`]?: CapCheckboxAttributes[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `prop:${K}`]?: CapCheckbox[K] };
@@ -2017,10 +2314,13 @@ declare namespace LocalJSX {
         "cap-input": Omit<CapInput, keyof CapInputAttributes> & { [K in keyof CapInput & keyof CapInputAttributes]?: CapInput[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `attr:${K}`]?: CapInputAttributes[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `prop:${K}`]?: CapInput[K] };
         "cap-modal": Omit<CapModal, keyof CapModalAttributes> & { [K in keyof CapModal & keyof CapModalAttributes]?: CapModal[K] } & { [K in keyof CapModal & keyof CapModalAttributes as `attr:${K}`]?: CapModalAttributes[K] } & { [K in keyof CapModal & keyof CapModalAttributes as `prop:${K}`]?: CapModal[K] };
         "cap-multiselect": Omit<CapMultiselect, keyof CapMultiselectAttributes> & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes]?: CapMultiselect[K] } & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes as `attr:${K}`]?: CapMultiselectAttributes[K] } & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes as `prop:${K}`]?: CapMultiselect[K] };
+        "cap-progress": Omit<CapProgress, keyof CapProgressAttributes> & { [K in keyof CapProgress & keyof CapProgressAttributes]?: CapProgress[K] } & { [K in keyof CapProgress & keyof CapProgressAttributes as `attr:${K}`]?: CapProgressAttributes[K] } & { [K in keyof CapProgress & keyof CapProgressAttributes as `prop:${K}`]?: CapProgress[K] };
         "cap-radio": Omit<CapRadio, keyof CapRadioAttributes> & { [K in keyof CapRadio & keyof CapRadioAttributes]?: CapRadio[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `attr:${K}`]?: CapRadioAttributes[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `prop:${K}`]?: CapRadio[K] };
         "cap-radio-group": Omit<CapRadioGroup, keyof CapRadioGroupAttributes> & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes]?: CapRadioGroup[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `attr:${K}`]?: CapRadioGroupAttributes[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `prop:${K}`]?: CapRadioGroup[K] };
         "cap-select": Omit<CapSelect, keyof CapSelectAttributes> & { [K in keyof CapSelect & keyof CapSelectAttributes]?: CapSelect[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `attr:${K}`]?: CapSelectAttributes[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `prop:${K}`]?: CapSelect[K] };
+        "cap-spinner": Omit<CapSpinner, keyof CapSpinnerAttributes> & { [K in keyof CapSpinner & keyof CapSpinnerAttributes]?: CapSpinner[K] } & { [K in keyof CapSpinner & keyof CapSpinnerAttributes as `attr:${K}`]?: CapSpinnerAttributes[K] } & { [K in keyof CapSpinner & keyof CapSpinnerAttributes as `prop:${K}`]?: CapSpinner[K] };
         "cap-switch": Omit<CapSwitch, keyof CapSwitchAttributes> & { [K in keyof CapSwitch & keyof CapSwitchAttributes]?: CapSwitch[K] } & { [K in keyof CapSwitch & keyof CapSwitchAttributes as `attr:${K}`]?: CapSwitchAttributes[K] } & { [K in keyof CapSwitch & keyof CapSwitchAttributes as `prop:${K}`]?: CapSwitch[K] };
+        "cap-tabs": Omit<CapTabs, keyof CapTabsAttributes> & { [K in keyof CapTabs & keyof CapTabsAttributes]?: CapTabs[K] } & { [K in keyof CapTabs & keyof CapTabsAttributes as `attr:${K}`]?: CapTabsAttributes[K] } & { [K in keyof CapTabs & keyof CapTabsAttributes as `prop:${K}`]?: CapTabs[K] };
         "cap-tag-input": Omit<CapTagInput, keyof CapTagInputAttributes> & { [K in keyof CapTagInput & keyof CapTagInputAttributes]?: CapTagInput[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `attr:${K}`]?: CapTagInputAttributes[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `prop:${K}`]?: CapTagInput[K] };
         "cap-textarea": Omit<CapTextarea, keyof CapTextareaAttributes> & { [K in keyof CapTextarea & keyof CapTextareaAttributes]?: CapTextarea[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `attr:${K}`]?: CapTextareaAttributes[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `prop:${K}`]?: CapTextarea[K] };
         "cap-toast": Omit<CapToast, keyof CapToastAttributes> & { [K in keyof CapToast & keyof CapToastAttributes]?: CapToast[K] } & { [K in keyof CapToast & keyof CapToastAttributes as `attr:${K}`]?: CapToastAttributes[K] } & { [K in keyof CapToast & keyof CapToastAttributes as `prop:${K}`]?: CapToast[K] };
@@ -2032,6 +2332,8 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "cap-accordion": LocalJSX.IntrinsicElements["cap-accordion"] & JSXBase.HTMLAttributes<HTMLCapAccordionElement>;
+            "cap-alert": LocalJSX.IntrinsicElements["cap-alert"] & JSXBase.HTMLAttributes<HTMLCapAlertElement>;
             "cap-badge": LocalJSX.IntrinsicElements["cap-badge"] & JSXBase.HTMLAttributes<HTMLCapBadgeElement>;
             "cap-button": LocalJSX.IntrinsicElements["cap-button"] & JSXBase.HTMLAttributes<HTMLCapButtonElement>;
             "cap-checkbox": LocalJSX.IntrinsicElements["cap-checkbox"] & JSXBase.HTMLAttributes<HTMLCapCheckboxElement>;
@@ -2041,10 +2343,13 @@ declare module "@stencil/core" {
             "cap-input": LocalJSX.IntrinsicElements["cap-input"] & JSXBase.HTMLAttributes<HTMLCapInputElement>;
             "cap-modal": LocalJSX.IntrinsicElements["cap-modal"] & JSXBase.HTMLAttributes<HTMLCapModalElement>;
             "cap-multiselect": LocalJSX.IntrinsicElements["cap-multiselect"] & JSXBase.HTMLAttributes<HTMLCapMultiselectElement>;
+            "cap-progress": LocalJSX.IntrinsicElements["cap-progress"] & JSXBase.HTMLAttributes<HTMLCapProgressElement>;
             "cap-radio": LocalJSX.IntrinsicElements["cap-radio"] & JSXBase.HTMLAttributes<HTMLCapRadioElement>;
             "cap-radio-group": LocalJSX.IntrinsicElements["cap-radio-group"] & JSXBase.HTMLAttributes<HTMLCapRadioGroupElement>;
             "cap-select": LocalJSX.IntrinsicElements["cap-select"] & JSXBase.HTMLAttributes<HTMLCapSelectElement>;
+            "cap-spinner": LocalJSX.IntrinsicElements["cap-spinner"] & JSXBase.HTMLAttributes<HTMLCapSpinnerElement>;
             "cap-switch": LocalJSX.IntrinsicElements["cap-switch"] & JSXBase.HTMLAttributes<HTMLCapSwitchElement>;
+            "cap-tabs": LocalJSX.IntrinsicElements["cap-tabs"] & JSXBase.HTMLAttributes<HTMLCapTabsElement>;
             "cap-tag-input": LocalJSX.IntrinsicElements["cap-tag-input"] & JSXBase.HTMLAttributes<HTMLCapTagInputElement>;
             "cap-textarea": LocalJSX.IntrinsicElements["cap-textarea"] & JSXBase.HTMLAttributes<HTMLCapTextareaElement>;
             "cap-toast": LocalJSX.IntrinsicElements["cap-toast"] & JSXBase.HTMLAttributes<HTMLCapToastElement>;

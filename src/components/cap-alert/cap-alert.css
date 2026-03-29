@@ -1,0 +1,100 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cap-space-sm);
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+/* ─── Variants ────────────────────────────────── */
+.alert--default,
+.alert--info {
+  background: var(--cap-color-surface);
+  color: var(--cap-color-on-surface);
+  border-color: var(--cap-border-color);
+}
+
+.alert--success {
+  background: var(--cap-color-success);
+  color: var(--cap-color-on-success);
+  border-color: var(--cap-color-success);
+}
+
+.alert--warning {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+  border-color: var(--cap-border-color);
+}
+
+.alert--danger {
+  background: var(--cap-color-danger);
+  color: var(--cap-color-on-danger);
+  border-color: var(--cap-color-danger);
+}
+
+/* ─── Icon ────────────────────────────────────── */
+.alert__icon {
+  flex-shrink: 0;
+  font-size: var(--cap-font-size-md);
+  line-height: 1.5;
+  font-family: var(--cap-font-family-mono);
+}
+
+/* ─── Body ────────────────────────────────────── */
+.alert__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-xs);
+  min-width: 0;
+}
+
+.alert__heading {
+  font-weight: var(--cap-font-weight-bold);
+  font-size: var(--cap-font-size-md);
+  display: block;
+}
+
+.alert__message {
+  line-height: 1.5;
+}
+
+/* ─── Actions slot ────────────────────────────── */
+::slotted([slot="actions"]) {
+  display: flex;
+  gap: var(--cap-space-sm);
+  margin-top: var(--cap-space-xs);
+}
+
+/* ─── Dismiss button ──────────────────────────── */
+.alert__close {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  font-size: var(--cap-font-size-sm);
+  line-height: 1;
+  opacity: 0.7;
+  font-family: var(--cap-font-family-mono);
+  align-self: flex-start;
+  margin-left: var(--cap-space-xs);
+}
+
+.alert__close:hover {
+  opacity: 1;
+}
+
+.alert__close:focus {
+  outline: none;
+  opacity: 1;
+}

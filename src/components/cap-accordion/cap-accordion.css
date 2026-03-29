@@ -1,0 +1,88 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Container ───────────────────────────────── */
+.accordion {
+  border: var(--cap-border-width) solid var(--cap-border-color);
+}
+
+/* ─── Item ────────────────────────────────────── */
+.accordion__item + .accordion__item {
+  border-top: var(--cap-border-width) solid var(--cap-border-color);
+}
+
+/* ─── Header ──────────────────────────────────── */
+.accordion__header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  background: var(--cap-color-surface);
+  border: none;
+  color: var(--cap-color-on-surface);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  font-weight: var(--cap-font-weight-bold);
+  letter-spacing: var(--cap-letter-spacing);
+  cursor: pointer;
+  text-align: left;
+  min-height: var(--cap-min-height-md);
+  box-sizing: border-box;
+  transition: background var(--cap-transition-fast);
+}
+
+.accordion__header:hover {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.accordion__header:focus {
+  outline: none;
+  box-shadow: inset var(--cap-shadow);
+}
+
+.accordion__item--open .accordion__header {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.accordion__item--disabled .accordion__header {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.accordion__item--disabled .accordion__header:hover {
+  background: var(--cap-color-surface);
+  color: var(--cap-color-on-surface);
+}
+
+/* ─── Label + arrow ───────────────────────────── */
+.accordion__label {
+  flex: 1;
+}
+
+.accordion__arrow {
+  flex-shrink: 0;
+  font-size: 10px;
+  margin-left: var(--cap-space-sm);
+  font-family: var(--cap-font-family-mono);
+  transition: opacity var(--cap-transition-fast);
+}
+
+/* ─── Panel ───────────────────────────────────── */
+.accordion__panel {
+  border-top: var(--cap-border-width) solid var(--cap-border-color);
+}
+
+.accordion__panel[hidden] {
+  display: none;
+}
+
+.accordion__content {
+  padding: var(--cap-space-md);
+  font-size: var(--cap-font-size-md);
+  line-height: 1.6;
+  color: var(--cap-color-on-surface);
+}

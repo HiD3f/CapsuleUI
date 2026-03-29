@@ -1,0 +1,84 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Tab list ────────────────────────────────── */
+.tabs__list {
+  display: flex;
+  border-bottom: var(--cap-border-width) solid var(--cap-border-color);
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs__list::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Tab button ──────────────────────────────── */
+.tabs__tab {
+  position: relative;
+  padding: var(--cap-space-sm) var(--cap-space-lg);
+  background: transparent;
+  border: none;
+  border-right: var(--cap-border-width) solid var(--cap-border-color);
+  color: var(--cap-color-on-surface);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  font-weight: var(--cap-font-weight-bold);
+  letter-spacing: var(--cap-letter-spacing);
+  cursor: pointer;
+  min-height: var(--cap-min-height-md);
+  white-space: nowrap;
+  transition: background var(--cap-transition-fast);
+  /* Overlap the bottom border when active */
+  margin-bottom: calc(-1 * var(--cap-border-width));
+}
+
+.tabs__tab:first-child {
+  border-left: none;
+}
+
+.tabs__tab:last-child {
+  border-right: none;
+}
+
+.tabs__tab:hover:not(:disabled) {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.tabs__tab:focus {
+  outline: none;
+  box-shadow: inset var(--cap-shadow);
+  z-index: 1;
+}
+
+/* Active tab — sits "on top" of the tab strip border */
+.tabs__tab--active {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+  border-bottom: var(--cap-border-width) solid var(--cap-color-primary);
+}
+
+.tabs__tab--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tabs__tab--disabled:hover {
+  background: transparent;
+  color: var(--cap-color-on-surface);
+}
+
+/* ─── Panel ───────────────────────────────────── */
+.tabs__panel {
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  border-top: none;
+  padding: var(--cap-space-lg);
+}
+
+.tabs__panel[hidden] {
+  display: none;
+}

@@ -1,0 +1,66 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Retro spinning square ───────────────────── */
+.spinner__inner {
+  display: block;
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  background: transparent;
+  animation: spin 0.7s steps(8, end) infinite;
+  position: relative;
+}
+
+/* Diagonal fill — top-right corner */
+.spinner__inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 40%;
+  background: var(--cap-border-color);
+}
+
+/* ─── Sizes ───────────────────────────────────── */
+.spinner--sm .spinner__inner {
+  width: 16px;
+  height: 16px;
+}
+
+.spinner--md .spinner__inner {
+  width: 24px;
+  height: 24px;
+}
+
+.spinner--lg .spinner__inner {
+  width: 36px;
+  height: 36px;
+}
+
+/* ─── SR-only label ───────────────────────────── */
+.spinner__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Animation ───────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
