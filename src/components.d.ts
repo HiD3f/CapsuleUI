@@ -262,6 +262,41 @@ export namespace Components {
          */
         "value": string;
     }
+    interface CapModal {
+        /**
+          * Close the modal when the backdrop is clicked. Set to false to require explicit close action.
+          * @default true
+         */
+        "closeOnBackdrop": boolean;
+        /**
+          * Modal title shown in the header
+          * @default ''
+         */
+        "heading": string;
+        /**
+          * Programmatically close the modal
+         */
+        "hide": () => Promise<void>;
+        /**
+          * Hide the default close (×) button in the header
+          * @default false
+         */
+        "hideClose": boolean;
+        /**
+          * Whether the modal is open
+          * @default false
+         */
+        "open": boolean;
+        /**
+          * Programmatically open the modal
+         */
+        "show": () => Promise<void>;
+        /**
+          * Width of the modal panel. Any valid CSS width value, e.g. '480px', '60vw', '100%'.
+          * @default '480px'
+         */
+        "width": string;
+    }
     interface CapMultiselect {
         /**
           * Forces the dropdown open — useful for debugging styles
@@ -645,6 +680,10 @@ export interface CapInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapInputElement;
 }
+export interface CapModalCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapModalElement;
+}
 export interface CapMultiselectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapMultiselectElement;
@@ -790,6 +829,24 @@ declare global {
     var HTMLCapInputElement: {
         prototype: HTMLCapInputElement;
         new (): HTMLCapInputElement;
+    };
+    interface HTMLCapModalElementEventMap {
+        "capClose": void;
+        "capOpen": void;
+    }
+    interface HTMLCapModalElement extends Components.CapModal, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapModalElementEventMap>(type: K, listener: (this: HTMLCapModalElement, ev: CapModalCustomEvent<HTMLCapModalElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapModalElementEventMap>(type: K, listener: (this: HTMLCapModalElement, ev: CapModalCustomEvent<HTMLCapModalElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapModalElement: {
+        prototype: HTMLCapModalElement;
+        new (): HTMLCapModalElement;
     };
     interface HTMLCapMultiselectElementEventMap {
         "capChange": string[];
@@ -943,6 +1000,7 @@ declare global {
         "cap-context-menu": HTMLCapContextMenuElement;
         "cap-dropdown-menu": HTMLCapDropdownMenuElement;
         "cap-input": HTMLCapInputElement;
+        "cap-modal": HTMLCapModalElement;
         "cap-multiselect": HTMLCapMultiselectElement;
         "cap-radio": HTMLCapRadioElement;
         "cap-radio-group": HTMLCapRadioGroupElement;
@@ -1250,6 +1308,41 @@ declare namespace LocalJSX {
           * @default ''
          */
         "value"?: string;
+    }
+    interface CapModal {
+        /**
+          * Close the modal when the backdrop is clicked. Set to false to require explicit close action.
+          * @default true
+         */
+        "closeOnBackdrop"?: boolean;
+        /**
+          * Modal title shown in the header
+          * @default ''
+         */
+        "heading"?: string;
+        /**
+          * Hide the default close (×) button in the header
+          * @default false
+         */
+        "hideClose"?: boolean;
+        /**
+          * Emitted when the modal requests to close (× button, Escape, or backdrop click)
+         */
+        "onCapClose"?: (event: CapModalCustomEvent<void>) => void;
+        /**
+          * Emitted after the modal finishes opening
+         */
+        "onCapOpen"?: (event: CapModalCustomEvent<void>) => void;
+        /**
+          * Whether the modal is open
+          * @default false
+         */
+        "open"?: boolean;
+        /**
+          * Width of the modal panel. Any valid CSS width value, e.g. '480px', '60vw', '100%'.
+          * @default '480px'
+         */
+        "width"?: string;
     }
     interface CapMultiselect {
         /**
@@ -1749,6 +1842,13 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "required": boolean;
     }
+    interface CapModalAttributes {
+        "open": boolean;
+        "heading": string;
+        "width": string;
+        "hideClose": boolean;
+        "closeOnBackdrop": boolean;
+    }
     interface CapMultiselectAttributes {
         "placeholder": string;
         "name": string;
@@ -1847,6 +1947,7 @@ declare namespace LocalJSX {
         "cap-context-menu": Omit<CapContextMenu, keyof CapContextMenuAttributes> & { [K in keyof CapContextMenu & keyof CapContextMenuAttributes]?: CapContextMenu[K] } & { [K in keyof CapContextMenu & keyof CapContextMenuAttributes as `attr:${K}`]?: CapContextMenuAttributes[K] } & { [K in keyof CapContextMenu & keyof CapContextMenuAttributes as `prop:${K}`]?: CapContextMenu[K] };
         "cap-dropdown-menu": Omit<CapDropdownMenu, keyof CapDropdownMenuAttributes> & { [K in keyof CapDropdownMenu & keyof CapDropdownMenuAttributes]?: CapDropdownMenu[K] } & { [K in keyof CapDropdownMenu & keyof CapDropdownMenuAttributes as `attr:${K}`]?: CapDropdownMenuAttributes[K] } & { [K in keyof CapDropdownMenu & keyof CapDropdownMenuAttributes as `prop:${K}`]?: CapDropdownMenu[K] };
         "cap-input": Omit<CapInput, keyof CapInputAttributes> & { [K in keyof CapInput & keyof CapInputAttributes]?: CapInput[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `attr:${K}`]?: CapInputAttributes[K] } & { [K in keyof CapInput & keyof CapInputAttributes as `prop:${K}`]?: CapInput[K] };
+        "cap-modal": Omit<CapModal, keyof CapModalAttributes> & { [K in keyof CapModal & keyof CapModalAttributes]?: CapModal[K] } & { [K in keyof CapModal & keyof CapModalAttributes as `attr:${K}`]?: CapModalAttributes[K] } & { [K in keyof CapModal & keyof CapModalAttributes as `prop:${K}`]?: CapModal[K] };
         "cap-multiselect": Omit<CapMultiselect, keyof CapMultiselectAttributes> & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes]?: CapMultiselect[K] } & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes as `attr:${K}`]?: CapMultiselectAttributes[K] } & { [K in keyof CapMultiselect & keyof CapMultiselectAttributes as `prop:${K}`]?: CapMultiselect[K] };
         "cap-radio": Omit<CapRadio, keyof CapRadioAttributes> & { [K in keyof CapRadio & keyof CapRadioAttributes]?: CapRadio[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `attr:${K}`]?: CapRadioAttributes[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `prop:${K}`]?: CapRadio[K] };
         "cap-radio-group": Omit<CapRadioGroup, keyof CapRadioGroupAttributes> & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes]?: CapRadioGroup[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `attr:${K}`]?: CapRadioGroupAttributes[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `prop:${K}`]?: CapRadioGroup[K] };
@@ -1869,6 +1970,7 @@ declare module "@stencil/core" {
             "cap-context-menu": LocalJSX.IntrinsicElements["cap-context-menu"] & JSXBase.HTMLAttributes<HTMLCapContextMenuElement>;
             "cap-dropdown-menu": LocalJSX.IntrinsicElements["cap-dropdown-menu"] & JSXBase.HTMLAttributes<HTMLCapDropdownMenuElement>;
             "cap-input": LocalJSX.IntrinsicElements["cap-input"] & JSXBase.HTMLAttributes<HTMLCapInputElement>;
+            "cap-modal": LocalJSX.IntrinsicElements["cap-modal"] & JSXBase.HTMLAttributes<HTMLCapModalElement>;
             "cap-multiselect": LocalJSX.IntrinsicElements["cap-multiselect"] & JSXBase.HTMLAttributes<HTMLCapMultiselectElement>;
             "cap-radio": LocalJSX.IntrinsicElements["cap-radio"] & JSXBase.HTMLAttributes<HTMLCapRadioElement>;
             "cap-radio-group": LocalJSX.IntrinsicElements["cap-radio-group"] & JSXBase.HTMLAttributes<HTMLCapRadioGroupElement>;

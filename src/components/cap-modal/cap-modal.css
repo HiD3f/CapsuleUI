@@ -1,0 +1,113 @@
+:host {
+  display: contents;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Backdrop ────────────────────────────────── */
+.modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--cap-space-xl);
+  box-sizing: border-box;
+  opacity: 1;
+  transition: opacity var(--cap-transition-base);
+}
+
+.modal__backdrop--animating {
+  opacity: 0;
+}
+
+/* ─── Panel ───────────────────────────────────── */
+.modal__panel {
+  background: var(--cap-color-surface);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  box-shadow: var(--cap-shadow);
+  max-width: 100%;
+  max-height: calc(100vh - 2 * var(--cap-space-xl));
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  transform: translateY(0);
+  transition: transform var(--cap-transition-base), opacity var(--cap-transition-base);
+  opacity: 1;
+}
+
+.modal__panel--animating {
+  transform: translateY(-12px);
+  opacity: 0;
+}
+
+/* ─── Header ──────────────────────────────────── */
+.modal__header {
+  display: flex;
+  align-items: center;
+  gap: var(--cap-space-md);
+  padding: var(--cap-space-md) var(--cap-space-lg);
+  border-bottom: var(--cap-border-width) solid var(--cap-border-color);
+  flex-shrink: 0;
+}
+
+.modal__heading {
+  flex: 1;
+  margin: 0;
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-lg);
+  font-weight: var(--cap-font-weight-bold);
+  color: var(--cap-color-on-surface);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+/* ─── Close button ────────────────────────────── */
+.modal__close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: var(--cap-border-width) solid transparent;
+  color: var(--cap-color-on-surface);
+  font-size: var(--cap-font-size-md);
+  cursor: pointer;
+  letter-spacing: 0;
+  transition: background var(--cap-transition-fast), border-color var(--cap-transition-fast);
+  font-family: var(--cap-font-family-mono);
+}
+
+.modal__close:hover {
+  background: var(--cap-color-primary);
+  border-color: var(--cap-border-color);
+}
+
+.modal__close:focus {
+  outline: none;
+  box-shadow: var(--cap-shadow);
+}
+
+/* ─── Body ────────────────────────────────────── */
+.modal__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--cap-space-lg);
+  color: var(--cap-color-on-surface);
+  font-size: var(--cap-font-size-md);
+  line-height: 1.6;
+}
+
+/* ─── Footer slot ─────────────────────────────── */
+::slotted([slot="footer"]) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--cap-space-sm);
+  padding: var(--cap-space-md) var(--cap-space-lg);
+  border-top: var(--cap-border-width) solid var(--cap-border-color);
+  flex-shrink: 0;
+}
