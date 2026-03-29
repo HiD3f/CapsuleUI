@@ -68,15 +68,15 @@ export class CapContextMenu {
   }
 
   componentDidUpdate() {
-    // Clamp menu panel to viewport after it renders
+    // Clamp menu panel to viewport after it renders.
+    // getBoundingClientRect is always viewport-relative, so comparing against
+    // innerWidth/innerHeight is correct regardless of any ancestor transforms.
     if (this.open && this.menuEl) {
       const rect = this.menuEl.getBoundingClientRect();
       let x = this.menuX;
       let y = this.menuY;
       if (rect.right > window.innerWidth) x -= rect.right - window.innerWidth;
       if (rect.bottom > window.innerHeight) y -= rect.bottom - window.innerHeight;
-      if (x < 0) x = 0;
-      if (y < 0) y = 0;
       if (x !== this.menuX) this.menuX = x;
       if (y !== this.menuY) this.menuY = y;
     }
@@ -212,9 +212,19 @@ export class CapContextMenu {
     if (this.disabled) return; // let the browser's native context menu appear
     e.preventDefault();
     this._previousFocus = document.activeElement as HTMLElement;
-    const hostRect = this.el.getBoundingClientRect();
-    this.menuX = e.clientX - hostRect.left;
-    this.menuY = e.clientY - hostRect.top;
+
+    // Probe the actual fixed-positioning origin inside this shadow root.
+    // If an ancestor has a CSS transform it creates a new containing block
+    // for position:fixed, shifting the origin away from the viewport's (0,0).
+    // The probe measures that shift so we can compensate.
+    const probe = document.createElement('div');
+    probe.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none;visibility:hidden;';
+    this.el.shadowRoot.appendChild(probe);
+    const origin = probe.getBoundingClientRect();
+    this.el.shadowRoot.removeChild(probe);
+
+    this.menuX = e.clientX - origin.left;
+    this.menuY = e.clientY - origin.top;
     this.openMenu();
   };
 
