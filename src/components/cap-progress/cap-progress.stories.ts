@@ -5,6 +5,36 @@ const meta: Meta = {
   title: 'Components/Feedback/Progress',
   component: 'cap-progress',
   tags: ['autodocs'],
+  argTypes: {
+    value: {
+      control: { type: 'range', min: 0, max: 100, step: 1 },
+      description: 'Current value (omit for indeterminate)',
+    },
+    max: {
+      control: 'number',
+      description: 'Maximum value (default 100)',
+    },
+    label: {
+      control: 'text',
+      description: 'Accessible label shown above the bar',
+    },
+    showValue: {
+      control: 'boolean',
+      description: 'Show the numeric percentage',
+    },
+    variant: {
+      control: 'select',
+      options: ['default', 'success', 'warning', 'danger'],
+      description: 'Fill colour variant',
+    },
+  },
+  args: {
+    value: 60,
+    max: 100,
+    label: 'Progress',
+    showValue: true,
+    variant: 'default',
+  },
   parameters: {
     docs: {
       description: {
@@ -22,6 +52,20 @@ Progress bar. Supports determinate (numeric \`value\`) and indeterminate (no \`v
 
 export default meta;
 type Story = StoryObj;
+
+export const Playground: Story = {
+  render: (args) => html`
+    <div style="padding: 24px; max-width: 480px;">
+      <cap-progress
+        value=${args.value}
+        max=${args.max}
+        label=${args.label}
+        ?show-value=${args.showValue}
+        variant=${args.variant}
+      ></cap-progress>
+    </div>
+  `,
+};
 
 export const Default: Story = {
   render: () => html`

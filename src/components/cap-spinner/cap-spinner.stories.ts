@@ -5,6 +5,27 @@ const meta: Meta = {
   title: 'Components/Feedback/Spinner',
   component: 'cap-spinner',
   tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['circle', 'ascii', 'dots', 'block', 'bar'],
+      description: 'Animation style',
+    },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+      description: 'Size of the spinner',
+    },
+    label: {
+      control: 'text',
+      description: 'Accessible label announced to screen readers',
+    },
+  },
+  args: {
+    variant: 'circle',
+    size: 'md',
+    label: 'Loading…',
+  },
   parameters: {
     docs: {
       description: {
@@ -28,6 +49,18 @@ Loading indicator. Five animation styles via the \`variant\` prop.
 
 export default meta;
 type Story = StoryObj;
+
+export const Playground: Story = {
+  render: (args) => html`
+    <div style="padding: 40px; display: flex; align-items: center; justify-content: center;">
+      <cap-spinner
+        variant=${args.variant}
+        size=${args.size}
+        label=${args.label}
+      ></cap-spinner>
+    </div>
+  `,
+};
 
 export const AllVariants: Story = {
   name: 'All variants',

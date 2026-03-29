@@ -5,6 +5,26 @@ const meta: Meta = {
   title: 'Components/Feedback/Alert',
   component: 'cap-alert',
   tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'info', 'success', 'warning', 'danger'],
+      description: 'Visual style variant',
+    },
+    heading: {
+      control: 'text',
+      description: 'Bold title line above the message',
+    },
+    dismissible: {
+      control: 'boolean',
+      description: 'Show a dismiss (×) button',
+    },
+  },
+  args: {
+    variant: 'default',
+    heading: '',
+    dismissible: false,
+  },
   parameters: {
     docs: {
       description: {
@@ -26,6 +46,20 @@ Inline status banner. Renders with \`role="alert"\` so screen readers announce i
 
 export default meta;
 type Story = StoryObj;
+
+export const Playground: Story = {
+  render: (args) => html`
+    <div style="padding: 24px; max-width: 560px;">
+      <cap-alert
+        variant=${args.variant}
+        heading=${args.heading ?? ''}
+        ?dismissible=${args.dismissible}
+      >
+        This is an example alert message. Use the controls below to customise it.
+      </cap-alert>
+    </div>
+  `,
+};
 
 export const Default: Story = {
   render: () => html`
