@@ -15,6 +15,7 @@ import { MultiselectOption, MultiselectOverflow } from "./components/cap-multise
 import { SelectOption } from "./components/cap-select/cap-select";
 import { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 import { TextareaResize } from "./components/cap-textarea/cap-textarea";
+import { ToastOptions, ToastPosition } from "./components/cap-toast/cap-toast";
 export { BadgeSize, BadgeVariant } from "./components/cap-badge/cap-badge";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 export { ComboboxOption } from "./components/cap-combobox/cap-combobox";
@@ -25,6 +26,7 @@ export { MultiselectOption, MultiselectOverflow } from "./components/cap-multise
 export { SelectOption } from "./components/cap-select/cap-select";
 export { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 export { TextareaResize } from "./components/cap-textarea/cap-textarea";
+export { ToastOptions, ToastPosition } from "./components/cap-toast/cap-toast";
 export namespace Components {
     interface CapBadge {
         /**
@@ -619,6 +621,30 @@ export namespace Components {
          */
         "value": string;
     }
+    interface CapToast {
+        /**
+          * Remove all toasts immediately
+         */
+        "clear": () => Promise<void>;
+        /**
+          * Default auto-dismiss duration in ms (0 = no auto-dismiss)
+          * @default 4000
+         */
+        "defaultDuration": number;
+        /**
+          * Remove a toast by id (with exit animation)
+         */
+        "dismiss": (id: string) => Promise<void>;
+        /**
+          * Where toasts stack on screen
+          * @default 'top-right'
+         */
+        "position": ToastPosition;
+        /**
+          * Add a toast notification. Returns the id so you can dismiss it programmatically.
+         */
+        "show": (options: ToastOptions) => Promise<string>;
+    }
     interface CapTooltip {
         /**
           * Tooltip text content
@@ -711,6 +737,10 @@ export interface CapTagInputCustomEvent<T> extends CustomEvent<T> {
 export interface CapTextareaCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapTextareaElement;
+}
+export interface CapToastCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapToastElement;
 }
 declare global {
     interface HTMLCapBadgeElement extends Components.CapBadge, HTMLStencilElement {
@@ -980,6 +1010,23 @@ declare global {
         prototype: HTMLCapTextareaElement;
         new (): HTMLCapTextareaElement;
     };
+    interface HTMLCapToastElementEventMap {
+        "capDismiss": { id: string };
+    }
+    interface HTMLCapToastElement extends Components.CapToast, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapToastElementEventMap>(type: K, listener: (this: HTMLCapToastElement, ev: CapToastCustomEvent<HTMLCapToastElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapToastElementEventMap>(type: K, listener: (this: HTMLCapToastElement, ev: CapToastCustomEvent<HTMLCapToastElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapToastElement: {
+        prototype: HTMLCapToastElement;
+        new (): HTMLCapToastElement;
+    };
     interface HTMLCapTooltipElement extends Components.CapTooltip, HTMLStencilElement {
     }
     var HTMLCapTooltipElement: {
@@ -1008,6 +1055,7 @@ declare global {
         "cap-switch": HTMLCapSwitchElement;
         "cap-tag-input": HTMLCapTagInputElement;
         "cap-textarea": HTMLCapTextareaElement;
+        "cap-toast": HTMLCapToastElement;
         "cap-tooltip": HTMLCapTooltipElement;
         "my-component": HTMLMyComponentElement;
     }
@@ -1746,6 +1794,22 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface CapToast {
+        /**
+          * Default auto-dismiss duration in ms (0 = no auto-dismiss)
+          * @default 4000
+         */
+        "defaultDuration"?: number;
+        /**
+          * Emitted when a toast is removed
+         */
+        "onCapDismiss"?: (event: CapToastCustomEvent<{ id: string }>) => void;
+        /**
+          * Where toasts stack on screen
+          * @default 'top-right'
+         */
+        "position"?: ToastPosition;
+    }
     interface CapTooltip {
         /**
           * Tooltip text content
@@ -1927,6 +1991,10 @@ declare namespace LocalJSX {
         "required": boolean;
         "ariaLabel": string;
     }
+    interface CapToastAttributes {
+        "position": ToastPosition;
+        "defaultDuration": number;
+    }
     interface CapTooltipAttributes {
         "content": string;
         "placement": 'top' | 'bottom' | 'left' | 'right';
@@ -1955,6 +2023,7 @@ declare namespace LocalJSX {
         "cap-switch": Omit<CapSwitch, keyof CapSwitchAttributes> & { [K in keyof CapSwitch & keyof CapSwitchAttributes]?: CapSwitch[K] } & { [K in keyof CapSwitch & keyof CapSwitchAttributes as `attr:${K}`]?: CapSwitchAttributes[K] } & { [K in keyof CapSwitch & keyof CapSwitchAttributes as `prop:${K}`]?: CapSwitch[K] };
         "cap-tag-input": Omit<CapTagInput, keyof CapTagInputAttributes> & { [K in keyof CapTagInput & keyof CapTagInputAttributes]?: CapTagInput[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `attr:${K}`]?: CapTagInputAttributes[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `prop:${K}`]?: CapTagInput[K] };
         "cap-textarea": Omit<CapTextarea, keyof CapTextareaAttributes> & { [K in keyof CapTextarea & keyof CapTextareaAttributes]?: CapTextarea[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `attr:${K}`]?: CapTextareaAttributes[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `prop:${K}`]?: CapTextarea[K] };
+        "cap-toast": Omit<CapToast, keyof CapToastAttributes> & { [K in keyof CapToast & keyof CapToastAttributes]?: CapToast[K] } & { [K in keyof CapToast & keyof CapToastAttributes as `attr:${K}`]?: CapToastAttributes[K] } & { [K in keyof CapToast & keyof CapToastAttributes as `prop:${K}`]?: CapToast[K] };
         "cap-tooltip": Omit<CapTooltip, keyof CapTooltipAttributes> & { [K in keyof CapTooltip & keyof CapTooltipAttributes]?: CapTooltip[K] } & { [K in keyof CapTooltip & keyof CapTooltipAttributes as `attr:${K}`]?: CapTooltipAttributes[K] } & { [K in keyof CapTooltip & keyof CapTooltipAttributes as `prop:${K}`]?: CapTooltip[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
@@ -1978,6 +2047,7 @@ declare module "@stencil/core" {
             "cap-switch": LocalJSX.IntrinsicElements["cap-switch"] & JSXBase.HTMLAttributes<HTMLCapSwitchElement>;
             "cap-tag-input": LocalJSX.IntrinsicElements["cap-tag-input"] & JSXBase.HTMLAttributes<HTMLCapTagInputElement>;
             "cap-textarea": LocalJSX.IntrinsicElements["cap-textarea"] & JSXBase.HTMLAttributes<HTMLCapTextareaElement>;
+            "cap-toast": LocalJSX.IntrinsicElements["cap-toast"] & JSXBase.HTMLAttributes<HTMLCapToastElement>;
             "cap-tooltip": LocalJSX.IntrinsicElements["cap-tooltip"] & JSXBase.HTMLAttributes<HTMLCapTooltipElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }

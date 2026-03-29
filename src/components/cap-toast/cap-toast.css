@@ -1,0 +1,183 @@
+:host {
+  display: contents;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Container ───────────────────────────────── */
+.toast__container {
+  position: fixed;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cap-space-sm);
+  pointer-events: none;
+  max-width: min(360px, calc(100vw - 2 * var(--cap-space-lg)));
+}
+
+/* Vertical alignment */
+.toast__container--top {
+  top: var(--cap-space-lg);
+  flex-direction: column;
+}
+
+.toast__container--bottom {
+  bottom: var(--cap-space-lg);
+  flex-direction: column-reverse;
+}
+
+/* Horizontal alignment */
+.toast__container--right {
+  right: var(--cap-space-lg);
+}
+
+.toast__container--left {
+  left: var(--cap-space-lg);
+}
+
+.toast__container--center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ─── Toast item ──────────────────────────────── */
+.toast__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cap-space-sm);
+  padding: var(--cap-space-sm) var(--cap-space-md);
+  background: var(--cap-color-on-surface);
+  color: var(--cap-color-surface);
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  box-shadow: var(--cap-shadow);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  line-height: 1.5;
+  pointer-events: all;
+  /* Enter animation */
+  animation: toast-in 0.15s ease forwards;
+}
+
+.toast__item--exiting {
+  animation: toast-out 0.2s ease forwards;
+}
+
+/* Variant: default — inverted (on-surface bg / surface text) */
+.toast__item--default {
+  background: var(--cap-color-on-surface);
+  color: var(--cap-color-surface);
+}
+
+/* Variant: success */
+.toast__item--success {
+  background: var(--cap-color-success);
+  color: var(--cap-color-on-success);
+  border-color: var(--cap-color-success);
+}
+
+/* Variant: warning */
+.toast__item--warning {
+  background: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+  border-color: var(--cap-border-color);
+}
+
+/* Variant: danger */
+.toast__item--danger {
+  background: var(--cap-color-danger);
+  color: var(--cap-color-on-danger);
+  border-color: var(--cap-color-danger);
+}
+
+/* ─── Icon ────────────────────────────────────── */
+.toast__icon {
+  flex-shrink: 0;
+  font-size: var(--cap-font-size-md);
+  line-height: 1.5;
+  font-style: normal;
+  font-family: var(--cap-font-family-mono);
+}
+
+/* ─── Message ─────────────────────────────────── */
+.toast__message {
+  flex: 1;
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+/* ─── Close button ────────────────────────────── */
+.toast__close {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  font-size: var(--cap-font-size-sm);
+  line-height: 1;
+  opacity: 0.7;
+  font-family: var(--cap-font-family-mono);
+  margin-left: var(--cap-space-xs);
+  align-self: center;
+}
+
+.toast__close:hover {
+  opacity: 1;
+}
+
+.toast__close:focus {
+  outline: none;
+  opacity: 1;
+}
+
+/* ─── Animations ──────────────────────────────── */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* Bottom-positioned toasts slide up from below */
+.toast__container--bottom .toast__item {
+  animation-name: toast-in-bottom;
+}
+
+.toast__container--bottom .toast__item--exiting {
+  animation-name: toast-out-bottom;
+}
+
+@keyframes toast-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-out-bottom {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
