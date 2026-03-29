@@ -1,13 +1,16 @@
+/* ─── Outer frame ─────────────────────────────── */
+/* The host IS the border. Tabs + panel live inside it as one connected unit. */
 :host {
   display: block;
+  border: var(--cap-border-width) solid var(--cap-border-color);
   font-family: var(--cap-font-family);
 }
 
 /* ─── Tab list ────────────────────────────────── */
 .tabs__list {
   display: flex;
+  /* Divider between the tab strip and the panel content */
   border-bottom: var(--cap-border-width) solid var(--cap-border-color);
-  gap: 0;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -19,9 +22,11 @@
 /* ─── Tab button ──────────────────────────────── */
 .tabs__tab {
   position: relative;
+  z-index: 0;
   padding: var(--cap-space-sm) var(--cap-space-lg);
   background: transparent;
   border: none;
+  /* Vertical divider between adjacent tabs */
   border-right: var(--cap-border-width) solid var(--cap-border-color);
   color: var(--cap-color-on-surface);
   font-family: var(--cap-font-family);
@@ -32,12 +37,6 @@
   min-height: var(--cap-min-height-md);
   white-space: nowrap;
   transition: background var(--cap-transition-fast);
-  /* Overlap the bottom border when active */
-  margin-bottom: calc(-1 * var(--cap-border-width));
-}
-
-.tabs__tab:first-child {
-  border-left: none;
 }
 
 .tabs__tab:last-child {
@@ -55,13 +54,19 @@
   z-index: 1;
 }
 
-/* Active tab — sits "on top" of the tab strip border */
+/* ─── Active tab ──────────────────────────────── */
+/*
+  Shift down by border-width so the tab's background overlaps and
+  visually erases the list's border-bottom, merging tab with panel.
+*/
 .tabs__tab--active {
   background: var(--cap-color-primary);
   color: var(--cap-color-on-primary);
-  border-bottom: var(--cap-border-width) solid var(--cap-color-primary);
+  top: var(--cap-border-width);
+  z-index: 2;
 }
 
+/* ─── Disabled ────────────────────────────────── */
 .tabs__tab--disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -73,10 +78,13 @@
 }
 
 /* ─── Panel ───────────────────────────────────── */
+/* No border — the host provides the outer frame on all four sides. */
 .tabs__panel {
-  border: var(--cap-border-width) solid var(--cap-border-color);
-  border-top: none;
   padding: var(--cap-space-lg);
+  color: var(--cap-color-on-surface);
+  font-size: var(--cap-font-size-md);
+  line-height: 1.6;
+  outline: none;
 }
 
 .tabs__panel[hidden] {
