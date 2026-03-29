@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { BadgeSize, BadgeVariant } from "./components/cap-badge/cap-badge";
 import { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 import { ComboboxOption } from "./components/cap-combobox/cap-combobox";
 import { MenuItem } from "./components/cap-dropdown-menu/cap-dropdown-menu";
@@ -14,6 +15,7 @@ import { MultiselectOption, MultiselectOverflow } from "./components/cap-multise
 import { SelectOption } from "./components/cap-select/cap-select";
 import { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 import { TextareaResize } from "./components/cap-textarea/cap-textarea";
+export { BadgeSize, BadgeVariant } from "./components/cap-badge/cap-badge";
 export { ButtonSize, ButtonType, ButtonVariant } from "./components/cap-button/cap-button";
 export { ComboboxOption } from "./components/cap-combobox/cap-combobox";
 export { MenuItem } from "./components/cap-dropdown-menu/cap-dropdown-menu";
@@ -24,6 +26,18 @@ export { SelectOption } from "./components/cap-select/cap-select";
 export { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 export { TextareaResize } from "./components/cap-textarea/cap-textarea";
 export namespace Components {
+    interface CapBadge {
+        /**
+          * Size of the badge
+          * @default 'md'
+         */
+        "size": BadgeSize;
+        /**
+          * Visual style variant
+          * @default 'default'
+         */
+        "variant": BadgeVariant;
+    }
     interface CapButton {
         /**
           * Accessible label for icon-only buttons
@@ -421,6 +435,44 @@ export namespace Components {
          */
         "value": string;
     }
+    interface CapSwitch {
+        /**
+          * Whether the switch is on
+          * @default false
+         */
+        "checked": boolean;
+        /**
+          * Disables the switch
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Error message displayed below the switch
+         */
+        "error": string;
+        /**
+          * Hint text displayed below the switch
+         */
+        "hint": string;
+        /**
+          * Label text displayed above the switch
+         */
+        "label": string;
+        /**
+          * Name attribute for form submission
+         */
+        "name": string;
+        /**
+          * Marks the switch as required
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * Value submitted with the form when checked
+          * @default 'on'
+         */
+        "value": string;
+    }
     interface CapTagInput {
         /**
           * Forces the dropdown open — useful for debugging styles
@@ -587,6 +639,10 @@ export interface CapSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapSelectElement;
 }
+export interface CapSwitchCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCapSwitchElement;
+}
 export interface CapTagInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCapTagInputElement;
@@ -596,6 +652,12 @@ export interface CapTextareaCustomEvent<T> extends CustomEvent<T> {
     target: HTMLCapTextareaElement;
 }
 declare global {
+    interface HTMLCapBadgeElement extends Components.CapBadge, HTMLStencilElement {
+    }
+    var HTMLCapBadgeElement: {
+        prototype: HTMLCapBadgeElement;
+        new (): HTMLCapBadgeElement;
+    };
     interface HTMLCapButtonElementEventMap {
         "capClick": MouseEvent;
     }
@@ -780,6 +842,25 @@ declare global {
         prototype: HTMLCapSelectElement;
         new (): HTMLCapSelectElement;
     };
+    interface HTMLCapSwitchElementEventMap {
+        "capChange": { checked: boolean; value: string };
+        "capFocus": void;
+        "capBlur": void;
+    }
+    interface HTMLCapSwitchElement extends Components.CapSwitch, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCapSwitchElementEventMap>(type: K, listener: (this: HTMLCapSwitchElement, ev: CapSwitchCustomEvent<HTMLCapSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCapSwitchElementEventMap>(type: K, listener: (this: HTMLCapSwitchElement, ev: CapSwitchCustomEvent<HTMLCapSwitchElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLCapSwitchElement: {
+        prototype: HTMLCapSwitchElement;
+        new (): HTMLCapSwitchElement;
+    };
     interface HTMLCapTagInputElementEventMap {
         "capChange": string[];
         "capInput": string;
@@ -827,6 +908,7 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "cap-badge": HTMLCapBadgeElement;
         "cap-button": HTMLCapButtonElement;
         "cap-checkbox": HTMLCapCheckboxElement;
         "cap-combobox": HTMLCapComboboxElement;
@@ -837,12 +919,25 @@ declare global {
         "cap-radio": HTMLCapRadioElement;
         "cap-radio-group": HTMLCapRadioGroupElement;
         "cap-select": HTMLCapSelectElement;
+        "cap-switch": HTMLCapSwitchElement;
         "cap-tag-input": HTMLCapTagInputElement;
         "cap-textarea": HTMLCapTextareaElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface CapBadge {
+        /**
+          * Size of the badge
+          * @default 'md'
+         */
+        "size"?: BadgeSize;
+        /**
+          * Visual style variant
+          * @default 'default'
+         */
+        "variant"?: BadgeVariant;
+    }
     interface CapButton {
         /**
           * Accessible label for icon-only buttons
@@ -1336,6 +1431,56 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface CapSwitch {
+        /**
+          * Whether the switch is on
+          * @default false
+         */
+        "checked"?: boolean;
+        /**
+          * Disables the switch
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Error message displayed below the switch
+         */
+        "error"?: string;
+        /**
+          * Hint text displayed below the switch
+         */
+        "hint"?: string;
+        /**
+          * Label text displayed above the switch
+         */
+        "label"?: string;
+        /**
+          * Name attribute for form submission
+         */
+        "name"?: string;
+        /**
+          * Emitted when the switch loses focus
+         */
+        "onCapBlur"?: (event: CapSwitchCustomEvent<void>) => void;
+        /**
+          * Emitted when the checked state changes
+         */
+        "onCapChange"?: (event: CapSwitchCustomEvent<{ checked: boolean; value: string }>) => void;
+        /**
+          * Emitted when the switch receives focus
+         */
+        "onCapFocus"?: (event: CapSwitchCustomEvent<void>) => void;
+        /**
+          * Marks the switch as required
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * Value submitted with the form when checked
+          * @default 'on'
+         */
+        "value"?: string;
+    }
     interface CapTagInput {
         /**
           * Forces the dropdown open — useful for debugging styles
@@ -1494,6 +1639,10 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
 
+    interface CapBadgeAttributes {
+        "variant": BadgeVariant;
+        "size": BadgeSize;
+    }
     interface CapButtonAttributes {
         "variant": ButtonVariant;
         "size": ButtonSize;
@@ -1591,6 +1740,16 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "required": boolean;
     }
+    interface CapSwitchAttributes {
+        "checked": boolean;
+        "disabled": boolean;
+        "label": string;
+        "hint": string;
+        "error": string;
+        "name": string;
+        "value": string;
+        "required": boolean;
+    }
     interface CapTagInputAttributes {
         "placeholder": string;
         "name": string;
@@ -1624,6 +1783,7 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
+        "cap-badge": Omit<CapBadge, keyof CapBadgeAttributes> & { [K in keyof CapBadge & keyof CapBadgeAttributes]?: CapBadge[K] } & { [K in keyof CapBadge & keyof CapBadgeAttributes as `attr:${K}`]?: CapBadgeAttributes[K] } & { [K in keyof CapBadge & keyof CapBadgeAttributes as `prop:${K}`]?: CapBadge[K] };
         "cap-button": Omit<CapButton, keyof CapButtonAttributes> & { [K in keyof CapButton & keyof CapButtonAttributes]?: CapButton[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `attr:${K}`]?: CapButtonAttributes[K] } & { [K in keyof CapButton & keyof CapButtonAttributes as `prop:${K}`]?: CapButton[K] };
         "cap-checkbox": Omit<CapCheckbox, keyof CapCheckboxAttributes> & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes]?: CapCheckbox[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `attr:${K}`]?: CapCheckboxAttributes[K] } & { [K in keyof CapCheckbox & keyof CapCheckboxAttributes as `prop:${K}`]?: CapCheckbox[K] };
         "cap-combobox": Omit<CapCombobox, keyof CapComboboxAttributes> & { [K in keyof CapCombobox & keyof CapComboboxAttributes]?: CapCombobox[K] } & { [K in keyof CapCombobox & keyof CapComboboxAttributes as `attr:${K}`]?: CapComboboxAttributes[K] } & { [K in keyof CapCombobox & keyof CapComboboxAttributes as `prop:${K}`]?: CapCombobox[K] };
@@ -1634,6 +1794,7 @@ declare namespace LocalJSX {
         "cap-radio": Omit<CapRadio, keyof CapRadioAttributes> & { [K in keyof CapRadio & keyof CapRadioAttributes]?: CapRadio[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `attr:${K}`]?: CapRadioAttributes[K] } & { [K in keyof CapRadio & keyof CapRadioAttributes as `prop:${K}`]?: CapRadio[K] };
         "cap-radio-group": Omit<CapRadioGroup, keyof CapRadioGroupAttributes> & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes]?: CapRadioGroup[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `attr:${K}`]?: CapRadioGroupAttributes[K] } & { [K in keyof CapRadioGroup & keyof CapRadioGroupAttributes as `prop:${K}`]?: CapRadioGroup[K] };
         "cap-select": Omit<CapSelect, keyof CapSelectAttributes> & { [K in keyof CapSelect & keyof CapSelectAttributes]?: CapSelect[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `attr:${K}`]?: CapSelectAttributes[K] } & { [K in keyof CapSelect & keyof CapSelectAttributes as `prop:${K}`]?: CapSelect[K] };
+        "cap-switch": Omit<CapSwitch, keyof CapSwitchAttributes> & { [K in keyof CapSwitch & keyof CapSwitchAttributes]?: CapSwitch[K] } & { [K in keyof CapSwitch & keyof CapSwitchAttributes as `attr:${K}`]?: CapSwitchAttributes[K] } & { [K in keyof CapSwitch & keyof CapSwitchAttributes as `prop:${K}`]?: CapSwitch[K] };
         "cap-tag-input": Omit<CapTagInput, keyof CapTagInputAttributes> & { [K in keyof CapTagInput & keyof CapTagInputAttributes]?: CapTagInput[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `attr:${K}`]?: CapTagInputAttributes[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `prop:${K}`]?: CapTagInput[K] };
         "cap-textarea": Omit<CapTextarea, keyof CapTextareaAttributes> & { [K in keyof CapTextarea & keyof CapTextareaAttributes]?: CapTextarea[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `attr:${K}`]?: CapTextareaAttributes[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `prop:${K}`]?: CapTextarea[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
@@ -1643,6 +1804,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "cap-badge": LocalJSX.IntrinsicElements["cap-badge"] & JSXBase.HTMLAttributes<HTMLCapBadgeElement>;
             "cap-button": LocalJSX.IntrinsicElements["cap-button"] & JSXBase.HTMLAttributes<HTMLCapButtonElement>;
             "cap-checkbox": LocalJSX.IntrinsicElements["cap-checkbox"] & JSXBase.HTMLAttributes<HTMLCapCheckboxElement>;
             "cap-combobox": LocalJSX.IntrinsicElements["cap-combobox"] & JSXBase.HTMLAttributes<HTMLCapComboboxElement>;
@@ -1653,6 +1815,7 @@ declare module "@stencil/core" {
             "cap-radio": LocalJSX.IntrinsicElements["cap-radio"] & JSXBase.HTMLAttributes<HTMLCapRadioElement>;
             "cap-radio-group": LocalJSX.IntrinsicElements["cap-radio-group"] & JSXBase.HTMLAttributes<HTMLCapRadioGroupElement>;
             "cap-select": LocalJSX.IntrinsicElements["cap-select"] & JSXBase.HTMLAttributes<HTMLCapSelectElement>;
+            "cap-switch": LocalJSX.IntrinsicElements["cap-switch"] & JSXBase.HTMLAttributes<HTMLCapSwitchElement>;
             "cap-tag-input": LocalJSX.IntrinsicElements["cap-tag-input"] & JSXBase.HTMLAttributes<HTMLCapTagInputElement>;
             "cap-textarea": LocalJSX.IntrinsicElements["cap-textarea"] & JSXBase.HTMLAttributes<HTMLCapTextareaElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;

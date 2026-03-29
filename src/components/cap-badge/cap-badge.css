@@ -1,0 +1,58 @@
+:host {
+  display: inline-block;
+}
+
+/* ─── Base badge ─────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  font-family: var(--cap-font-family);
+  letter-spacing: var(--cap-letter-spacing);
+  font-weight: var(--cap-font-weight-bold);
+  border: var(--cap-border-width) solid;
+  box-sizing: border-box;
+  text-transform: uppercase;
+}
+
+/* ─── Sizes ──────────────────────────────────── */
+.badge--sm {
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+.badge--md {
+  font-size: var(--cap-font-size-sm);
+  padding: 3px 8px;
+}
+
+/* ─── Variants ───────────────────────────────── */
+.badge--default {
+  background: var(--cap-color-surface);
+  border-color: var(--cap-border-color);
+  color: var(--cap-color-on-surface);
+}
+
+.badge--primary {
+  background: var(--cap-color-primary);
+  border-color: var(--cap-color-primary);
+  color: var(--cap-color-on-primary);
+}
+
+.badge--success {
+  background: var(--cap-color-success);
+  border-color: var(--cap-color-success);
+  color: var(--cap-color-on-success);
+}
+
+.badge--warning {
+  background: var(--cap-color-warning);
+  border-color: var(--cap-color-warning);
+  color: var(--cap-color-on-warning);
+}
+
+.badge--danger {
+  background: var(--cap-color-danger);
+  border-color: var(--cap-color-danger);
+  color: var(--cap-color-on-danger);
+}

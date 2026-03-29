@@ -1,0 +1,138 @@
+:host {
+  display: block;
+  font-family: var(--cap-font-family);
+}
+
+/* ─── Wrapper ────────────────────────────────── */
+.switch-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--cap-space-xs);
+}
+
+/* ─── Label ──────────────────────────────────── */
+.switch__label {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-md);
+  color: var(--cap-color-on-background);
+  letter-spacing: var(--cap-letter-spacing);
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch-wrapper--disabled .switch__label {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.switch__required {
+  color: var(--cap-color-danger);
+}
+
+/* ─── Control row ────────────────────────────── */
+.switch__control-row {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ─── Hide native input ──────────────────────── */
+input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Button (focusable control) ─────────────── */
+.switch__button {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: none;
+  outline: none;
+  border-radius: 11px;
+}
+
+.switch__button:disabled,
+.switch-wrapper--disabled .switch__button {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ─── Focus ──────────────────────────────────── */
+.switch__button:focus-visible {
+  box-shadow: var(--cap-shadow);
+}
+
+:host-context(.cap-focus-outline) .switch__button:focus-visible {
+  box-shadow: none;
+  outline: var(--cap-border-width-thick) solid var(--cap-color-focus);
+  outline-offset: 2px;
+}
+
+/* ─── Track ──────────────────────────────────── */
+.switch__track {
+  display: block;
+  width: 40px;
+  height: 22px;
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  background: var(--cap-color-surface);
+  border-radius: 11px;
+  position: relative;
+  transition: background var(--cap-transition-fast),
+              border-color var(--cap-transition-fast);
+  box-sizing: border-box;
+}
+
+.switch__track--checked {
+  background: var(--cap-color-primary);
+  border-color: var(--cap-color-primary);
+}
+
+/* ─── Error state ────────────────────────────── */
+.switch-wrapper--error .switch__track {
+  border-color: var(--cap-color-danger);
+}
+
+/* ─── Thumb ──────────────────────────────────── */
+.switch__thumb {
+  display: block;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: var(--cap-color-on-surface);
+  border-radius: 50%;
+  transition: transform var(--cap-transition-fast),
+              background var(--cap-transition-fast);
+}
+
+.switch__thumb--checked {
+  transform: translateX(18px);
+  background: var(--cap-color-on-primary);
+}
+
+/* ─── Feedback ───────────────────────────────── */
+.switch__feedback {
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+}
+
+.switch__feedback--error {
+  color: var(--cap-color-danger);
+  font-weight: var(--cap-font-weight-bold);
+}
+
+.switch__feedback--hint {
+  color: var(--cap-color-on-background);
+  opacity: 0.6;
+}

@@ -16,6 +16,8 @@
   --cap-color-focus:         var(--cap-color-black);
   --cap-color-success:       #16a34a;
   --cap-color-on-success:    var(--cap-color-white);
+  --cap-color-warning:       #ca8a04;
+  --cap-color-on-warning:    #000000;
 
   /* ─── Typography ─────────────────────────── */
   --cap-font-family:         'Georgia', 'Times New Roman', serif;
