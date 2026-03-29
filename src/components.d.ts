@@ -584,6 +584,28 @@ export namespace Components {
          */
         "value": string;
     }
+    interface CapTooltip {
+        /**
+          * Tooltip text content
+          * @default ''
+         */
+        "content": string;
+        /**
+          * Delay in milliseconds before showing the tooltip
+          * @default 150
+         */
+        "delay": number;
+        /**
+          * Disables the tooltip
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Preferred placement of the tooltip relative to the trigger
+          * @default 'top'
+         */
+        "placement": 'top' | 'bottom' | 'left' | 'right';
+    }
     interface MyComponent {
         /**
           * The first name
@@ -901,6 +923,12 @@ declare global {
         prototype: HTMLCapTextareaElement;
         new (): HTMLCapTextareaElement;
     };
+    interface HTMLCapTooltipElement extends Components.CapTooltip, HTMLStencilElement {
+    }
+    var HTMLCapTooltipElement: {
+        prototype: HTMLCapTooltipElement;
+        new (): HTMLCapTooltipElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -922,6 +950,7 @@ declare global {
         "cap-switch": HTMLCapSwitchElement;
         "cap-tag-input": HTMLCapTagInputElement;
         "cap-textarea": HTMLCapTextareaElement;
+        "cap-tooltip": HTMLCapTooltipElement;
         "my-component": HTMLMyComponentElement;
     }
 }
@@ -1624,6 +1653,28 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface CapTooltip {
+        /**
+          * Tooltip text content
+          * @default ''
+         */
+        "content"?: string;
+        /**
+          * Delay in milliseconds before showing the tooltip
+          * @default 150
+         */
+        "delay"?: number;
+        /**
+          * Disables the tooltip
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Preferred placement of the tooltip relative to the trigger
+          * @default 'top'
+         */
+        "placement"?: 'top' | 'bottom' | 'left' | 'right';
+    }
     interface MyComponent {
         /**
           * The first name
@@ -1776,6 +1827,12 @@ declare namespace LocalJSX {
         "required": boolean;
         "ariaLabel": string;
     }
+    interface CapTooltipAttributes {
+        "content": string;
+        "placement": 'top' | 'bottom' | 'left' | 'right';
+        "delay": number;
+        "disabled": boolean;
+    }
     interface MyComponentAttributes {
         "first": string;
         "middle": string;
@@ -1797,6 +1854,7 @@ declare namespace LocalJSX {
         "cap-switch": Omit<CapSwitch, keyof CapSwitchAttributes> & { [K in keyof CapSwitch & keyof CapSwitchAttributes]?: CapSwitch[K] } & { [K in keyof CapSwitch & keyof CapSwitchAttributes as `attr:${K}`]?: CapSwitchAttributes[K] } & { [K in keyof CapSwitch & keyof CapSwitchAttributes as `prop:${K}`]?: CapSwitch[K] };
         "cap-tag-input": Omit<CapTagInput, keyof CapTagInputAttributes> & { [K in keyof CapTagInput & keyof CapTagInputAttributes]?: CapTagInput[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `attr:${K}`]?: CapTagInputAttributes[K] } & { [K in keyof CapTagInput & keyof CapTagInputAttributes as `prop:${K}`]?: CapTagInput[K] };
         "cap-textarea": Omit<CapTextarea, keyof CapTextareaAttributes> & { [K in keyof CapTextarea & keyof CapTextareaAttributes]?: CapTextarea[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `attr:${K}`]?: CapTextareaAttributes[K] } & { [K in keyof CapTextarea & keyof CapTextareaAttributes as `prop:${K}`]?: CapTextarea[K] };
+        "cap-tooltip": Omit<CapTooltip, keyof CapTooltipAttributes> & { [K in keyof CapTooltip & keyof CapTooltipAttributes]?: CapTooltip[K] } & { [K in keyof CapTooltip & keyof CapTooltipAttributes as `attr:${K}`]?: CapTooltipAttributes[K] } & { [K in keyof CapTooltip & keyof CapTooltipAttributes as `prop:${K}`]?: CapTooltip[K] };
         "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
     }
 }
@@ -1818,6 +1876,7 @@ declare module "@stencil/core" {
             "cap-switch": LocalJSX.IntrinsicElements["cap-switch"] & JSXBase.HTMLAttributes<HTMLCapSwitchElement>;
             "cap-tag-input": LocalJSX.IntrinsicElements["cap-tag-input"] & JSXBase.HTMLAttributes<HTMLCapTagInputElement>;
             "cap-textarea": LocalJSX.IntrinsicElements["cap-textarea"] & JSXBase.HTMLAttributes<HTMLCapTextareaElement>;
+            "cap-tooltip": LocalJSX.IntrinsicElements["cap-tooltip"] & JSXBase.HTMLAttributes<HTMLCapTooltipElement>;
             "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }

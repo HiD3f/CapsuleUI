@@ -1,0 +1,50 @@
+:host {
+  display: inline-block;
+}
+
+/* Transparent to layout — lets the slotted content dictate sizing */
+.tooltip__trigger-wrap {
+  display: contents;
+}
+
+/* ─── Tooltip panel ───────────────────────────── */
+.tooltip__panel {
+  position: fixed;
+  z-index: 2000;
+  background: var(--cap-color-on-surface);
+  color: var(--cap-color-surface);
+  font-family: var(--cap-font-family);
+  font-size: var(--cap-font-size-sm);
+  letter-spacing: var(--cap-letter-spacing);
+  padding: var(--cap-space-xs) var(--cap-space-sm);
+  border: var(--cap-border-width) solid var(--cap-color-on-surface);
+  box-shadow: var(--cap-shadow);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--cap-transition-fast);
+}
+
+.tooltip__panel--visible {
+  opacity: 1;
+}
+
+/* ─── Placement transforms ────────────────────── */
+/* tipX/tipY is the anchor point (edge of trigger).  */
+/* Transform centers the panel on that anchor.       */
+
+.tooltip__panel--top {
+  transform: translate(-50%, -100%);
+}
+
+.tooltip__panel--bottom {
+  transform: translate(-50%, 0);
+}
+
+.tooltip__panel--left {
+  transform: translate(-100%, -50%);
+}
+
+.tooltip__panel--right {
+  transform: translate(0, -50%);
+}

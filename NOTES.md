@@ -34,6 +34,11 @@ Running log of decisions made, reasoning, open questions, and things to revisit.
 | `cap-multiselect` | ✅ done | `overflow`, `filterable`, `maxVisibleChips` props |
 | `cap-tag-input` | ✅ done | free text always on; options optional (suggestions); Enter + Tab to commit |
 
+### Overlay / feedback
+| Component | Status | Notes |
+|---|---|---|
+| `cap-tooltip` | ✅ done | hover + focus trigger, 4 placements, auto-flip, viewport clamping, probe pattern for transform ancestors |
+
 ---
 
 ## Conventions (apply to all components)
@@ -215,6 +220,7 @@ Added a welcome/intro page and per-component descriptions to improve the Storybo
 - [ ] Create design decisions file for each component? Or keep it all here?
 - [x] Build `cap-dropdown-menu` — data-driven items array, sub-menus one level deep, toggle items, link items as `<a>`
 - [x] Build `cap-context-menu` — right-click variant, `position: fixed` at cursor, viewport clamping, same item types
+- [x] Build `cap-tooltip` — hover/focus triggered, 4 placements with auto-flip, `position: fixed` + probe pattern, viewport clamping
 
 ---
 
