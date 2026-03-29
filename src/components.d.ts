@@ -16,7 +16,7 @@ import { InputType } from "./components/cap-input/cap-input";
 import { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
 import { ProgressVariant } from "./components/cap-progress/cap-progress";
 import { SelectOption } from "./components/cap-select/cap-select";
-import { SpinnerSize } from "./components/cap-spinner/cap-spinner";
+import { SpinnerSize, SpinnerVariant } from "./components/cap-spinner/cap-spinner";
 import { TabItem } from "./components/cap-tabs/cap-tabs";
 import { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 import { TextareaResize } from "./components/cap-textarea/cap-textarea";
@@ -32,7 +32,7 @@ export { InputType } from "./components/cap-input/cap-input";
 export { MultiselectOption, MultiselectOverflow } from "./components/cap-multiselect/cap-multiselect";
 export { ProgressVariant } from "./components/cap-progress/cap-progress";
 export { SelectOption } from "./components/cap-select/cap-select";
-export { SpinnerSize } from "./components/cap-spinner/cap-spinner";
+export { SpinnerSize, SpinnerVariant } from "./components/cap-spinner/cap-spinner";
 export { TabItem } from "./components/cap-tabs/cap-tabs";
 export { TagInputOption } from "./components/cap-tag-input/cap-tag-input";
 export { TextareaResize } from "./components/cap-textarea/cap-textarea";
@@ -554,6 +554,11 @@ export namespace Components {
           * @default 'md'
          */
         "size": SpinnerSize;
+        /**
+          * Visual animation style
+          * @default 'circle'
+         */
+        "variant": SpinnerVariant;
     }
     interface CapSwitch {
         /**
@@ -1856,6 +1861,11 @@ declare namespace LocalJSX {
           * @default 'md'
          */
         "size"?: SpinnerSize;
+        /**
+          * Visual animation style
+          * @default 'circle'
+         */
+        "variant"?: SpinnerVariant;
     }
     interface CapSwitch {
         /**
@@ -2244,6 +2254,7 @@ declare namespace LocalJSX {
         "required": boolean;
     }
     interface CapSpinnerAttributes {
+        "variant": SpinnerVariant;
         "size": SpinnerSize;
         "label": string;
     }
