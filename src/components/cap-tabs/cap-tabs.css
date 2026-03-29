@@ -1,15 +1,15 @@
-/* ─── Outer frame ─────────────────────────────── */
-/* The host IS the border. Tabs + panel live inside it as one connected unit. */
 :host {
   display: block;
-  border: var(--cap-border-width) solid var(--cap-border-color);
   font-family: var(--cap-font-family);
 }
 
-/* ─── Tab list ────────────────────────────────── */
+/* ─── Tab strip ───────────────────────────────── */
+/*
+  The strip's border-bottom is the visual top edge of the panel.
+  Tabs sit ON it via margin-bottom: -border-width.
+*/
 .tabs__list {
   display: flex;
-  /* Divider between the tab strip and the panel content */
   border-bottom: var(--cap-border-width) solid var(--cap-border-color);
   overflow-x: auto;
   scrollbar-width: none;
@@ -24,10 +24,15 @@
   position: relative;
   z-index: 0;
   padding: var(--cap-space-sm) var(--cap-space-lg);
-  background: transparent;
-  border: none;
-  /* Vertical divider between adjacent tabs */
-  border-right: var(--cap-border-width) solid var(--cap-border-color);
+  background: var(--cap-color-surface);
+  /* Borders on top and sides; bottom is transparent so the strip's
+     border-bottom line shows through and tabs appear to rest on it */
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  border-bottom-color: transparent;
+  /* Pull each tab down so its transparent bottom sits on the strip line */
+  margin-bottom: calc(-1 * var(--cap-border-width));
+  /* Collapse adjacent tab side borders into one line */
+  margin-right: calc(-1 * var(--cap-border-width));
   color: var(--cap-color-on-surface);
   font-family: var(--cap-font-family);
   font-size: var(--cap-font-size-md);
@@ -40,7 +45,7 @@
 }
 
 .tabs__tab:last-child {
-  border-right: none;
+  margin-right: 0;
 }
 
 .tabs__tab:hover:not(:disabled) {
@@ -56,13 +61,14 @@
 
 /* ─── Active tab ──────────────────────────────── */
 /*
-  Shift down by border-width so the tab's background overlaps and
-  visually erases the list's border-bottom, merging tab with panel.
+  border-bottom-color matches the tab's own background, which covers
+  the strip's border-bottom line in this tab's horizontal span.
+  Result: no visible border between the active tab and the panel below.
 */
 .tabs__tab--active {
   background: var(--cap-color-primary);
   color: var(--cap-color-on-primary);
-  top: var(--cap-border-width);
+  border-bottom-color: var(--cap-color-primary);
   z-index: 2;
 }
 
@@ -73,13 +79,18 @@
 }
 
 .tabs__tab--disabled:hover {
-  background: transparent;
+  background: var(--cap-color-surface);
   color: var(--cap-color-on-surface);
 }
 
 /* ─── Panel ───────────────────────────────────── */
-/* No border — the host provides the outer frame on all four sides. */
+/*
+  Full border on all sides. border-top: none because the strip's
+  border-bottom already forms the top edge visually.
+*/
 .tabs__panel {
+  border: var(--cap-border-width) solid var(--cap-border-color);
+  border-top: none;
   padding: var(--cap-space-lg);
   color: var(--cap-color-on-surface);
   font-size: var(--cap-font-size-md);
