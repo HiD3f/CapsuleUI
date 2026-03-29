@@ -2,7 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/RadioGroup',
+  title: 'Components/Form/Radio Group',
   component: 'cap-radio-group',
   tags: ['autodocs'],
   argTypes: {

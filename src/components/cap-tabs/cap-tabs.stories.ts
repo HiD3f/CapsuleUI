@@ -15,7 +15,7 @@ const TABS_WITH_DISABLED = [
 ];
 
 const meta: Meta = {
-  title: 'Components/Tabs',
+  title: 'Components/Layout/Tabs',
   component: 'cap-tabs',
   tags: ['autodocs'],
   parameters: {

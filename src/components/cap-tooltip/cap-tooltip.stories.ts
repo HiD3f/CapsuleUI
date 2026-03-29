@@ -2,7 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Tooltip',
+  title: 'Components/Overlay/Tooltip',
   component: 'cap-tooltip',
   tags: ['autodocs'],
   argTypes: {

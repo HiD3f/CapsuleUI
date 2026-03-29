@@ -2,7 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Badge',
+  title: 'Components/Feedback/Badge',
   component: 'cap-badge',
   tags: ['autodocs'],
   argTypes: {

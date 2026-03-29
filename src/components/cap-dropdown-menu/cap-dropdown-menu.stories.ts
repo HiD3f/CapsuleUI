@@ -64,7 +64,7 @@ const LINKS_MENU = [
 ];
 
 const meta: Meta = {
-  title: 'Components/Dropdown Menu',
+  title: 'Components/Overlay/Dropdown Menu',
   component: 'cap-dropdown-menu',
   tags: ['autodocs'],
   argTypes: {

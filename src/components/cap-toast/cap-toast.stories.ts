@@ -2,7 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Toast',
+  title: 'Components/Overlay/Toast',
   component: 'cap-toast',
   tags: ['autodocs'],
   parameters: {

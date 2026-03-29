@@ -32,7 +32,7 @@ const FRAMEWORKS = [
 ];
 
 const meta: Meta = {
-  title: 'Components/Multiselect',
+  title: 'Components/Dropdown/Multiselect',
   component: 'cap-multiselect',
   tags: ['autodocs'],
   argTypes: {

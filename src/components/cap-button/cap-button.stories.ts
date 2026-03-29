@@ -2,7 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Button',
+  title: 'Components/Form/Button',
   component: 'cap-button',
   tags: ['autodocs'],
   argTypes: {

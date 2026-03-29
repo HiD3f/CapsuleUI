@@ -17,7 +17,7 @@ const TECHS = [
 ];
 
 const meta: Meta = {
-  title: 'Components/Tag Input',
+  title: 'Components/Dropdown/Tag Input',
   component: 'cap-tag-input',
   tags: ['autodocs'],
   argTypes: {

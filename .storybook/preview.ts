@@ -54,7 +54,22 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ['Welcome', 'Components'],
+        order: [
+          'Welcome',
+          'Components',
+          [
+            'Form',
+            ['Button', 'Input', 'Textarea', 'Checkbox', 'Radio', 'Radio Group', 'Switch'],
+            'Dropdown',
+            ['Select', 'Combobox', 'Multiselect', 'Tag Input'],
+            'Overlay',
+            ['Modal', 'Toast', 'Tooltip', 'Dropdown Menu', 'Context Menu'],
+            'Feedback',
+            ['Alert', 'Badge', 'Progress', 'Spinner'],
+            'Layout',
+            ['Tabs', 'Accordion'],
+          ],
+        ],
       },
     },
     controls: {

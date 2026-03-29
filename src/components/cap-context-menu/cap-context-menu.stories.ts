@@ -41,7 +41,7 @@ const FILE_ITEMS = [
 ];
 
 const meta: Meta = {
-  title: 'Components/Context Menu',
+  title: 'Components/Overlay/Context Menu',
   component: 'cap-context-menu',
   tags: ['autodocs'],
   parameters: {

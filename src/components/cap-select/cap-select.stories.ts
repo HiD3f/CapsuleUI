@@ -16,7 +16,7 @@ const FONTS = [
 ];
 
 const meta: Meta = {
-  title: 'Components/Select',
+  title: 'Components/Dropdown/Select',
   component: 'cap-select',
   tags: ['autodocs'],
   argTypes: {

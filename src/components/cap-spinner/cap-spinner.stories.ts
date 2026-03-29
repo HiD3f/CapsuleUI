@@ -2,7 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Spinner',
+  title: 'Components/Feedback/Spinner',
   component: 'cap-spinner',
   tags: ['autodocs'],
   parameters: {

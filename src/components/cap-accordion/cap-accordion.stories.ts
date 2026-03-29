@@ -31,7 +31,7 @@ const FAQ = [
 ];
 
 const meta: Meta = {
-  title: 'Components/Accordion',
+  title: 'Components/Layout/Accordion',
   component: 'cap-accordion',
   tags: ['autodocs'],
   parameters: {

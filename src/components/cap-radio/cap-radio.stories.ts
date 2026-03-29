@@ -2,7 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Radio',
+  title: 'Components/Form/Radio',
   component: 'cap-radio',
   tags: ['autodocs'],
   argTypes: {

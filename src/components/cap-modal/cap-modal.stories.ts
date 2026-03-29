@@ -2,7 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Modal',
+  title: 'Components/Overlay/Modal',
   component: 'cap-modal',
   tags: ['autodocs'],
   parameters: {

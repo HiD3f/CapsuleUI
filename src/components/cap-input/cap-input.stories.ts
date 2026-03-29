@@ -2,7 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 
 const meta: Meta = {
-  title: 'Components/Input',
+  title: 'Components/Form/Input',
   component: 'cap-input',
   tags: ['autodocs'],
   argTypes: {

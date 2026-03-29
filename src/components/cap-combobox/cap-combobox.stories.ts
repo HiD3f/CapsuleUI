@@ -17,7 +17,7 @@ const FRAMEWORKS = [
 ];
 
 const meta: Meta = {
-  title: 'Components/Combobox',
+  title: 'Components/Dropdown/Combobox',
   component: 'cap-combobox',
   tags: ['autodocs'],
   argTypes: {
