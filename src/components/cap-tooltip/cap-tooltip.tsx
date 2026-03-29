@@ -91,7 +91,7 @@ export class CapTooltip {
     const origin = probe.getBoundingClientRect();
     this.el.shadowRoot.removeChild(probe);
 
-    const triggerRect = this.wrapperEl.getBoundingClientRect();
+    const triggerRect = this.el.getBoundingClientRect();
     const gap = 8;
     let x: number;
     let y: number;
