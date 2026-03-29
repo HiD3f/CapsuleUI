@@ -133,7 +133,7 @@ export class CapModal {
   /** Programmatically close the modal */
   @Method()
   async hide() {
-    this.requestClose();
+    this.open = false;
   }
 
   // ─── Focus trap ───────────────────────────────────────────────
