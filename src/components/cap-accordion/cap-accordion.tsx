@@ -5,6 +5,7 @@ import {
   State,
   Event,
   EventEmitter,
+  Element,
   Watch,
   h,
 } from '@stencil/core';
@@ -26,6 +27,8 @@ export interface AccordionItem {
   shadow: true,
 })
 export class CapAccordion {
+  @Element() el!: HTMLElement;
+
   /** Items to render */
   @Prop() items: AccordionItem[] = [];
 
@@ -87,10 +90,57 @@ export class CapAccordion {
     this.capChange.emit({ id, open: !isOpen, openItems });
   }
 
-  private handleKeyDown(e: KeyboardEvent, item: AccordionItem) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      this.toggle(item);
+  // ─── Keyboard navigation ──────────────────────────────────────
+
+  private focusHeader(index: number) {
+    const headers = this.el.shadowRoot?.querySelectorAll<HTMLButtonElement>('.accordion__header');
+    headers?.[index]?.focus();
+  }
+
+  private nextEnabledIndex(from: number, direction: 1 | -1): number {
+    const len = this.items.length;
+    let i = (from + direction + len) % len;
+    while (i !== from) {
+      if (!this.items[i].disabled) return i;
+      i = (i + direction + len) % len;
+    }
+    return from; // all others disabled, stay put
+  }
+
+  private firstEnabledIndex(): number {
+    return this.items.findIndex(i => !i.disabled);
+  }
+
+  private lastEnabledIndex(): number {
+    for (let i = this.items.length - 1; i >= 0; i--) {
+      if (!this.items[i].disabled) return i;
+    }
+    return -1;
+  }
+
+  private handleKeyDown(e: KeyboardEvent, item: AccordionItem, index: number) {
+    switch (e.key) {
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        this.toggle(item);
+        break;
+      case 'ArrowDown':
+        e.preventDefault();
+        this.focusHeader(this.nextEnabledIndex(index, 1));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        this.focusHeader(this.nextEnabledIndex(index, -1));
+        break;
+      case 'Home':
+        e.preventDefault();
+        this.focusHeader(this.firstEnabledIndex());
+        break;
+      case 'End':
+        e.preventDefault();
+        this.focusHeader(this.lastEnabledIndex());
+        break;
     }
   }
 
@@ -98,7 +148,7 @@ export class CapAccordion {
     return (
       <Host>
         <div class="accordion">
-          {this.items.map(item => {
+          {this.items.map((item, index) => {
             const isOpen = this.openSet.has(item.id);
             const headerId = `acc-header-${item.id}`;
             const panelId = `acc-panel-${item.id}`;
@@ -121,7 +171,7 @@ export class CapAccordion {
                   aria-disabled={item.disabled ? 'true' : undefined}
                   disabled={item.disabled}
                   onClick={() => this.toggle(item)}
-                  onKeyDown={e => this.handleKeyDown(e, item)}
+                  onKeyDown={e => this.handleKeyDown(e, item, index)}
                 >
                   <span class="accordion__label">{item.label}</span>
                   <span class="accordion__arrow" aria-hidden="true">

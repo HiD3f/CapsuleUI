@@ -133,6 +133,7 @@ export class CapTabs {
               'tabs__panel': true,
               'tabs__panel--active': tab.id === this.currentTab,
             }}
+            tabIndex={tab.id === this.currentTab ? 0 : -1}
             id={`panel-${tab.id}`}
             role="tabpanel"
             aria-labelledby={`tab-${tab.id}`}

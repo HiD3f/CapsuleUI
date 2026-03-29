@@ -1,4 +1,4 @@
-import { Component, Host, Prop, State, Element, h } from '@stencil/core';
+import { Component, Host, Prop, State, Element, Watch, h } from '@stencil/core';
 
 @Component({
   tag: 'cap-tooltip',
@@ -7,12 +7,15 @@ import { Component, Host, Prop, State, Element, h } from '@stencil/core';
 })
 export class CapTooltip {
   private tooltipId = `cap-tooltip-${Math.random().toString(36).slice(2, 9)}`;
-  private wrapperEl?: HTMLElement;
   private panelEl?: HTMLElement;
   private showTimeout: ReturnType<typeof setTimeout> | null = null;
   private escKeyHandler: (e: KeyboardEvent) => void;
+  // Light-DOM hidden span that carries the tooltip id — reachable by aria-describedby
+  private descEl?: HTMLSpanElement;
+  // Saved aria-describedby value on slotted trigger before we modify it
+  private savedDescribedBy: string | null = null;
 
-  @Element() el: HTMLElement;
+  @Element() el!: HTMLElement;
 
   /** Tooltip text content */
   @Prop() content: string = '';
@@ -32,10 +35,19 @@ export class CapTooltip {
   @State() actualPlacement: 'top' | 'bottom' | 'left' | 'right' = 'top';
 
   connectedCallback() {
+    // Inject a hidden light-DOM span whose id is the tooltip id.
+    // aria-describedby on the slotted trigger can reference it because
+    // both the trigger and this span are in the same light DOM tree.
+    this.descEl = document.createElement('span');
+    this.descEl.id = this.tooltipId;
+    this.descEl.textContent = this.content;
+    this.descEl.style.cssText =
+      'position:absolute;width:1px;height:1px;overflow:hidden;' +
+      'clip:rect(0,0,0,0);white-space:nowrap;border:0;padding:0;margin:-1px;';
+    this.el.appendChild(this.descEl);
+
     this.escKeyHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        this.hide();
-      }
+      if (e.key === 'Escape') this.hide();
     };
     document.addEventListener('keydown', this.escKeyHandler);
   }
@@ -46,33 +58,35 @@ export class CapTooltip {
       clearTimeout(this.showTimeout);
       this.showTimeout = null;
     }
+    if (this.descEl?.parentNode) {
+      this.descEl.parentNode.removeChild(this.descEl);
+    }
+  }
+
+  @Watch('content')
+  onContentChange(val: string) {
+    if (this.descEl) this.descEl.textContent = val;
   }
 
   componentDidUpdate() {
     if (!this.visible || !this.panelEl) return;
     const rect = this.panelEl.getBoundingClientRect();
 
-    // Flip if overflowing viewport
     let flipped = false;
     if (this.actualPlacement === 'top' && rect.top < 0) {
-      this.actualPlacement = 'bottom';
-      flipped = true;
+      this.actualPlacement = 'bottom'; flipped = true;
     } else if (this.actualPlacement === 'bottom' && rect.bottom > window.innerHeight) {
-      this.actualPlacement = 'top';
-      flipped = true;
+      this.actualPlacement = 'top'; flipped = true;
     } else if (this.actualPlacement === 'left' && rect.left < 0) {
-      this.actualPlacement = 'right';
-      flipped = true;
+      this.actualPlacement = 'right'; flipped = true;
     } else if (this.actualPlacement === 'right' && rect.right > window.innerWidth) {
-      this.actualPlacement = 'left';
-      flipped = true;
+      this.actualPlacement = 'left'; flipped = true;
     }
     if (flipped) {
       this.computePosition();
       return;
     }
 
-    // Clamp horizontally for top/bottom placements
     let x = this.tipX;
     if (rect.right > window.innerWidth) x -= rect.right - window.innerWidth;
     if (rect.left < 0) x -= rect.left;
@@ -80,11 +94,6 @@ export class CapTooltip {
   }
 
   private computePosition() {
-    if (!this.wrapperEl) return;
-
-    // Probe the actual fixed-positioning origin inside this shadow root.
-    // If an ancestor has a CSS transform it creates a new containing block
-    // for position:fixed, shifting the origin away from the viewport's (0,0).
     const probe = document.createElement('div');
     probe.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none;visibility:hidden;';
     this.el.shadowRoot.appendChild(probe);
@@ -93,8 +102,7 @@ export class CapTooltip {
 
     const triggerRect = this.el.getBoundingClientRect();
     const gap = 8;
-    let x: number;
-    let y: number;
+    let x: number, y: number;
 
     switch (this.actualPlacement) {
       case 'top':
@@ -122,12 +130,37 @@ export class CapTooltip {
     this.tipY = y - origin.top;
   }
 
+  // Returns the first light-DOM element assigned to the default slot
+  private getSlottedTrigger(): HTMLElement | null {
+    const slot = this.el.shadowRoot?.querySelector('slot:not([name])') as HTMLSlotElement;
+    return (slot?.assignedElements({ flatten: true })[0] as HTMLElement) ?? null;
+  }
+
+  private addDescribedBy(trigger: HTMLElement) {
+    this.savedDescribedBy = trigger.getAttribute('aria-describedby');
+    const next = this.savedDescribedBy
+      ? `${this.savedDescribedBy} ${this.tooltipId}`
+      : this.tooltipId;
+    trigger.setAttribute('aria-describedby', next);
+  }
+
+  private removeDescribedBy(trigger: HTMLElement) {
+    if (this.savedDescribedBy) {
+      trigger.setAttribute('aria-describedby', this.savedDescribedBy);
+    } else {
+      trigger.removeAttribute('aria-describedby');
+    }
+    this.savedDescribedBy = null;
+  }
+
   private show = () => {
     if (this.disabled) return;
     this.showTimeout = setTimeout(() => {
       this.actualPlacement = this.placement;
       this.computePosition();
       this.visible = true;
+      const trigger = this.getSlottedTrigger();
+      if (trigger) this.addDescribedBy(trigger);
     }, this.delay);
   };
 
@@ -135,6 +168,10 @@ export class CapTooltip {
     if (this.showTimeout) {
       clearTimeout(this.showTimeout);
       this.showTimeout = null;
+    }
+    if (this.visible) {
+      const trigger = this.getSlottedTrigger();
+      if (trigger) this.removeDescribedBy(trigger);
     }
     this.visible = false;
   };
@@ -144,8 +181,6 @@ export class CapTooltip {
       <Host>
         <div
           class="tooltip__trigger-wrap"
-          ref={el => (this.wrapperEl = el)}
-          aria-describedby={this.visible ? this.tooltipId : undefined}
           onMouseEnter={this.show}
           onMouseLeave={this.hide}
           onFocusin={this.show}
@@ -163,6 +198,7 @@ export class CapTooltip {
             [`tooltip__panel--${this.actualPlacement}`]: true,
           }}
           style={{ top: `${this.tipY}px`, left: `${this.tipX}px` }}
+          aria-hidden="true"
         >
           {this.content}
         </div>

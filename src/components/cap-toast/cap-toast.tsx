@@ -151,7 +151,7 @@ export class CapToast {
                 [`toast__item--${item.variant}`]: true,
                 'toast__item--exiting': item.exiting,
               }}
-              role="status"
+              role={item.variant === 'danger' ? 'alert' : 'status'}
             >
               <span class="toast__icon" aria-hidden="true">
                 {this.variantIcon(item.variant)}

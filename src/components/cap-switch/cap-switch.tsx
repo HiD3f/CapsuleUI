@@ -7,6 +7,7 @@ import { Component, Host, Prop, Event, EventEmitter, h } from '@stencil/core';
 })
 export class CapSwitch {
   private instanceId = `cap-switch-${Math.random().toString(36).slice(2, 9)}`;
+  private get labelId() { return `${this.instanceId}-label`; }
 
   /** Whether the switch is on */
   @Prop({ mutable: true, reflect: true }) checked: boolean = false;
@@ -102,7 +103,7 @@ export class CapSwitch {
           }}
         >
           {this.label && (
-            <label class="switch__label" htmlFor={this.instanceId}>
+            <label id={this.labelId} class="switch__label" htmlFor={this.instanceId}>
               {this.label}
               {this.required && (
                 <span class="switch__required" aria-hidden="true"> *</span>
@@ -130,6 +131,7 @@ export class CapSwitch {
               aria-checked={String(this.checked)}
               aria-disabled={this.disabled ? 'true' : undefined}
               aria-required={this.required ? 'true' : undefined}
+              aria-labelledby={this.label ? this.labelId : undefined}
               aria-describedby={hasFeedback ? this.feedbackId : undefined}
               disabled={this.disabled}
               class={{
