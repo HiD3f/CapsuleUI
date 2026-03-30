@@ -42,7 +42,6 @@
   min-height: var(--cap-min-height-md);
   white-space: nowrap;
   transition: background var(--cap-transition-fast);
-  background: transparent;
 }
 
 .tabs__tab:last-child {
@@ -80,7 +79,7 @@
 }
 
 .tabs__tab--disabled:hover {
-  background: transparent;
+  background: var(--cap-color-surface);
   color: var(--cap-color-on-surface);
 }
 
